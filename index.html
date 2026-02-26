@@ -861,28 +861,51 @@
   /* Floating score bug */
   .stream-scorebug {
     position: absolute;
-    top: 60px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 8px 20px;
+    border-radius: 16px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    gap: 16px;
     z-index: 10;
     white-space: nowrap;
+    min-width: 280px;
   }
   .sb-team {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-weight: 600;
-    color: white;
+    gap: 4px;
     flex-shrink: 0;
+    min-width: 60px;
+  }
+  .sb-team-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sb-team-logo img {
+    width: 24px;
+    height: auto;
+  }
+  .sb-team-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+  .sb-team-tag {
+    font-size: 9px;
+    color: var(--text-muted);
   }
   .sb-center {
     display: flex;
@@ -891,7 +914,7 @@
     flex-shrink: 0;
   }
   .sb-score {
-    font-size: 18px;
+    font-size: 26px;
     font-weight: 800;
     color: white;
     letter-spacing: 4px;
@@ -900,7 +923,7 @@
     font-size: 9px;
     color: var(--text-muted);
     text-align: center;
-    margin-top: 1px;
+    margin-top: 2px;
   }
 
   /* Bottom bet panel */
@@ -988,6 +1011,13 @@
     cursor: pointer;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .stream-fire-btn.inactive {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
   .lm-teams {
@@ -1030,7 +1060,7 @@
     letter-spacing: 2px;
   }
 
-  .lm-score-nums .sep { color: var(--text-dim); margin: 0 4px; }
+  .lm-score-nums .sep { color: var(--white); margin: 0 4px; }
 
   .lm-round {
     font-size: 10px;
@@ -1173,6 +1203,12 @@
   .micro-opt.selected {
     border-color: var(--green);
     background: var(--green-dim);
+    box-shadow: 0 0 12px rgba(29,185,84,0.25), inset 0 0 20px rgba(29,185,84,0.08);
+  }
+  .micro-opt.selected.boosted-card {
+    border-color: var(--green);
+    background: rgba(29,185,84,0.12);
+    box-shadow: 0 0 16px rgba(29,185,84,0.3), inset 0 0 20px rgba(29,185,84,0.08);
   }
 
   .micro-opt .opt-team { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 4px; }
@@ -1251,8 +1287,15 @@
     position: relative;
     overflow: hidden;
   }
+  .fire-btn.inactive {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 
   .fire-btn:hover { background: var(--green-bright); }
+  .fire-btn.inactive:hover { background: rgba(255,255,255,0.06); }
 
   .queue-section {
     padding: 0 14px 14px;
@@ -2140,6 +2183,7 @@
   }
 
   .fire-btn { animation: fireGlow 2.5s ease-in-out infinite; }
+  .fire-btn.inactive { animation: none; }
 
   .fire-btn::after {
     content: '';
@@ -3683,7 +3727,7 @@
             <div class="amt-chip" onclick="selAmt(this)">$10</div>
             <div class="amt-chip" onclick="selAmt(this)">$25</div>
           </div>
-          <button class="fire-btn" onclick="fireBet()">BET</button>
+          <button class="fire-btn inactive" onclick="fireBet()">BET</button>
 
           <!-- Buy the Bonus (inline below bet) -->
           <div class="buy-bonus bb-inline" id="buyBonusCard">
@@ -3792,7 +3836,7 @@
             <div class="amt-chip" onclick="selAmt(this)">$10</div>
             <div class="amt-chip" onclick="selAmt(this)">$25</div>
           </div>
-          <button class="fire-btn" onclick="fireBet()">BET</button>
+          <button class="fire-btn inactive" onclick="fireBet()">BET</button>
 
           <div class="buy-bonus bb-inline">
             <div class="bb-compact">
@@ -4320,10 +4364,27 @@
   let selectedTeam = null;
   let selectedAmount = 5;
 
+  function updateBetBtn() {
+    document.querySelectorAll('.fire-btn').forEach(b => {
+      if (document.querySelector('.micro-opt.selected')) {
+        b.classList.remove('inactive');
+      } else {
+        b.classList.add('inactive');
+      }
+    });
+  }
+
   function selOpt(el) {
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+      selectedTeam = '';
+      updateBetBtn();
+      return;
+    }
     document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
     selectedTeam = el.querySelector('.opt-team').textContent;
+    updateBetBtn();
   }
 
   function selAmt(el) {
@@ -5958,6 +6019,12 @@
     slide.style.opacity = opacity;
   }
 
+  function resetBetSelection() {
+    document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
+    selectedTeam = '';
+    microBetActive = false;
+  }
+
   function lmDragEnd(clientX) {
     if (!lmDragging) return;
     lmDragging = false;
@@ -5988,6 +6055,7 @@
             });
           }
           updateMatchDots();
+          resetBetSelection();
           if (currentMatchIdx === 1 && !window.canvas2Init) { initCanvas2(); window.canvas2Init = true; }
           // Dismiss hint
           const lmHint = document.getElementById('lmSwipeHint');
@@ -6021,6 +6089,7 @@
             });
           }
           updateMatchDots();
+          resetBetSelection();
           const lmHint = document.getElementById('lmSwipeHint');
           if (lmHint && lmHint.style.display !== 'none') {
             lmHint.style.transition = 'opacity 0.4s';
@@ -6428,9 +6497,10 @@
 
     // Update overlay content
     document.querySelector('.stream-match-info').textContent = m.game;
-    document.querySelector('.sb-team:first-child').innerHTML = m.teamA;
-    document.querySelector('.sb-team:last-child').innerHTML = m.teamB;
-    document.getElementById('streamScore').textContent = m.score;
+    const sbTeams = document.querySelectorAll('.sb-team');
+    sbTeams[0].querySelector('.sb-team-name').textContent = m.teamA.replace(/<[^>]*>/g, '').trim();
+    sbTeams[1].querySelector('.sb-team-name').textContent = m.teamB.replace(/<[^>]*>/g, '').trim();
+    document.getElementById('streamScore').innerHTML = m.score.replace(':', '<span style="color:white;margin:0 2px;">:</span>');
     document.getElementById('streamRound').textContent = m.round;
     document.querySelector('.stream-bet-question').textContent = m.question;
     const opts = document.querySelectorAll('.stream-bet-opt');
@@ -6441,6 +6511,14 @@
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    // Reset selections
+    document.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
+    const streamBtn = document.querySelector('.stream-fire-btn');
+    streamBtn.classList.add('inactive');
+    streamBtn.textContent = 'BET';
+    streamBtn.style.background = '';
+    streamBtn.style.color = '';
+    streamBtn.style.border = '';
     startStreamCanvas(matchIdx);
     startStreamTimer();
   }
@@ -6596,9 +6674,24 @@
     }, 1000);
   }
 
+  function updateStreamBetBtn() {
+    const btn = document.querySelector('.stream-fire-btn');
+    if (document.querySelector('.stream-bet-opt.selected')) {
+      btn.classList.remove('inactive');
+    } else {
+      btn.classList.add('inactive');
+    }
+  }
+
   function selectStreamOpt(el) {
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+      updateStreamBetBtn();
+      return;
+    }
     el.parentElement.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
+    updateStreamBetBtn();
   }
 
   function selectStreamChip(el) {
@@ -6607,6 +6700,7 @@
   }
 
   function fireStreamBet() {
+    if (!document.querySelector('.stream-bet-opt.selected')) return;
     const btn = document.querySelector('.stream-fire-btn');
     btn.textContent = '✅ BET PLACED!';
     btn.style.background = 'rgba(29,185,84,0.3)';
@@ -6761,19 +6855,27 @@
     </div>
 
     <div class="stream-scorebug">
-      <div class="sb-team"><span class="navi-logo"></span> NAVI</div>
-      <div class="sb-center">
-        <div class="sb-score" id="streamScore">8 : 6</div>
-        <div class="sb-round" id="streamRound">Round 15</div>
+      <div class="sb-team">
+        <div class="sb-team-logo"><span class="navi-logo" style="width:20px;height:18px;"></span></div>
+        <div class="sb-team-name">NAVI</div>
+        <div class="sb-team-tag">CT Side</div>
       </div>
-      <div class="sb-team">Vitality <span class="vit-logo"></span></div>
+      <div class="sb-center">
+        <div class="sb-score" id="streamScore">8 <span style="color:white;margin:0 2px;">:</span> 6</div>
+        <div class="sb-round" id="streamRound">Round 15 · 1:23</div>
+      </div>
+      <div class="sb-team">
+        <div class="sb-team-logo"><span class="vit-logo" style="width:18px;height:18px;"></span></div>
+        <div class="sb-team-name">Vitality</div>
+        <div class="sb-team-tag">T Side</div>
+      </div>
     </div>
 
     <div class="stream-bet-panel">
       <div class="stream-bet-timer" id="streamTimer">⏱ Next micro-bet in 0:28</div>
       <div class="stream-bet-question">Who wins Round 15?</div>
       <div class="stream-bet-options">
-        <div class="stream-bet-opt selected" onclick="selectStreamOpt(this)">
+        <div class="stream-bet-opt" onclick="selectStreamOpt(this)">
           <div class="sbo-team"><span class="navi-logo"></span> NAVI</div>
           <div class="sbo-odds" id="streamOdds1">1.72x</div>
         </div>
@@ -6788,7 +6890,7 @@
         <div class="stream-chip" onclick="selectStreamChip(this)">$10</div>
         <div class="stream-chip" onclick="selectStreamChip(this)">$25</div>
       </div>
-      <button class="stream-fire-btn" onclick="fireStreamBet()">BET</button>
+      <button class="stream-fire-btn inactive" onclick="fireStreamBet()">BET</button>
     </div>
   </div>
 
