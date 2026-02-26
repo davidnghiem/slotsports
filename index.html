@@ -6234,6 +6234,10 @@
       oddsA: '1.72x', oddsB: '2.39x',
       colorA: '255,200,50', colorB: '80,150,255',
       dotA: '#ffc832', dotB: '#5096ff',
+      logoA: '<span class="navi-logo" style="width:20px;height:18px;"></span>',
+      logoB: '<span class="vit-logo" style="width:18px;height:18px;"></span>',
+      nameA: 'NAVI', nameB: 'Vitality',
+      tagA: 'CT Side', tagB: 'T Side',
     },
     {
       game: 'COD · CDL Major IV',
@@ -6244,6 +6248,10 @@
       oddsA: '1.72x', oddsB: '2.15x',
       colorA: '239,68,68', colorB: '34,197,94',
       dotA: '#ef4444', dotB: '#22c55e',
+      logoA: '<span class="faze-logo" style="width:20px;height:18px;"></span>',
+      logoB: '<span class="optic-logo" style="width:20px;height:18px;"></span>',
+      nameA: 'FaZe', nameB: 'OpTic',
+      tagA: 'CT Side', tagB: 'T Side',
     }
   ];
 
@@ -6503,8 +6511,12 @@
     // Update overlay content
     document.querySelector('.stream-match-info').textContent = m.game;
     const sbTeams = document.querySelectorAll('.sb-team');
-    sbTeams[0].querySelector('.sb-team-name').textContent = m.teamA.replace(/<[^>]*>/g, '').trim();
-    sbTeams[1].querySelector('.sb-team-name').textContent = m.teamB.replace(/<[^>]*>/g, '').trim();
+    sbTeams[0].querySelector('.sb-team-logo').innerHTML = m.logoA;
+    sbTeams[0].querySelector('.sb-team-name').textContent = m.nameA;
+    sbTeams[0].querySelector('.sb-team-tag').textContent = m.tagA;
+    sbTeams[1].querySelector('.sb-team-logo').innerHTML = m.logoB;
+    sbTeams[1].querySelector('.sb-team-name').textContent = m.nameB;
+    sbTeams[1].querySelector('.sb-team-tag').textContent = m.tagB;
     document.getElementById('streamScore').innerHTML = m.score.replace(':', '<span style="color:white;margin:0 2px;">:</span>');
     document.getElementById('streamRound').textContent = m.round;
     document.querySelector('.stream-bet-question').textContent = m.question;
