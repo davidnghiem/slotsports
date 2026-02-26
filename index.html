@@ -845,28 +845,36 @@
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px;
-    padding: 6px 16px;
+    padding: 8px 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     z-index: 10;
+    white-space: nowrap;
   }
   .sb-team {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
+    gap: 5px;
+    font-size: 12px;
     font-weight: 600;
     color: white;
+    flex-shrink: 0;
+  }
+  .sb-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
   }
   .sb-score {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     color: white;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
   }
   .sb-round {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-muted);
     text-align: center;
     margin-top: 1px;
@@ -1145,7 +1153,36 @@
   }
 
   .micro-opt .opt-team { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 4px; }
-  .micro-opt .opt-odds { font-size: 20px; font-weight: 800; color: var(--green); }
+  .micro-opt .opt-odds { font-size: 20px; font-weight: 800; color: var(--green); transition: all 0.3s; }
+
+  .opt-odds.boosted {
+    color: #ffd700;
+    text-shadow: 0 0 8px rgba(255,215,0,0.6), 0 0 16px rgba(255,215,0,0.3);
+    animation: boostedGlow 1.5s ease-in-out infinite;
+  }
+  @keyframes boostedGlow {
+    0%, 100% { text-shadow: 0 0 8px rgba(255,215,0,0.4), 0 0 16px rgba(255,215,0,0.2); }
+    50% { text-shadow: 0 0 12px rgba(255,215,0,0.8), 0 0 24px rgba(255,215,0,0.4); }
+  }
+
+  .micro-opt.boosted-card {
+    border-color: rgba(255,215,0,0.4);
+    background: rgba(255,215,0,0.06);
+    box-shadow: 0 0 12px rgba(255,215,0,0.1);
+  }
+
+  .boost-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    color: #ffd700;
+    background: rgba(255,215,0,0.12);
+    border: 1px solid rgba(255,215,0,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    animation: boostedGlow 1.5s ease-in-out infinite;
+  }
 
   .amount-row {
     display: flex;
@@ -1342,6 +1379,241 @@
     flex: 1;
   }
 
+  .bb-inline {
+    margin: 8px 0 0;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+  .bb-inline .bb-compact {
+    padding: 0;
+    background: none;
+    gap: 6px;
+    align-items: center;
+  }
+  .bb-inline .bb-compact .bb-tag {
+    padding: 7px 8px;
+    font-size: 11px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-weight: 600;
+    animation: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+  .bb-inline .bb-compact .bb-btn {
+    padding: 7px 12px;
+    font-size: 10px;
+  }
+  .bb-inline .bb-info-btn {
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+
+  .bb-btn-muted {
+    background: linear-gradient(90deg, rgba(236,72,153,0.1), rgba(168,85,247,0.12), rgba(249,115,22,0.1)) !important;
+    border: 1px solid transparent !important;
+    background-clip: padding-box !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+    animation: bbBuyGlow 2.5s ease-in-out infinite !important;
+    position: relative !important;
+  }
+  .bb-btn-muted::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px; bottom: -1px;
+    background: linear-gradient(90deg, #ec4899, #a855f7, #f97316);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.6;
+  }
+  .bb-btn-muted:hover {
+    background: linear-gradient(90deg, rgba(236,72,153,0.15), rgba(168,85,247,0.18), rgba(249,115,22,0.15)) !important;
+  }
+  @keyframes bbBuyGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(168,85,247,0), 0 0 0 0 rgba(236,72,153,0); }
+    50% { box-shadow: 0 0 10px 2px rgba(168,85,247,0.25), 0 0 16px 4px rgba(236,72,153,0.15); }
+  }
+  @keyframes bbActiveGlow {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.2); }
+    50% { transform: scale(1.04); box-shadow: 0 0 12px 2px rgba(255,215,0,0.15); }
+  }
+  @keyframes bbActiveRing {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.06); }
+  }
+
+  .bb-btn-muted.is-active {
+    border: 1.5px solid rgba(255,215,0,0.35) !important;
+    background: rgba(255,215,0,0.08) !important;
+    color: #ffd700 !important;
+    animation: bbActiveGlow 2s ease-in-out infinite !important;
+    position: relative !important;
+  }
+  .bb-btn-muted.is-active::before {
+    content: '';
+    position: absolute;
+    top: -3px; left: -3px; right: -3px; bottom: -3px;
+    border-radius: inherit;
+    border: 1.5px solid rgba(255,215,0,0.3);
+    background: none;
+    opacity: 1;
+    animation: bbActiveRing 2s ease-in-out infinite;
+  }
+
+  /* Bonus Round Overlay */
+  .bonus-round-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 10000;
+    background: rgba(0,0,0,0.92);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .bonus-round-overlay.active {
+    display: flex;
+  }
+
+  .br-slot-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .br-slot {
+    width: 64px;
+    height: 72px;
+    background: rgba(168,85,247,0.1);
+    border: 2px solid rgba(168,85,247,0.4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    overflow: hidden;
+  }
+  .br-slot.spinning .br-slot-face {
+    animation: slotSpin 0.1s linear infinite;
+  }
+  .br-slot.landed {
+    border-color: #ffd700;
+    background: rgba(255,215,0,0.1);
+    box-shadow: 0 0 16px rgba(255,215,0,0.3);
+    animation: slotLand 0.3s ease-out;
+  }
+  @keyframes slotSpin {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(100%); opacity: 0; }
+  }
+  @keyframes slotLand {
+    0% { transform: scale(1.2); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  .br-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .br-title.show {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 20px rgba(255,215,0,0.5), 0 0 40px rgba(255,215,0,0.2);
+  }
+
+  .br-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    opacity: 0;
+    transition: opacity 0.3s 0.2s;
+  }
+  .br-subtitle.show { opacity: 1; }
+
+  .br-perks-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    opacity: 0;
+    transition: opacity 0.3s 0.4s;
+  }
+  .br-perks-row.show { opacity: 1; }
+
+  .br-perk-chip {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: rgba(168,85,247,0.15);
+    border: 1px solid rgba(168,85,247,0.3);
+    color: var(--purple);
+  }
+
+  .br-timer-block {
+    opacity: 0;
+    transition: opacity 0.3s 0.6s;
+  }
+  .br-timer-block.show { opacity: 1; }
+
+  .br-timer {
+    font-size: 42px;
+    font-weight: 900;
+    color: white;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+  }
+  .br-timer-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    margin-bottom: 16px;
+  }
+  .br-timer-bar-track {
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto 20px;
+  }
+  .br-timer-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--purple), #ffd700);
+    border-radius: 2px;
+    transition: width 1s linear;
+  }
+
+  .br-close {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--text-muted);
+    padding: 10px 28px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s 0.8s;
+  }
+  .br-close.show { opacity: 1; }
+  .br-close:hover { background: rgba(255,255,255,0.12); }
+
   .bb-compact-row {
     display: flex;
     align-items: center;
@@ -1369,8 +1641,18 @@
 
   .bb-info-btn:hover { border-color: var(--border-light); }
   .bb-info-btn.active {
-    border-color: var(--purple);
-    background: rgba(168,85,247,0.1);
+    border: 1px solid transparent;
+    background: linear-gradient(90deg, rgba(236,72,153,0.1), rgba(168,85,247,0.12), rgba(249,115,22,0.1));
+    position: relative;
+  }
+  .bb-info-btn.active::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px; bottom: -1px;
+    background: linear-gradient(90deg, #ec4899, #a855f7, #f97316);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.5;
   }
 
   .bb-details {
@@ -2745,23 +3027,23 @@
 
     <!-- Category pills -->
     <div class="category-pills">
-      <div class="cat-pill active">
+      <div class="cat-pill active" data-category="popular">
         <span class="cat-icon">🔥</span>
         <span class="cat-label">Popular</span>
       </div>
-      <div class="cat-pill">
+      <div class="cat-pill" data-category="esports">
         <span class="cat-icon">🎮</span>
         <span class="cat-label">Esports</span>
       </div>
-      <div class="cat-pill">
+      <div class="cat-pill" data-category="soccer">
         <span class="cat-icon">⚽</span>
         <span class="cat-label">Soccer</span>
       </div>
-      <div class="cat-pill">
+      <div class="cat-pill" data-category="basketball">
         <span class="cat-icon">🏀</span>
         <span class="cat-label">Basketball</span>
       </div>
-      <div class="cat-pill">
+      <div class="cat-pill" data-category="hockey">
         <span class="cat-icon">🏒</span>
         <span class="cat-label">Hockey</span>
       </div>
@@ -2799,30 +3081,11 @@
         <div class="streak-fire">🔥</div>
         <div class="streak-info">
           <div class="streak-count">12 Win Streak!</div>
-          <div class="streak-sub">You're on fire right now 🔥</div>
+          <div class="streak-sub">You're on fire right now</div>
         </div>
         <div class="streak-multiplier">1.5x XP</div>
       </div>
-      <!-- Buy the Bonus -->
-      <div class="buy-bonus" id="buyBonusCard">
-        <div class="bb-compact">
-          <div class="bb-tag">Buy The Bonus</div>
-          <div class="bb-compact-row">
-            <button class="bb-btn" onclick="event.stopPropagation(); buyBonus()">Buy In – $25</button>
-            <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
-          </div>
-        </div>
-        <div class="bb-details" id="bbDetails">
-          <div class="bb-title">Dicey Bonus Session</div>
-          <div class="bb-desc">10-min premium live session. Boosted odds, exclusive micro-markets, 3x bonus triggers.</div>
-          <div class="bb-perks">
-            <span class="bb-perk">✨ 2x payouts</span>
-            <span class="bb-perk">🎯 Exclusive markets</span>
-            <span class="bb-perk">🔥 3x bonuses</span>
-            <span class="bb-perk">⏱️ 10 min</span>
-          </div>
-        </div>
-      </div>
+      <!-- Buy the Bonus moved below BET button -->
 
       <div class="section-label">⚡ Live Matches</div>
 
@@ -2903,7 +3166,28 @@
             <div class="amt-chip" onclick="selAmt(this)">$10</div>
             <div class="amt-chip" onclick="selAmt(this)">$25</div>
           </div>
-          <button class="fire-btn" onclick="fireBet()">FIRE BET</button>
+          <button class="fire-btn" onclick="fireBet()">BET</button>
+
+          <!-- Buy the Bonus (inline below bet) -->
+          <div class="buy-bonus bb-inline" id="buyBonusCard">
+            <div class="bb-compact">
+              <div class="bb-tag">🎰 BUY THE BONUS</div>
+              <div class="bb-compact-row">
+                <button class="bb-btn bb-btn-muted" onclick="event.stopPropagation(); buyBonus()">BUY IN – $25</button>
+                <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
+              </div>
+            </div>
+            <div class="bb-details" id="bbDetails">
+              <div class="bb-title">Dicey Bonus Session</div>
+              <div class="bb-desc">10-min premium live session. Boosted odds, exclusive micro-markets, 3x bonus triggers.</div>
+              <div class="bb-perks">
+                <span class="bb-perk">✨ 2x payouts</span>
+                <span class="bb-perk">🎯 Exclusive markets</span>
+                <span class="bb-perk">🔥 3x bonuses</span>
+                <span class="bb-perk">⏱️ 10 min</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="queue-section">
@@ -3177,9 +3461,9 @@
       <!-- Active near-miss slip -->
       <div class="reroll-slip">
         <div class="reroll-slip-header">
-          <div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
             <div class="reroll-slip-title">🔥 Degen Roll #247</div>
-            <div class="reroll-slip-status">❌ MISSED BY 1 LEG</div>
+            <div class="reroll-slip-status" style="padding-left:2px;">❌ MISSED BY 1 LEG</div>
           </div>
           <div class="reroll-slip-odds">15.5x</div>
         </div>
@@ -3508,6 +3792,23 @@
     p.addEventListener('click', () => {
       document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
       p.classList.add('active');
+      const cat = p.dataset.category;
+      if (parlaysByCategory[cat]) {
+        parlayData = parlaysByCategory[cat];
+        currentParlayIdx = 0;
+        const wrapper = document.getElementById('parlayCardWrapper');
+        wrapper.style.opacity = '0';
+        wrapper.style.transform = 'translateY(8px)';
+        setTimeout(() => {
+          wrapper.innerHTML = renderParlayCard(parlayData[currentParlayIdx]);
+          renderDots();
+          updateCounter();
+          wrapper.style.transition = 'opacity 0.3s, transform 0.3s';
+          wrapper.style.opacity = '1';
+          wrapper.style.transform = 'translateY(0)';
+          setTimeout(() => { wrapper.style.transition = ''; }, 300);
+        }, 150);
+      }
     });
   });
 
@@ -3555,14 +3856,109 @@
     showToast('Parlay tailed!', 'Copied to your bet slip');
   }
 
+  let bonusTimerCountdown = null;
+  let bonusSecondsLeft = 600;
+
   function buyBonus() {
-    document.getElementById('app').classList.add('shake');
-    setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+    const overlay = document.getElementById('bonusRoundOverlay');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Reset state
+    const slots = [document.getElementById('brSlot1'), document.getElementById('brSlot2'), document.getElementById('brSlot3')];
+    const faces = ['🎰', '💎', '🔥', '⚡', '✨', '🎲', '💰', '🏆'];
+    const winFaces = ['🎲', '🎲', '🎲'];
+
+    slots.forEach(s => { s.classList.remove('landed'); s.classList.add('spinning'); });
+    document.getElementById('brTitle').classList.remove('show');
+    document.getElementById('brSubtitle').classList.remove('show');
+    document.getElementById('brPerks').classList.remove('show');
+    document.getElementById('brTimerBlock').classList.remove('show');
+    document.getElementById('brClose').classList.remove('show');
+
+    // Spin faces rapidly
+    const spinIntervals = slots.map((slot, i) => {
+      return setInterval(() => {
+        slot.querySelector('.br-slot-face').textContent = faces[Math.floor(Math.random() * faces.length)];
+      }, 80);
+    });
+
+    // Land slots one by one
+    slots.forEach((slot, i) => {
+      setTimeout(() => {
+        clearInterval(spinIntervals[i]);
+        slot.classList.remove('spinning');
+        slot.classList.add('landed');
+        slot.querySelector('.br-slot-face').textContent = winFaces[i];
+
+        // Shake on each land
+        overlay.style.transform = 'translateX(3px)';
+        setTimeout(() => overlay.style.transform = 'translateX(-3px)', 50);
+        setTimeout(() => overlay.style.transform = '', 100);
+
+        // After all slots land, show the rest
+        if (i === 2) {
+          setTimeout(() => {
+            document.getElementById('brTitle').classList.add('show');
+            flash('rgba(168,85,247,0.25)');
+          }, 300);
+          setTimeout(() => document.getElementById('brSubtitle').classList.add('show'), 500);
+          setTimeout(() => document.getElementById('brPerks').classList.add('show'), 700);
+          setTimeout(() => {
+            document.getElementById('brTimerBlock').classList.add('show');
+            startBonusCountdown();
+          }, 900);
+          setTimeout(() => document.getElementById('brClose').classList.add('show'), 1100);
+        }
+      }, 800 + i * 600);
+    });
+  }
+
+  function startBonusCountdown() {
+    bonusSecondsLeft = 600;
+    updateBonusTimer();
+    document.getElementById('brTimerBar').style.width = '100%';
+
+    if (bonusTimerCountdown) clearInterval(bonusTimerCountdown);
+    bonusTimerCountdown = setInterval(() => {
+      bonusSecondsLeft--;
+      if (bonusSecondsLeft <= 0) {
+        clearInterval(bonusTimerCountdown);
+        closeBonusRound();
+        return;
+      }
+      updateBonusTimer();
+      document.getElementById('brTimerBar').style.width = (bonusSecondsLeft / 600 * 100) + '%';
+    }, 1000);
+  }
+
+  function updateBonusTimer() {
+    const min = Math.floor(bonusSecondsLeft / 60);
+    const sec = bonusSecondsLeft % 60;
+    document.getElementById('brTimer').textContent = `${min}:${String(sec).padStart(2, '0')}`;
+  }
+
+  function closeBonusRound() {
+    const overlay = document.getElementById('bonusRoundOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Activate the bonus banner
     const b = document.getElementById('bonusBanner');
     b.querySelector('.bonus-title').textContent = '🎰 BONUS SESSION ACTIVE';
     b.querySelector('.bonus-desc').innerHTML = 'All micro-bets pay <strong>2x</strong> for 10 minutes.';
     b.classList.add('show');
-    flash('rgba(29,185,84,0.2)');
+
+    // Boost odds
+    boostLiveOdds();
+
+    // Update buy bonus button to show active
+    const buyBtn = document.querySelector('.bb-btn-muted');
+    if (buyBtn) {
+      buyBtn.textContent = 'ACTIVE';
+      buyBtn.classList.add('is-active');
+      buyBtn.style.pointerEvents = 'none';
+    }
   }
 
   function toggleBonusInfo() {
@@ -3740,7 +4136,50 @@
     document.getElementById('bonusBanner').classList.add('show');
     document.getElementById('app').classList.add('shake');
     setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+
+    // Boost live match odds by 25%
+    boostLiveOdds();
   }, 15000);
+
+  function boostLiveOdds() {
+    const oddsEls = document.querySelectorAll('.micro-opt .opt-odds');
+    const optCards = document.querySelectorAll('.micro-opt');
+
+    oddsEls.forEach((el, i) => {
+      const current = parseFloat(el.textContent);
+      const boosted = (current * 1.25).toFixed(2);
+
+      // Add boosted card style
+      if (optCards[i]) optCards[i].classList.add('boosted-card');
+
+      // Animate the number change
+      el.style.transform = 'scale(1.3)';
+      el.style.opacity = '0';
+
+      setTimeout(() => {
+        el.textContent = boosted + 'x';
+        el.classList.add('boosted');
+
+        // Add boost badge if not present
+        const team = optCards[i]?.querySelector('.opt-team');
+        if (team && !team.querySelector('.boost-badge')) {
+          const badge = document.createElement('span');
+          badge.className = 'boost-badge';
+          badge.textContent = '+25%';
+          team.appendChild(badge);
+        }
+
+        el.style.transform = 'scale(1)';
+        el.style.opacity = '1';
+      }, 200);
+    });
+  }
+
+  function removeBoostedOdds() {
+    document.querySelectorAll('.opt-odds.boosted').forEach(el => el.classList.remove('boosted'));
+    document.querySelectorAll('.micro-opt.boosted-card').forEach(el => el.classList.remove('boosted-card'));
+    document.querySelectorAll('.boost-badge').forEach(el => el.remove());
+  }
 
   // Timer
   let sec = 42;
@@ -3827,6 +4266,7 @@
           banner.classList.remove('show');
           banner.style.opacity = '';
           banner.style.transform = '';
+          removeBoostedOdds();
         }, 500);
       }
     });
@@ -4141,78 +4581,283 @@
   // ========================================
   // SWIPEABLE PARLAY CARDS
   // ========================================
-  const parlayData = [
-    {
-      tier: 'safe', emoji: '🛡️', name: 'Safe Roll', tag: '3 legs · 67% hit rate',
-      odds: '2.8x', color: 'safe', bet: '$10', plays: '1.2k', resType: 'safe',
-      legs: [
-        { pick: 'Team Liquid ML', match: 'LoL · LEC · vs Fnatic', odds: '1.50x' },
-        { pick: 'NAVI ML', match: 'CS2 · Major · vs Vitality', odds: '1.67x' },
-        { pick: 'T1 -1.5 Maps', match: 'LoL · LCK · vs DRX', odds: '1.77x' },
-      ]
-    },
-    {
-      tier: 'degen', emoji: '🔥', name: 'Degen Roll', tag: '4 legs · 18% hit rate',
-      odds: '15.5x', color: 'degen', bet: '$5', plays: '843', resType: 'degen',
-      legs: [
-        { pick: '100T upset vs C9', match: 'Valorant · VCT · Bo3', odds: '3.30x' },
-        { pick: 'G2 2-0 exact score', match: 'CS2 · EPL · vs FaZe', odds: '2.75x' },
-        { pick: 'Over 35.5 kills', match: 'LoL · LCS · TL vs FLY', odds: '2.20x' },
-        { pick: 'SEN win pistol rd', match: 'Valorant · VCT · Rd 1', odds: '1.91x' },
-      ]
-    },
-    {
-      tier: 'yolo', emoji: '💀', name: 'YOLO Roll', tag: '5 legs · 3% hit rate',
-      odds: '83x', color: 'yolo', bet: '$2', plays: '2.4k', resType: 'yolo',
-      legs: [
-        { pick: 'Loud upset vs GenG', match: 'Valorant · Masters', odds: '4.40x' },
-        { pick: 'First blood under 1:30', match: 'LoL · Worlds · Game 1', odds: '3.80x' },
-        { pick: 'Ace in first half', match: 'CS2 · Major · Grand Final', odds: '6.00x' },
-        { pick: 'Map 3 overtime', match: 'Valorant · Masters · Finals', odds: '3.00x' },
-        { pick: 'MVP kills 30+', match: 'CS2 · Major · Grand Final', odds: '2.80x' },
-      ]
-    },
-    {
-      tier: 'mid', emoji: '⚡', name: 'Mid Roll', tag: '3 legs · 42% hit rate',
-      odds: '5.2x', color: 'mid', bet: '$10', plays: '1.8k', resType: 'safe',
-      legs: [
-        { pick: 'G2 ML', match: 'CS2 · EPL · vs FaZe', odds: '1.75x' },
-        { pick: 'Over 2.5 maps', match: 'Valorant · VCT · SEN vs LOUD', odds: '1.90x' },
-        { pick: 'GenG -1.5 maps', match: 'LoL · LCK · vs T1', odds: '1.55x' },
-      ]
-    },
-    {
-      tier: 'safe', emoji: '🛡️', name: 'Safe Roll #2', tag: '2 legs · 78% hit rate',
-      odds: '1.9x', color: 'safe', bet: '$25', plays: '3.1k', resType: 'safe',
-      legs: [
-        { pick: 'Fnatic ML', match: 'LoL · LEC · vs Rogue', odds: '1.35x' },
-        { pick: 'FaZe ML', match: 'CS2 · BLAST · vs MOUZ', odds: '1.42x' },
-      ]
-    },
-    {
-      tier: 'degen', emoji: '🔥', name: 'Degen Roll #2', tag: '5 legs · 8% hit rate',
-      odds: '28x', color: 'degen', bet: '$3', plays: '654', resType: 'degen',
-      legs: [
-        { pick: 'EG upset vs C9', match: 'Valorant · VCT · Bo3', odds: '2.80x' },
-        { pick: 'First blood < 45s', match: 'LoL · Worlds · Game 3', odds: '3.50x' },
-        { pick: 'NAVI 16-14 exact', match: 'CS2 · Major · Semifinal', odds: '8.00x' },
-        { pick: '40+ kills total', match: 'LoL · LCK · Game 1', odds: '2.10x' },
-        { pick: 'Pistol ace', match: 'Valorant · VCT · Map 2', odds: '12.0x' },
-      ]
-    },
-    {
-      tier: 'yolo', emoji: '💀', name: 'YOLO Roll #2', tag: '6 legs · 1% hit rate',
-      odds: '150x', color: 'yolo', bet: '$1', plays: '4.2k', resType: 'yolo',
-      legs: [
-        { pick: 'PRX upset vs GenG', match: 'Valorant · Masters · Bo5', odds: '4.00x' },
-        { pick: 'Sub-1min first blood', match: 'LoL · LPL · Finals', odds: '5.50x' },
-        { pick: 'Triple OT', match: 'CS2 · Major · Grand Final', odds: '7.00x' },
-        { pick: 'Knife kill', match: 'CS2 · BLAST · Map 3', odds: '15.0x' },
-        { pick: 'Flawless map', match: 'Valorant · VCT · Playoffs', odds: '9.00x' },
-        { pick: 'Baron steal', match: 'LoL · Worlds · Game 5', odds: '3.20x' },
-      ]
-    },
-  ];
+  const parlaysByCategory = {
+    popular: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Safe Roll', tag: '3 legs · 67% hit rate',
+        odds: '2.8x', color: 'safe', bet: '$10', plays: '1.2k', resType: 'safe',
+        legs: [
+          { pick: 'Team Liquid ML', match: 'LoL · LEC · vs Fnatic', odds: '1.50x' },
+          { pick: 'NAVI ML', match: 'CS2 · Major · vs Vitality', odds: '1.67x' },
+          { pick: 'T1 -1.5 Maps', match: 'LoL · LCK · vs DRX', odds: '1.77x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Degen Roll', tag: '4 legs · 18% hit rate',
+        odds: '15.5x', color: 'degen', bet: '$5', plays: '843', resType: 'degen',
+        legs: [
+          { pick: '100T upset vs C9', match: 'Valorant · VCT · Bo3', odds: '3.30x' },
+          { pick: 'G2 2-0 exact score', match: 'CS2 · EPL · vs FaZe', odds: '2.75x' },
+          { pick: 'Over 35.5 kills', match: 'LoL · LCS · TL vs FLY', odds: '2.20x' },
+          { pick: 'SEN win pistol rd', match: 'Valorant · VCT · Rd 1', odds: '1.91x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'YOLO Roll', tag: '5 legs · 3% hit rate',
+        odds: '83x', color: 'yolo', bet: '$2', plays: '2.4k', resType: 'yolo',
+        legs: [
+          { pick: 'Loud upset vs GenG', match: 'Valorant · Masters', odds: '4.40x' },
+          { pick: 'First blood under 1:30', match: 'LoL · Worlds · Game 1', odds: '3.80x' },
+          { pick: 'Ace in first half', match: 'CS2 · Major · Grand Final', odds: '6.00x' },
+          { pick: 'Map 3 overtime', match: 'Valorant · Masters · Finals', odds: '3.00x' },
+          { pick: 'MVP kills 30+', match: 'CS2 · Major · Grand Final', odds: '2.80x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Mid Roll', tag: '3 legs · 42% hit rate',
+        odds: '5.2x', color: 'mid', bet: '$10', plays: '1.8k', resType: 'safe',
+        legs: [
+          { pick: 'G2 ML', match: 'CS2 · EPL · vs FaZe', odds: '1.75x' },
+          { pick: 'Over 2.5 maps', match: 'Valorant · VCT · SEN vs LOUD', odds: '1.90x' },
+          { pick: 'GenG -1.5 maps', match: 'LoL · LCK · vs T1', odds: '1.55x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Safe Roll #2', tag: '2 legs · 78% hit rate',
+        odds: '1.9x', color: 'safe', bet: '$25', plays: '3.1k', resType: 'safe',
+        legs: [
+          { pick: 'Fnatic ML', match: 'LoL · LEC · vs Rogue', odds: '1.35x' },
+          { pick: 'FaZe ML', match: 'CS2 · BLAST · vs MOUZ', odds: '1.42x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Degen Roll #2', tag: '5 legs · 8% hit rate',
+        odds: '28x', color: 'degen', bet: '$3', plays: '654', resType: 'degen',
+        legs: [
+          { pick: 'EG upset vs C9', match: 'Valorant · VCT · Bo3', odds: '2.80x' },
+          { pick: 'First blood < 45s', match: 'LoL · Worlds · Game 3', odds: '3.50x' },
+          { pick: 'NAVI 16-14 exact', match: 'CS2 · Major · Semifinal', odds: '8.00x' },
+          { pick: '40+ kills total', match: 'LoL · LCK · Game 1', odds: '2.10x' },
+          { pick: 'Pistol ace', match: 'Valorant · VCT · Map 2', odds: '12.0x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'YOLO Roll #2', tag: '6 legs · 1% hit rate',
+        odds: '150x', color: 'yolo', bet: '$1', plays: '4.2k', resType: 'yolo',
+        legs: [
+          { pick: 'PRX upset vs GenG', match: 'Valorant · Masters · Bo5', odds: '4.00x' },
+          { pick: 'Sub-1min first blood', match: 'LoL · LPL · Finals', odds: '5.50x' },
+          { pick: 'Triple OT', match: 'CS2 · Major · Grand Final', odds: '7.00x' },
+          { pick: 'Knife kill', match: 'CS2 · BLAST · Map 3', odds: '15.0x' },
+          { pick: 'Flawless map', match: 'Valorant · VCT · Playoffs', odds: '9.00x' },
+          { pick: 'Baron steal', match: 'LoL · Worlds · Game 5', odds: '3.20x' },
+        ]
+      },
+    ],
+    esports: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'CS2 Lock', tag: '2 legs · 72% hit rate',
+        odds: '2.1x', color: 'safe', bet: '$15', plays: '2.8k', resType: 'safe',
+        legs: [
+          { pick: 'FaZe ML', match: 'CS2 · BLAST · vs MOUZ', odds: '1.40x' },
+          { pick: 'NAVI ML', match: 'CS2 · EPL · vs Heroic', odds: '1.50x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'LCK Special', tag: '3 legs · 38% hit rate',
+        odds: '6.8x', color: 'mid', bet: '$10', plays: '1.1k', resType: 'safe',
+        legs: [
+          { pick: 'T1 ML', match: 'LoL · LCK · vs HLE', odds: '1.65x' },
+          { pick: 'GenG -1.5 maps', match: 'LoL · LCK · vs KT', odds: '1.80x' },
+          { pick: 'Over 25 min Game 1', match: 'LoL · LCK · T1 vs HLE', odds: '2.30x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'VCT Chaos', tag: '4 legs · 12% hit rate',
+        odds: '22x', color: 'degen', bet: '$5', plays: '720', resType: 'degen',
+        legs: [
+          { pick: 'PRX upset vs SEN', match: 'Valorant · VCT · Bo3', odds: '2.90x' },
+          { pick: 'Over 2.5 maps', match: 'Valorant · VCT · LOUD vs GenG', odds: '2.10x' },
+          { pick: 'First map under 11 rds', match: 'Valorant · VCT · Map 1', odds: '3.20x' },
+          { pick: '100T win pistol', match: 'Valorant · VCT · Rd 1', odds: '1.85x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'Esports Madness', tag: '5 legs · 2% hit rate',
+        odds: '110x', color: 'yolo', bet: '$2', plays: '3.5k', resType: 'yolo',
+        legs: [
+          { pick: 'Ace round 1', match: 'CS2 · Major · Grand Final', odds: '8.00x' },
+          { pick: 'Sub-20 min game', match: 'LoL · Worlds · Quarters', odds: '4.50x' },
+          { pick: 'Knife kill in pistol', match: 'CS2 · BLAST · Map 2', odds: '12.0x' },
+          { pick: 'Comeback from 0-9', match: 'Valorant · VCT · Map 3', odds: '6.00x' },
+          { pick: 'Pentakill in finals', match: 'LoL · LCK · Grand Final', odds: '5.00x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Valorant Safe', tag: '2 legs · 75% hit rate',
+        odds: '1.8x', color: 'safe', bet: '$20', plays: '4.1k', resType: 'safe',
+        legs: [
+          { pick: 'SEN ML', match: 'Valorant · VCT · vs NRG', odds: '1.30x' },
+          { pick: 'LOUD ML', match: 'Valorant · VCT · vs MIBR', odds: '1.38x' },
+        ]
+      },
+    ],
+    soccer: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'PL Favorites', tag: '3 legs · 58% hit rate',
+        odds: '3.4x', color: 'safe', bet: '$10', plays: '5.2k', resType: 'safe',
+        legs: [
+          { pick: 'Arsenal ML', match: 'EPL · vs Wolves', odds: '1.35x' },
+          { pick: 'Man City ML', match: 'EPL · vs Bournemouth', odds: '1.45x' },
+          { pick: 'Liverpool ML', match: 'EPL · vs Crystal Palace', odds: '1.72x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'BTTS Special', tag: '3 legs · 40% hit rate',
+        odds: '5.8x', color: 'mid', bet: '$10', plays: '1.9k', resType: 'safe',
+        legs: [
+          { pick: 'Both teams score', match: 'EPL · Chelsea vs Spurs', odds: '1.65x' },
+          { pick: 'Over 2.5 goals', match: 'La Liga · Barça vs Atlético', odds: '1.80x' },
+          { pick: 'Both teams score', match: 'Serie A · Inter vs Napoli', odds: '1.95x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Scoreline Hunter', tag: '3 legs · 6% hit rate',
+        odds: '42x', color: 'degen', bet: '$5', plays: '890', resType: 'degen',
+        legs: [
+          { pick: 'Arsenal 2-1 exact', match: 'EPL · vs Wolves', odds: '7.50x' },
+          { pick: 'Haaland anytime scorer', match: 'EPL · City vs Bournemouth', odds: '1.55x' },
+          { pick: 'Barça win & over 3.5', match: 'La Liga · vs Atlético', odds: '3.60x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'UCL Chaos', tag: '5 legs · 1% hit rate',
+        odds: '175x', color: 'yolo', bet: '$1', plays: '6.8k', resType: 'yolo',
+        legs: [
+          { pick: 'Real Madrid 3-2 exact', match: 'UCL · vs PSG', odds: '15.0x' },
+          { pick: 'Red card in match', match: 'UCL · Bayern vs Inter', odds: '4.50x' },
+          { pick: 'Goal before 5 min', match: 'UCL · Arsenal vs Barça', odds: '5.00x' },
+          { pick: 'Penalty awarded', match: 'UCL · City vs Dortmund', odds: '2.80x' },
+          { pick: 'Hat trick scored', match: 'UCL · Real Madrid vs PSG', odds: '9.00x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Derby Day', tag: '2 legs · 52% hit rate',
+        odds: '3.1x', color: 'mid', bet: '$15', plays: '2.3k', resType: 'safe',
+        legs: [
+          { pick: 'Draw', match: 'EPL · Man Utd vs Man City', odds: '3.40x' },
+          { pick: 'Under 2.5 goals', match: 'Serie A · AC Milan vs Inter', odds: '1.90x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'La Liga Lock', tag: '2 legs · 70% hit rate',
+        odds: '2.2x', color: 'safe', bet: '$20', plays: '3.4k', resType: 'safe',
+        legs: [
+          { pick: 'Barcelona ML', match: 'La Liga · vs Sevilla', odds: '1.40x' },
+          { pick: 'Real Madrid ML', match: 'La Liga · vs Real Sociedad', odds: '1.55x' },
+        ]
+      },
+    ],
+    basketball: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'NBA Chalk', tag: '3 legs · 55% hit rate',
+        odds: '3.6x', color: 'safe', bet: '$10', plays: '4.5k', resType: 'safe',
+        legs: [
+          { pick: 'Celtics ML', match: 'NBA · vs Hornets', odds: '1.25x' },
+          { pick: 'Thunder ML', match: 'NBA · vs Wizards', odds: '1.30x' },
+          { pick: 'Nuggets ML', match: 'NBA · vs Blazers', odds: '1.45x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Player Props', tag: '3 legs · 35% hit rate',
+        odds: '7.2x', color: 'mid', bet: '$10', plays: '2.1k', resType: 'safe',
+        legs: [
+          { pick: 'LeBron over 27.5 pts', match: 'NBA · Lakers vs Clippers', odds: '1.85x' },
+          { pick: 'Jokic triple-double', match: 'NBA · Nuggets vs Blazers', odds: '2.40x' },
+          { pick: 'Curry over 4.5 threes', match: 'NBA · Warriors vs Kings', odds: '1.90x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Upset Alert', tag: '4 legs · 10% hit rate',
+        odds: '32x', color: 'degen', bet: '$5', plays: '1.3k', resType: 'degen',
+        legs: [
+          { pick: 'Wizards ML upset', match: 'NBA · vs Thunder', odds: '3.80x' },
+          { pick: 'Blazers +6.5', match: 'NBA · vs Nuggets', odds: '1.95x' },
+          { pick: 'Under 215.5 total', match: 'NBA · Celtics vs Hornets', odds: '2.10x' },
+          { pick: 'Wemby 5+ blocks', match: 'NBA · Spurs vs Wolves', odds: '3.20x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'NBA Parlay Bomb', tag: '5 legs · 2% hit rate',
+        odds: '95x', color: 'yolo', bet: '$2', plays: '5.9k', resType: 'yolo',
+        legs: [
+          { pick: 'Ant-Man 40+ pts', match: 'NBA · Wolves vs Mavs', odds: '6.00x' },
+          { pick: 'Triple OT', match: 'NBA · Lakers vs Clippers', odds: '12.0x' },
+          { pick: 'Luka triple-double', match: 'NBA · Mavs vs Wolves', odds: '3.50x' },
+          { pick: '20-0 run in game', match: 'NBA · Celtics vs Hornets', odds: '8.00x' },
+          { pick: 'Buzzer beater to win', match: 'NBA · Warriors vs Kings', odds: '10.0x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Spread Lock', tag: '2 legs · 68% hit rate',
+        odds: '2.4x', color: 'safe', bet: '$20', plays: '3.8k', resType: 'safe',
+        legs: [
+          { pick: 'Celtics -8.5', match: 'NBA · vs Hornets', odds: '1.50x' },
+          { pick: 'Thunder -10.5', match: 'NBA · vs Wizards', odds: '1.60x' },
+        ]
+      },
+    ],
+    hockey: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'NHL Favorites', tag: '3 legs · 52% hit rate',
+        odds: '3.9x', color: 'safe', bet: '$10', plays: '1.8k', resType: 'safe',
+        legs: [
+          { pick: 'Oilers ML', match: 'NHL · vs Sharks', odds: '1.40x' },
+          { pick: 'Panthers ML', match: 'NHL · vs Senators', odds: '1.50x' },
+          { pick: 'Avalanche ML', match: 'NHL · vs Ducks', odds: '1.55x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Puck Line Combo', tag: '3 legs · 30% hit rate',
+        odds: '8.5x', color: 'mid', bet: '$10', plays: '950', resType: 'safe',
+        legs: [
+          { pick: 'Over 6.5 goals', match: 'NHL · Oilers vs Sharks', odds: '2.00x' },
+          { pick: 'Panthers -1.5', match: 'NHL · vs Senators', odds: '2.10x' },
+          { pick: 'McDavid anytime goal', match: 'NHL · Oilers vs Sharks', odds: '1.75x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Hatty Hunter', tag: '3 legs · 5% hit rate',
+        odds: '48x', color: 'degen', bet: '$5', plays: '1.5k', resType: 'degen',
+        legs: [
+          { pick: 'McDavid hat trick', match: 'NHL · Oilers vs Sharks', odds: '12.0x' },
+          { pick: 'Over 8.5 goals', match: 'NHL · Avalanche vs Ducks', odds: '3.50x' },
+          { pick: 'Fight in 1st period', match: 'NHL · Rangers vs Bruins', odds: '2.80x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'OT Madness', tag: '5 legs · 1% hit rate',
+        odds: '200x', color: 'yolo', bet: '$1', plays: '3.2k', resType: 'yolo',
+        legs: [
+          { pick: 'Game goes to OT', match: 'NHL · Rangers vs Bruins', odds: '4.00x' },
+          { pick: 'Goalie scores', match: 'NHL · Any game', odds: '50.0x' },
+          { pick: 'Short-handed goal', match: 'NHL · Oilers vs Sharks', odds: '5.50x' },
+          { pick: 'Shutout', match: 'NHL · Panthers vs Senators', odds: '6.00x' },
+          { pick: 'Own goal scored', match: 'NHL · Avalanche vs Ducks', odds: '15.0x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Original Six', tag: '2 legs · 65% hit rate',
+        odds: '2.5x', color: 'safe', bet: '$15', plays: '2.6k', resType: 'safe',
+        legs: [
+          { pick: 'Rangers ML', match: 'NHL · vs Bruins', odds: '1.55x' },
+          { pick: 'Maple Leafs ML', match: 'NHL · vs Red Wings', odds: '1.60x' },
+        ]
+      },
+    ],
+  };
+
+  let parlayData = parlaysByCategory.popular;
 
   let currentParlayIdx = 0;
   let startX = 0;
@@ -4601,6 +5246,28 @@
 
 </script>
 
+  <!-- BONUS ROUND OVERLAY -->
+  <div class="bonus-round-overlay" id="bonusRoundOverlay">
+    <div class="br-slot-row">
+      <div class="br-slot" id="brSlot1"><span class="br-slot-face">🎰</span></div>
+      <div class="br-slot" id="brSlot2"><span class="br-slot-face">🎰</span></div>
+      <div class="br-slot" id="brSlot3"><span class="br-slot-face">🎰</span></div>
+    </div>
+    <div class="br-title" id="brTitle">⚡ BONUS ROUND ⚡</div>
+    <div class="br-subtitle" id="brSubtitle">10-minute premium session activated</div>
+    <div class="br-perks-row" id="brPerks">
+      <div class="br-perk-chip">✨ 2x Payouts</div>
+      <div class="br-perk-chip">🎯 Exclusive Markets</div>
+      <div class="br-perk-chip">🔥 3x Bonuses</div>
+    </div>
+    <div class="br-timer-block" id="brTimerBlock">
+      <div class="br-timer" id="brTimer">10:00</div>
+      <div class="br-timer-label">remaining</div>
+      <div class="br-timer-bar-track"><div class="br-timer-bar" id="brTimerBar"></div></div>
+    </div>
+    <button class="br-close" id="brClose" onclick="closeBonusRound()">LET'S GO</button>
+  </div>
+
   <!-- STREAM OVERLAY -->
   <div class="stream-overlay" id="streamOverlay">
     <div class="stream-header">
@@ -4618,7 +5285,7 @@
 
     <div class="stream-scorebug">
       <div class="sb-team">🟡 NAVI</div>
-      <div style="text-align:center">
+      <div class="sb-center">
         <div class="sb-score" id="streamScore">8 : 6</div>
         <div class="sb-round" id="streamRound">Round 15</div>
       </div>
