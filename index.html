@@ -702,6 +702,29 @@
     margin-bottom: 12px;
   }
 
+  .lm-swiper {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .lm-slide {
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .lm-counter {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  .lm-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
   .lm-header {
     padding: 12px 14px;
     display: flex;
@@ -3087,14 +3110,26 @@
       </div>
       <!-- Buy the Bonus moved below BET button -->
 
-      <div class="section-label">⚡ Live Matches</div>
+      <div class="section-label" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>⚡ Live Matches</span>
+        <span class="lm-counter" id="lmCounter">1 of 2</span>
+      </div>
 
-      <!-- Live Match -->
-      <div class="live-match-card">
+      <div class="swipe-hint" id="lmSwipeHint" style="margin-bottom:8px;">
+        <span class="swipe-hand">👆</span>
+        Swipe left or right for more matches
+        <span style="letter-spacing:-2px;">← →</span>
+      </div>
+
+      <div class="lm-swiper" id="lmSwiper">
+        <div class="lm-swiper-track" id="lmTrack">
+
+      <!-- Match 1: NAVI vs Vitality -->
+      <div class="live-match-card lm-slide" id="lmSlide0">
         <div class="lm-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="lm-live"><span class="live-dot"></span> LIVE</div>
-            <button class="watch-live-btn" onclick="openStream()">▶ Watch</button>
+            <button class="watch-live-btn" onclick="openStream(0)">▶ Watch</button>
           </div>
           <div class="lm-game">CS2 · BLAST Premier · Map 2</div>
         </div>
@@ -3198,28 +3233,110 @@
         </div>
       </div>
 
-      <!-- Second match preview -->
-      <div class="live-match-card" style="opacity:0.6;">
+      <!-- Match 2: FaZe vs OpTic — COD -->
+      <div class="live-match-card lm-slide" id="lmSlide1" style="display:none;">
         <div class="lm-header">
-          <div class="lm-live"><span class="live-dot"></span> LIVE</div>
-          <div class="lm-game">Valorant · VCT Americas · Map 1</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="lm-live"><span class="live-dot"></span> LIVE</div>
+            <button class="watch-live-btn" onclick="openStream(1)">▶ Watch</button>
+          </div>
+          <div class="lm-game">COD · CDL Major IV · Map 3</div>
         </div>
+
         <div class="lm-teams">
           <div class="lm-team">
             <div class="lm-team-logo">🔴</div>
-            <div class="lm-team-name">SEN</div>
-            <div class="lm-team-tag">Attack</div>
+            <div class="lm-team-name">FaZe</div>
+            <div class="lm-team-tag">Hardpoint</div>
           </div>
           <div class="lm-score">
-            <div class="lm-score-nums">4<span class="sep">:</span>5</div>
-            <div class="lm-round">Round 10 · Lotus</div>
+            <div class="lm-score-nums">2<span class="sep">:</span>1</div>
+            <div class="lm-round">Map 3 · 198-185</div>
           </div>
           <div class="lm-team">
             <div class="lm-team-logo">🟢</div>
-            <div class="lm-team-name">LOUD</div>
-            <div class="lm-team-tag">Defense</div>
+            <div class="lm-team-name">OpTic</div>
+            <div class="lm-team-tag">Hardpoint</div>
           </div>
         </div>
+
+        <!-- Live Odds Graph for Match 2 -->
+        <div class="odds-graph-section">
+          <div class="odds-graph-header">
+            <div class="odds-graph-title">Win Probability</div>
+            <div class="odds-graph-legend">
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#ef4444;"></span>
+                <span>FaZe</span>
+                <span class="legend-pct" style="color:#ef4444;" id="fazePct">58%</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background:#22c55e;"></span>
+                <span>OpTic</span>
+                <span class="legend-pct" style="color:#22c55e;" id="opticPct">42%</span>
+              </div>
+            </div>
+          </div>
+          <div class="odds-graph-canvas">
+            <canvas id="oddsCanvas2"></canvas>
+          </div>
+          <div class="odds-graph-labels">
+            <span>Map 1</span>
+            <span>Map 2</span>
+            <span>Map 3</span>
+            <span>Now</span>
+          </div>
+        </div>
+
+        <div class="micro-section">
+          <div class="micro-header">
+            <div class="micro-label">⚡ NEXT PLAY</div>
+            <div class="micro-timer">⏱ 0:35</div>
+          </div>
+          <div class="micro-question">Who wins Hardpoint Map 3?</div>
+          <div class="micro-options">
+            <div class="micro-opt" onclick="selOpt(this)">
+              <div class="opt-team">🔴 FaZe</div>
+              <div class="opt-odds">1.72x</div>
+            </div>
+            <div class="micro-opt" onclick="selOpt(this)">
+              <div class="opt-team">🟢 OpTic</div>
+              <div class="opt-odds">2.15x</div>
+            </div>
+          </div>
+          <div class="amount-row">
+            <div class="amt-chip" onclick="selAmt(this)">$1</div>
+            <div class="amt-chip selected" onclick="selAmt(this)">$5</div>
+            <div class="amt-chip" onclick="selAmt(this)">$10</div>
+            <div class="amt-chip" onclick="selAmt(this)">$25</div>
+          </div>
+          <button class="fire-btn" onclick="fireBet()">BET</button>
+
+          <div class="buy-bonus bb-inline">
+            <div class="bb-compact">
+              <div class="bb-tag">🎰 BUY THE BONUS</div>
+              <div class="bb-compact-row">
+                <button class="bb-btn bb-btn-muted" onclick="event.stopPropagation(); buyBonus()">BUY IN – $25</button>
+                <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="queue-section">
+          <div class="queue-label">Up Next</div>
+          <div class="queue-item"><span class="qi-q">First blood next life?</span><span class="qi-t">~30s</span></div>
+          <div class="queue-item"><span class="qi-q">FaZe hold hill?</span><span class="qi-t">~60s</span></div>
+          <div class="queue-item"><span class="qi-q">Total kills O/U 12.5?</span><span class="qi-t">~45s</span></div>
+        </div>
+      </div>
+
+        </div><!-- end lm-swiper-track -->
+      </div><!-- end lm-swiper -->
+
+      <div class="lm-dots" id="lmDots">
+        <div class="parlay-dot active" onclick="goToMatch(0)"></div>
+        <div class="parlay-dot" onclick="goToMatch(1)"></div>
       </div>
     </div>
     <div class="spacer"></div>
@@ -5051,15 +5168,204 @@
   document.getElementById('parlayCardWrapper').innerHTML = renderParlayCard(parlayData[0]);
   renderDots();
   updateCounter();
+  // === LIVE MATCH SWIPER ===
+  let currentMatchIdx = 0;
+  const totalMatches = 2;
+  let lmStartX = 0;
+  let lmDragging = false;
+
+  function goToMatch(idx) {
+    if (idx === currentMatchIdx || idx < 0 || idx >= totalMatches) return;
+
+    // Hide swipe hint on first swipe
+    const lmHint = document.getElementById('lmSwipeHint');
+    if (lmHint && lmHint.style.display !== 'none') {
+      lmHint.style.transition = 'opacity 0.4s';
+      lmHint.style.opacity = '0';
+      setTimeout(() => lmHint.style.display = 'none', 400);
+    }
+
+    const oldSlide = document.getElementById('lmSlide' + currentMatchIdx);
+    const newSlide = document.getElementById('lmSlide' + idx);
+    const dir = idx > currentMatchIdx ? 'left' : 'right';
+
+    // Animate out
+    oldSlide.style.transition = 'opacity 0.25s, transform 0.25s';
+    oldSlide.style.opacity = '0';
+    oldSlide.style.transform = dir === 'left' ? 'translateX(-30px)' : 'translateX(30px)';
+
+    setTimeout(() => {
+      oldSlide.style.display = 'none';
+      oldSlide.style.transform = '';
+      oldSlide.style.opacity = '';
+
+      // Animate in
+      newSlide.style.display = '';
+      newSlide.style.opacity = '0';
+      newSlide.style.transform = dir === 'left' ? 'translateX(30px)' : 'translateX(-30px)';
+
+      requestAnimationFrame(() => {
+        newSlide.style.transition = 'opacity 0.3s, transform 0.3s';
+        newSlide.style.opacity = '1';
+        newSlide.style.transform = 'translateX(0)';
+      });
+
+      currentMatchIdx = idx;
+      updateMatchDots();
+
+      // Init second canvas if needed
+      if (idx === 1 && !window.canvas2Init) {
+        initCanvas2();
+        window.canvas2Init = true;
+      }
+    }, 250);
+  }
+
+  function updateMatchDots() {
+    document.querySelectorAll('#lmDots .parlay-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === currentMatchIdx);
+    });
+    document.getElementById('lmCounter').textContent = `${currentMatchIdx + 1} of ${totalMatches}`;
+  }
+
+  // Touch/mouse swipe on live matches
+  const lmSwiper = document.getElementById('lmSwiper');
+  lmSwiper.addEventListener('touchstart', e => { lmStartX = e.touches[0].clientX; lmDragging = true; });
+  lmSwiper.addEventListener('touchmove', e => { if (!lmDragging) return; });
+  lmSwiper.addEventListener('touchend', e => {
+    if (!lmDragging) return;
+    lmDragging = false;
+    const diff = e.changedTouches[0].clientX - lmStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff < 0 && currentMatchIdx < totalMatches - 1) goToMatch(currentMatchIdx + 1);
+      if (diff > 0 && currentMatchIdx > 0) goToMatch(currentMatchIdx - 1);
+    }
+  });
+
+  // Mouse swipe
+  lmSwiper.addEventListener('mousedown', e => { lmStartX = e.clientX; lmDragging = true; });
+  lmSwiper.addEventListener('mouseup', e => {
+    if (!lmDragging) return;
+    lmDragging = false;
+    const diff = e.clientX - lmStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff < 0 && currentMatchIdx < totalMatches - 1) goToMatch(currentMatchIdx + 1);
+      if (diff > 0 && currentMatchIdx > 0) goToMatch(currentMatchIdx - 1);
+    }
+  });
+
+  // Init second match canvas
+  function initCanvas2() {
+    const canvas = document.getElementById('oddsCanvas2');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    canvas.width = w * 2;
+    canvas.height = h * 2;
+    ctx.scale(2, 2);
+
+    const fazeColor = '#ef4444';
+    const opticColor = '#22c55e';
+    let history2 = { faze: [50,52,55,53,58,60,55,58,62,60,58], optic: [50,48,45,47,42,40,45,42,38,40,42] };
+
+    function draw2() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.fillRect(0, 0, w, h);
+
+      // 50% line
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(0, h / 2);
+      ctx.lineTo(w, h / 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      [{ data: history2.faze, color: fazeColor }, { data: history2.optic, color: opticColor }].forEach(team => {
+        const pts = team.data;
+        ctx.beginPath();
+        for (let i = 0; i < pts.length; i++) {
+          const x = (i / (pts.length - 1)) * w;
+          const y = h - (pts[i] / 100) * h;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = team.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Glow dot at end
+        const lastX = w;
+        const lastY = h - (pts[pts.length - 1] / 100) * h;
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = team.color;
+        ctx.fill();
+      });
+    }
+
+    draw2();
+    setInterval(() => {
+      const shift = (Math.random() - 0.5) * 4;
+      const lastF = history2.faze[history2.faze.length - 1] + shift;
+      const clamped = Math.max(30, Math.min(70, lastF));
+      history2.faze.push(clamped);
+      history2.optic.push(100 - clamped);
+      if (history2.faze.length > 20) { history2.faze.shift(); history2.optic.shift(); }
+      document.getElementById('fazePct').textContent = Math.round(clamped) + '%';
+      document.getElementById('opticPct').textContent = Math.round(100 - clamped) + '%';
+      draw2();
+    }, 3000);
+  }
+
   // === STREAM OVERLAY ===
   let streamAnimFrame = null;
   let streamTimerInterval = null;
 
-  function openStream() {
+  const streamMatchData = [
+    {
+      game: 'CS2 · BLAST Premier',
+      teamA: '🟡 NAVI', teamB: 'Vitality 🔵',
+      score: '8 : 6', round: 'Round 15',
+      question: 'Who wins Round 15?',
+      optA: '🟡 NAVI', optB: '🔵 Vitality',
+      oddsA: '1.72x', oddsB: '2.39x',
+      colorA: '255,200,50', colorB: '80,150,255',
+      dotA: '#ffc832', dotB: '#5096ff',
+    },
+    {
+      game: 'COD · CDL Major IV',
+      teamA: '🔴 FaZe', teamB: 'OpTic 🟢',
+      score: '2 : 1', round: 'Map 3 · HP',
+      question: 'Who wins Hardpoint Map 3?',
+      optA: '🔴 FaZe', optB: '🟢 OpTic',
+      oddsA: '1.72x', oddsB: '2.15x',
+      colorA: '239,68,68', colorB: '34,197,94',
+      dotA: '#ef4444', dotB: '#22c55e',
+    }
+  ];
+
+  function openStream(matchIdx = 0) {
+    const m = streamMatchData[matchIdx];
     const overlay = document.getElementById('streamOverlay');
+
+    // Update overlay content
+    document.querySelector('.stream-match-info').textContent = m.game;
+    document.querySelector('.sb-team:first-child').innerHTML = m.teamA;
+    document.querySelector('.sb-team:last-child').innerHTML = m.teamB;
+    document.getElementById('streamScore').textContent = m.score;
+    document.getElementById('streamRound').textContent = m.round;
+    document.querySelector('.stream-bet-question').textContent = m.question;
+    const opts = document.querySelectorAll('.stream-bet-opt');
+    opts[0].querySelector('.sbo-team').textContent = m.optA;
+    opts[1].querySelector('.sbo-team').textContent = m.optB;
+    document.getElementById('streamOdds1').textContent = m.oddsA;
+    document.getElementById('streamOdds2').textContent = m.oddsB;
+
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-    startStreamCanvas();
+    startStreamCanvas(matchIdx);
     startStreamTimer();
   }
 
@@ -5071,7 +5377,8 @@
     if (streamTimerInterval) clearInterval(streamTimerInterval);
   }
 
-  function startStreamCanvas() {
+  function startStreamCanvas(matchIdx = 0) {
+    const m = streamMatchData[matchIdx];
     const canvas = document.getElementById('streamCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth * 2;
@@ -5089,7 +5396,7 @@
         vx: (Math.random() - 0.5) * 1.5,
         vy: (Math.random() - 0.5) * 1.5,
         size: Math.random() * 3 + 1,
-        color: Math.random() > 0.5 ? 'rgba(255,200,50,' : 'rgba(80,150,255,',
+        color: Math.random() > 0.5 ? `rgba(${m.colorA},` : `rgba(${m.colorB},`,
         alpha: Math.random() * 0.4 + 0.1
       });
     }
@@ -5154,7 +5461,7 @@
 
         // Glow
         const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 12);
-        const baseColor = p.team === 'ct' ? '80,150,255' : '255,200,50';
+        const baseColor = p.team === 'ct' ? m.colorB : m.colorA;
         grd.addColorStop(0, `rgba(${baseColor},0.3)`);
         grd.addColorStop(1, `rgba(${baseColor},0)`);
         ctx.fillStyle = grd;
@@ -5163,7 +5470,7 @@
         // Dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = p.team === 'ct' ? '#5096ff' : '#ffc832';
+        ctx.fillStyle = p.team === 'ct' ? m.dotB : m.dotA;
         ctx.fill();
       });
 
@@ -5237,7 +5544,7 @@
     setTimeout(() => flash.remove(), 200);
 
     setTimeout(() => {
-      btn.textContent = 'FIRE BET';
+      btn.textContent = 'BET';
       btn.style.background = 'var(--green)';
       btn.style.color = 'var(--bg)';
       btn.style.border = 'none';
@@ -5311,7 +5618,7 @@
         <div class="stream-chip" onclick="selectStreamChip(this)">$10</div>
         <div class="stream-chip" onclick="selectStreamChip(this)">$25</div>
       </div>
-      <button class="stream-fire-btn" onclick="fireStreamBet()">FIRE BET</button>
+      <button class="stream-fire-btn" onclick="fireStreamBet()">BET</button>
     </div>
   </div>
 
