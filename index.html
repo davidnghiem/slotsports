@@ -2967,7 +2967,16 @@
     border-top: 1px solid var(--border);
     display: flex;
     z-index: 100;
-    padding-bottom: env(safe-area-inset-bottom, 0);
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
+  }
+  .bottom-nav::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: var(--bg);
   }
 
   .bn-item {
