@@ -1,0 +1,4102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dicey – The Slotified Sportsbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --bg-raised: #161616;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #222222;
+    --bg-input: #1e1e1e;
+    --green: #1db954;
+    --green-dim: rgba(29,185,84,0.12);
+    --green-border: rgba(29,185,84,0.25);
+    --green-bright: #22e065;
+    --white: #ffffff;
+    --text: #e5e5e5;
+    --text-secondary: #999999;
+    --text-muted: #666666;
+    --text-dim: #444444;
+    --border: #2a2a2a;
+    --border-light: #333333;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --gold: #fbbf24;
+    --purple: #a855f7;
+    --cyan: #06b6d4;
+    --pink: #ec4899;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #000000;
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+  }
+
+  /* === TOP BAR — matches Dicey === */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo-main {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .logo-dice {
+    width: 24px;
+    height: 24px;
+  }
+
+  .logo-text {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    color: var(--white);
+  }
+
+  .logo-sub {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
+
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .balance-pill {
+    background: var(--green);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .balance-icon {
+    width: 16px;
+    height: 16px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .icon-btn.has-bonus {
+    border-color: rgba(255,215,0,0.35);
+    animation: diamondPulse 2s ease-in-out infinite;
+    position: relative;
+  }
+
+  .icon-btn.has-bonus::after {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,215,0,0.3);
+    animation: diamondRing 2s ease-in-out infinite;
+  }
+
+  @keyframes diamondPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.2); }
+    50% { transform: scale(1.08); box-shadow: 0 0 12px 2px rgba(255,215,0,0.15); }
+  }
+
+  @keyframes diamondRing {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  /* Notification dot on diamond */
+  .icon-btn.has-bonus .notif-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 1.5px solid var(--bg);
+  }
+
+  /* === ROLL BOOST OVERLAY === */
+  .roll-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .roll-overlay.active { display: flex; }
+
+  .roll-overlay-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    animation: cardSlideUp 0.35s ease-out;
+  }
+
+  .roll-overlay-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* === TAB NAV === */
+  .tab-nav {
+    display: flex;
+    background: var(--bg);
+    padding: 0 12px;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 12px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    user-select: none;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .live-badge-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .live-badge-sm .live-dot-sm {
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* === PROMO BANNER CAROUSEL (matches Dicey) === */
+  .promo-carousel {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+  .promo-carousel::-webkit-scrollbar { display: none; }
+
+  .promo-card {
+    flex-shrink: 0;
+    width: 260px;
+    height: 140px;
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .promo-card.a {
+    background: linear-gradient(135deg, #1a3a1a, #0d2a0d);
+    border: 1px solid rgba(29,185,84,0.2);
+  }
+
+  .promo-card.b {
+    background: linear-gradient(135deg, #2a1a0d, #1a1208);
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+
+  .promo-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+  }
+
+  .promo-headline {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  .promo-headline em {
+    font-style: normal;
+    color: var(--green);
+  }
+
+  .promo-btn {
+    align-self: flex-start;
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* === SECTIONS === */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* === SPORT CATEGORY PILLS (matches Dicey) === */
+  .category-pills {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .category-pills::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 6px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 0;
+  }
+
+  .cat-pill:hover { border-color: var(--border-light); }
+  .cat-pill.active {
+    border-color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .cat-pill .cat-icon { font-size: 20px; }
+  .cat-pill .cat-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+  .cat-pill.active .cat-label { color: var(--green); }
+
+  /* === LIVE / UPCOMING TOGGLE === */
+  .toggle-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 12px;
+  }
+
+  .toggle-chip {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .toggle-chip.active {
+    background: var(--white);
+    color: var(--bg);
+    border-color: var(--white);
+  }
+
+  /* === DICEY PARLAY CARDS === */
+  .content-area { padding: 0 16px 16px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .parlay-stack { display: flex; flex-direction: column; gap: 12px; }
+
+  /* === SWIPEABLE PARLAY CARDS === */
+  .parlay-swipe-container {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+    min-height: 280px;
+  }
+
+  .parlay-card-wrapper {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease;
+    will-change: transform, opacity;
+  }
+
+  .parlay-card-wrapper.swiping {
+    transition: none;
+  }
+
+  .parlay-card-wrapper.exit-left {
+    transform: translateX(-110%) rotate(-4deg);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.55, 0, 1, 0.45);
+  }
+
+  .parlay-card-wrapper.exit-right {
+    transform: translateX(110%) rotate(4deg);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.55, 0, 1, 0.45);
+  }
+
+  .parlay-card-wrapper.enter-from-left {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+
+  .parlay-card-wrapper.enter-from-right {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+
+  .parlay-card-wrapper.enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Swipe feedback overlays */
+  .swipe-feedback {
+    position: absolute;
+    top: 16px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 0.15s;
+  }
+
+  .swipe-feedback.skip {
+    left: 16px;
+    background: rgba(239,68,68,0.15);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: var(--red);
+  }
+
+  .swipe-feedback.next {
+    right: 16px;
+    background: rgba(29,185,84,0.15);
+    border: 1px solid rgba(29,185,84,0.3);
+    color: var(--green);
+  }
+
+  .swipe-feedback.visible { opacity: 1; }
+
+  /* Card index dots */
+  .parlay-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 0 4px;
+  }
+
+  .parlay-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .parlay-dot.active {
+    background: var(--green);
+    width: 20px;
+    border-radius: 4px;
+  }
+
+  /* Card counter */
+  .parlay-counter {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .parlay-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .parlay-card:hover {
+    border-color: var(--border-light);
+    background: var(--bg-card-hover);
+  }
+
+  .parlay-top {
+    height: 3px;
+  }
+
+  .parlay-top.safe { background: var(--green); }
+  .parlay-top.mid { background: var(--cyan); }
+  .parlay-top.degen { background: var(--orange); }
+  .parlay-top.yolo { background: linear-gradient(90deg, var(--pink), var(--purple), var(--orange)); }
+
+  .parlay-header {
+    padding: 12px 14px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .parlay-tier {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tier-emoji { font-size: 18px; }
+
+  .tier-info {}
+
+  .tier-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .tier-tag {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .parlay-odds-box {
+    text-align: right;
+  }
+
+  .parlay-odds-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+
+  .parlay-odds-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--green-bright);
+  }
+
+  .parlay-legs {
+    padding: 4px 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .parlay-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .leg-left { display: flex; flex-direction: column; gap: 1px; }
+  .leg-pick { font-weight: 600; font-size: 13px; color: var(--white); }
+  .leg-match { color: var(--text-muted); font-size: 11px; }
+  .leg-odds { color: var(--green); font-weight: 700; font-size: 12px; }
+
+  .parlay-footer {
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .parlay-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .play-btn {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 9px 20px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .play-btn:hover {
+    background: var(--green-bright);
+    transform: scale(1.03);
+  }
+
+  /* === RAPID FIRE / LIVE BETTING === */
+  .live-match-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .lm-header {
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lm-live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .lm-game {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .lm-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 14px;
+    gap: 16px;
+  }
+
+  .lm-team {
+    text-align: center;
+    flex: 1;
+  }
+
+  .lm-team-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 6px;
+  }
+
+  .lm-team-name { font-weight: 700; font-size: 14px; color: var(--white); }
+  .lm-team-tag { font-size: 10px; color: var(--text-muted); }
+
+  .lm-score {
+    text-align: center;
+  }
+
+  .lm-score-nums {
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 2px;
+  }
+
+  .lm-score-nums .sep { color: var(--text-dim); margin: 0 4px; }
+
+  .lm-round {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* === LIVE ODDS GRAPH === */
+  .odds-graph-section {
+    padding: 0 14px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .odds-graph-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .odds-graph-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  .odds-graph-legend {
+    display: flex;
+    gap: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.team-a { background: #facc15; }
+  .legend-dot.team-b { background: #3b82f6; }
+
+  .legend-pct {
+    font-weight: 800;
+    font-size: 11px;
+  }
+
+  .legend-pct.team-a { color: #facc15; }
+  .legend-pct.team-b { color: #3b82f6; }
+
+  .odds-graph-canvas {
+    position: relative;
+    height: 80px;
+    width: 100%;
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .odds-graph-canvas canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .odds-graph-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  /* Micro bet */
+  .micro-section {
+    padding: 12px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .micro-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .micro-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .micro-timer {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  .micro-question {
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+
+  .micro-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .micro-opt {
+    background: var(--bg-input);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .micro-opt:hover { border-color: var(--border-light); }
+  .micro-opt.selected {
+    border-color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .micro-opt .opt-team { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 4px; }
+  .micro-opt .opt-odds { font-size: 20px; font-weight: 800; color: var(--green); }
+
+  .amount-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .amt-chip {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .amt-chip:hover { border-color: var(--border-light); }
+  .amt-chip.selected {
+    border-color: var(--green);
+    background: var(--green-dim);
+    color: var(--green);
+  }
+
+  .fire-btn {
+    width: 100%;
+    margin-top: 10px;
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fire-btn:hover { background: var(--green-bright); }
+
+  .queue-section {
+    padding: 0 14px 14px;
+  }
+
+  .queue-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .queue-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--radius-sm);
+    margin-bottom: 4px;
+    font-size: 12px;
+  }
+
+  .queue-item .qi-q { color: var(--text-secondary); }
+  .queue-item .qi-t { color: var(--text-dim); font-weight: 600; font-size: 11px; }
+
+  /* === BONUS BANNER === */
+  .bonus-banner {
+    margin: 12px 16px;
+    background: linear-gradient(135deg, rgba(29,185,84,0.08), rgba(29,185,84,0.03));
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    display: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bonus-banner.show {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes slideDown {
+    0% { transform: translateY(-12px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .bonus-emoji { font-size: 28px; flex-shrink: 0; }
+  .bonus-info { flex: 1; }
+  .bonus-title {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .bonus-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  .bonus-timer-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .bonus-timer-bar {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    width: 100%;
+    animation: countdown 60s linear forwards;
+  }
+  @keyframes countdown {
+    0% { width: 100%; }
+    100% { width: 0%; }
+  }
+
+  /* === BUY THE BONUS === */
+  .buy-bonus {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .bb-compact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .bb-compact .bb-tag {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 0;
+    padding: 9px 8px;
+    font-size: 11px;
+  }
+
+  .bb-compact .bb-btn {
+    flex: 1;
+  }
+
+  .bb-compact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .bb-info-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .bb-info-btn:hover { border-color: var(--border-light); }
+  .bb-info-btn.active {
+    border-color: var(--purple);
+    background: rgba(168,85,247,0.1);
+  }
+
+  .bb-details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+    margin-top: 0;
+  }
+
+  .bb-details.open {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+
+  .bb-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--purple);
+    background: rgba(168,85,247,0.1);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+
+  .bb-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .bb-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .bb-perks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+
+  .bb-perk {
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .bb-btn {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 22px;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .bb-btn:hover { background: var(--green-bright); transform: scale(1.03); }
+
+  /* === RESOLUTION OVERLAY === */
+  .resolution-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    backdrop-filter: blur(8px);
+  }
+
+  .resolution-overlay.active { display: flex; }
+
+  .resolution-reel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+    width: 340px;
+    max-width: 90vw;
+  }
+
+  .reel-leg {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .reel-leg.revealed { opacity: 1; transform: scale(1); }
+  .reel-leg.won { border-color: var(--green); box-shadow: 0 0 20px rgba(29,185,84,0.15); }
+  .reel-leg.lost { border-color: var(--red); }
+
+  .reel-leg .rl-info {}
+  .reel-leg .rl-pick { font-weight: 700; font-size: 14px; color: var(--white); }
+  .reel-leg .rl-status { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .reel-leg .rl-result { font-size: 26px; }
+
+  @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+  .res-result {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.4s;
+  }
+
+  .res-result.show { opacity: 1; transform: translateY(0); }
+
+  .res-amount {
+    font-size: 40px;
+    font-weight: 800;
+  }
+
+  .res-amount.win { color: var(--green); }
+  .res-amount.miss { color: var(--orange); }
+  .res-amount.loss { color: var(--text-dim); }
+
+  .close-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  /* Second chance */
+  .second-chance {
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: var(--radius);
+    text-align: center;
+    max-width: 300px;
+  }
+
+  .sc-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+
+  .sc-text { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4; }
+
+  .sc-btn {
+    background: var(--orange);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 22px;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .sc-btn:hover { transform: scale(1.03); }
+
+  /* === QUESTS / GAMIFICATION === */
+  .profile-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .profile-rank-name {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+
+  .profile-elo {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .profile-pct {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .pstat {
+    padding: 10px 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: var(--radius-sm);
+  }
+
+  .pstat-val { font-size: 18px; font-weight: 800; color: var(--green); }
+  .pstat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  .achievements-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0 14px;
+    scrollbar-width: none;
+  }
+  .achievements-scroll::-webkit-scrollbar { display: none; }
+
+  .ach {
+    flex-shrink: 0;
+    text-align: center;
+    width: 68px;
+  }
+
+  .ach-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 4px;
+    border: 2px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  .ach.on .ach-icon { border-color: var(--green); background: var(--green-dim); }
+  .ach.off .ach-icon { filter: grayscale(1); opacity: 0.35; }
+
+  .ach-name { font-size: 9px; color: var(--text-muted); line-height: 1.2; }
+
+  .quest-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .quest-emoji {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .quest-body { flex: 1; }
+  .quest-name { font-weight: 700; font-size: 13px; color: var(--white); }
+  .quest-desc { font-size: 11px; color: var(--text-muted); margin: 2px 0 6px; }
+
+  .quest-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .quest-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--green);
+    transition: width 1s ease;
+  }
+
+  .quest-reward {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .qr-val { font-size: 14px; font-weight: 800; color: var(--gold); }
+  .qr-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; }
+
+  /* === SOCIAL FEED === */
+  .share-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .sc-header {
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .sc-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .sc-user { flex: 1; }
+  .sc-username { font-weight: 700; font-size: 13px; color: var(--white); }
+  .sc-time { font-size: 10px; color: var(--text-muted); }
+
+  .tail-btn {
+    padding: 6px 12px;
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius-sm);
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tail-btn:hover { background: rgba(29,185,84,0.2); }
+
+  .sc-body { padding: 12px 14px; }
+
+  .shared-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 4px 0;
+    color: var(--text-secondary);
+  }
+
+  .shared-leg-status { font-size: 14px; }
+
+  .sc-footer {
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .sc-actions { display: flex; gap: 14px; }
+  .sc-action { cursor: pointer; transition: color 0.15s; }
+  .sc-action:hover { color: var(--text); }
+
+  /* === SCREEN SHAKE === */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-3px); }
+    20% { transform: translateX(3px); }
+    30% { transform: translateX(-2px); }
+    40% { transform: translateX(2px); }
+    50% { transform: translateX(-1px); }
+  }
+  .shake { animation: shake 0.4s ease-in-out; }
+
+  /* === ENHANCED ANIMATIONS === */
+
+  /* Odds shimmer on live markets */
+  @keyframes oddsShimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; text-shadow: 0 0 8px rgba(29,185,84,0.4); }
+  }
+
+  .odds-live {
+    animation: oddsShimmer 3s ease-in-out infinite;
+  }
+
+  /* Card entrance animation */
+  @keyframes cardSlideUp {
+    0% { opacity: 0; transform: translateY(16px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .section.active .parlay-card,
+  .section.active .live-match-card,
+  .section.active .share-card,
+  .section.active .quest-card,
+  .section.active .lb-row,
+  .section.active .reroll-slip {
+    animation: cardSlideUp 0.35s ease-out both;
+  }
+
+  .section.active .parlay-card:nth-child(1) { animation-delay: 0s; }
+  .section.active .parlay-card:nth-child(2) { animation-delay: 0.08s; }
+  .section.active .parlay-card:nth-child(3) { animation-delay: 0.16s; }
+  .section.active .share-card:nth-child(2) { animation-delay: 0.06s; }
+  .section.active .share-card:nth-child(3) { animation-delay: 0.12s; }
+  .section.active .share-card:nth-child(4) { animation-delay: 0.18s; }
+  .section.active .quest-card:nth-child(odd) { animation-delay: 0.05s; }
+  .section.active .lb-row:nth-child(n+2) { animation-delay: calc(0.04s * var(--i, 1)); }
+
+  /* Glowing pulse on parlay card border on hover */
+  @keyframes borderGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29,185,84,0); }
+    50% { box-shadow: 0 0 12px 2px rgba(29,185,84,0.12); }
+  }
+
+  .parlay-card:hover {
+    animation: borderGlow 2s ease-in-out infinite;
+  }
+
+  /* Fire button enhanced glow */
+  @keyframes fireGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29,185,84,0.3); }
+    50% { box-shadow: 0 0 20px 4px rgba(29,185,84,0.15); }
+  }
+
+  .fire-btn { animation: fireGlow 2.5s ease-in-out infinite; }
+
+  .fire-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    animation: btnSheen 4s ease-in-out infinite;
+  }
+
+  @keyframes btnSheen {
+    0% { left: -100%; }
+    50% { left: 150%; }
+    100% { left: 150%; }
+  }
+
+  /* Play button shimmer */
+  .play-btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .play-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: btnSheen 5s ease-in-out infinite;
+  }
+
+  /* Streak banner */
+  .streak-banner {
+    margin: 12px 16px 10px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(255,107,53,0.05));
+    border: 1px solid rgba(255,215,0,0.15);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: cardSlideUp 0.3s ease-out;
+  }
+
+  .streak-fire {
+    font-size: 22px;
+    animation: streakPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes streakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .streak-info { flex: 1; }
+  .streak-count {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--gold);
+  }
+  .streak-sub { font-size: 10px; color: var(--text-muted); }
+
+  .streak-multiplier {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--gold);
+    background: rgba(255,215,0,0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    animation: streakPulse 2s ease-in-out infinite;
+  }
+
+  /* === ROLL FOR BOOST === */
+  .roll-boost-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 14px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .roll-boost-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .roll-boost-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .roll-boost-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .dice-roller {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .dice-face {
+    width: 64px;
+    height: 64px;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    transition: all 0.3s;
+  }
+
+  .dice-face.rolling {
+    animation: diceRoll 0.15s linear infinite;
+    border-color: var(--gold);
+  }
+
+  @keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.05); }
+    50% { transform: rotate(180deg) scale(1); }
+    75% { transform: rotate(270deg) scale(1.05); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  .dice-face.landed {
+    border-color: var(--green);
+    background: var(--green-dim);
+    box-shadow: 0 0 20px rgba(29,185,84,0.2);
+    animation: diceLand 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes diceLand {
+    0% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  .boost-prizes {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .boost-prize {
+    padding: 4px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  .boost-prize.won {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .roll-btn {
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 28px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .roll-btn:hover { transform: scale(1.03); }
+  .roll-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  .boost-result {
+    display: none;
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    animation: cardSlideUp 0.3s ease-out;
+  }
+
+  .boost-result.show { display: block; }
+
+  .boost-result-text {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--green);
+  }
+
+  .boost-result-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* === SQUAD PARLAYS === */
+  .squad-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .squad-header {
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(29,185,84,0.06), rgba(6,182,212,0.04));
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .squad-title {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .squad-pot {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--green);
+  }
+
+  .squad-members {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .squad-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .squad-member-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .squad-member-name {
+    flex: 1;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .squad-member-amount {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .squad-member-you {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  .squad-body {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .squad-footer {
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .squad-status {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .squad-join-btn {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .squad-join-btn:hover { background: var(--green-bright); transform: scale(1.03); }
+
+  /* Live odds movement indicator */
+  .odds-up {
+    color: var(--green) !important;
+    position: relative;
+  }
+
+  .odds-up::after {
+    content: '▲';
+    font-size: 8px;
+    margin-left: 3px;
+    animation: fadeUp 1s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-8px); }
+  }
+
+  .odds-down {
+    color: var(--red) !important;
+    position: relative;
+  }
+
+  .odds-down::after {
+    content: '▼';
+    font-size: 8px;
+    margin-left: 3px;
+    animation: fadeDown 1s ease-out forwards;
+  }
+
+  @keyframes fadeDown {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(8px); }
+  }
+
+  /* === CONFETTI === */
+  .confetti-layer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 1001;
+    display: none;
+  }
+  .confetti-layer.on { display: block; }
+
+  .conf {
+    position: absolute;
+    font-size: 18px;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* === BOTTOM NAV (matches Dicey) === */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .bn-item {
+    flex: 1;
+    padding: 12px 0 10px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .bn-item .bn-icon { font-size: 18px; }
+  .bn-item .bn-label { font-size: 10px; font-weight: 600; color: var(--text-muted); }
+
+  .bn-item.active .bn-label { color: var(--white); }
+
+  /* Casino center tab — bordered pill style matching Dicey */
+  .bn-item.casino-tab {
+    background: rgba(29,185,84,0.06);
+    border: 1px solid var(--green-border);
+    border-radius: 10px;
+    margin: 4px 6px;
+    padding: 8px 0;
+  }
+
+  .bn-item.casino-tab .bn-label { color: var(--white); }
+
+  /* Sports active tab */
+  .bn-item.sports-active .bn-label { color: var(--white); }
+  .bn-item.sports-active .bn-icon { filter: brightness(2); }
+
+  .spacer { height: 70px; }
+
+  /* === BET TOAST === */
+  .bet-toast {
+    position: fixed;
+    bottom: 72px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    max-width: 400px;
+    width: calc(100% - 32px);
+    background: var(--bg-card);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 99;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .bet-toast.show { transform: translateX(-50%) translateY(0); }
+
+  .toast-info { display: flex; align-items: center; gap: 10px; }
+  .toast-emoji { font-size: 18px; }
+  .toast-text { font-size: 13px; font-weight: 600; color: var(--white); }
+  .toast-sub { font-size: 11px; color: var(--green); font-weight: 600; }
+
+  .toast-btn {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Dicey SVG Logo */
+  .dice-svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* === SWIPE HINT === */
+  .swipe-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px 4px;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .swipe-hand {
+    display: inline-block;
+    animation: swipeAnim 2s ease-in-out infinite;
+  }
+
+  @keyframes swipeAnim {
+    0%, 100% { transform: translateX(0); opacity: 0.4; }
+    50% { transform: translateX(12px); opacity: 1; }
+  }
+
+  /* === REROLL SECTION === */
+  .reroll-slip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .reroll-slip-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .reroll-slip-title {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .reroll-slip-odds {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--orange);
+  }
+
+  .reroll-slip-status {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .reroll-legs {
+    padding: 8px 16px;
+  }
+
+  .reroll-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13px;
+  }
+
+  .reroll-leg:last-child { border-bottom: none; }
+
+  .rl-left { display: flex; align-items: center; gap: 10px; }
+
+  .rl-status-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .rl-status-icon.hit {
+    background: rgba(29,185,84,0.15);
+    border: 1.5px solid var(--green);
+  }
+
+  .rl-status-icon.miss {
+    background: rgba(239,68,68,0.15);
+    border: 1.5px solid var(--red);
+  }
+
+  .rl-status-icon.pending {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid var(--text-dim);
+  }
+
+  .rl-pick-name { font-weight: 600; color: var(--white); }
+  .rl-pick-match { font-size: 11px; color: var(--text-muted); }
+  .rl-pick-odds { font-weight: 700; font-size: 12px; color: var(--text-secondary); }
+
+  .reroll-leg.missed {
+    background: rgba(239,68,68,0.04);
+    margin: 0 -16px;
+    padding: 10px 16px;
+    border: 1px dashed rgba(239,68,68,0.2);
+    border-left: none;
+    border-right: none;
+  }
+
+  .reroll-cta-section {
+    padding: 16px;
+    background: rgba(0,0,0,0.25);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .reroll-cta-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+
+  .reroll-cta-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .reroll-cta-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .reroll-cta-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .reroll-price-box {
+    padding: 8px 16px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+
+  .reroll-price-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--orange);
+  }
+
+  .reroll-price-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .reroll-potential-box {
+    padding: 8px 16px;
+    background: rgba(29,185,84,0.08);
+    border: 1px solid rgba(29,185,84,0.2);
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+
+  .reroll-potential-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .reroll-potential-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .reroll-btn {
+    width: 100%;
+    background: var(--orange);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    padding: 14px;
+    font-weight: 800;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.15s;
+  }
+
+  .reroll-btn:hover { transform: scale(1.02); background: #f5a623; }
+
+  .reroll-note {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  /* Old slips */
+  .old-slip-mini {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0.6;
+  }
+
+  .old-slip-info {}
+  .old-slip-name { font-weight: 600; font-size: 13px; color: var(--text-secondary); }
+  .old-slip-meta { font-size: 10px; color: var(--text-dim); }
+  .old-slip-result { font-weight: 800; font-size: 13px; }
+  .old-slip-result.won { color: var(--green); }
+  .old-slip-result.lost { color: var(--red); }
+
+  /* === LEADERBOARD === */
+  .lb-header-card {
+    background: linear-gradient(135deg, rgba(29,185,84,0.08), rgba(29,185,84,0.02));
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .lb-your-rank-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .lb-your-rank {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  .lb-your-elo {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .lb-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+
+  .lb-tab {
+    flex: 1;
+    padding: 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .lb-tab.active {
+    color: var(--green);
+    border-color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 6px;
+    transition: all 0.15s;
+  }
+
+  .lb-row:hover { border-color: var(--border-light); }
+
+  .lb-row.you {
+    border-color: var(--green-border);
+    background: var(--green-dim);
+  }
+
+  .lb-rank {
+    width: 28px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .lb-rank.gold { color: var(--gold); }
+  .lb-rank.silver { color: #c0c0c0; }
+  .lb-rank.bronze { color: #cd7f32; }
+
+  .lb-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .lb-user-info { flex: 1; }
+  .lb-username { font-weight: 700; font-size: 13px; color: var(--white); }
+  .lb-user-meta { font-size: 10px; color: var(--text-muted); }
+
+  .lb-stats {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .lb-elo {
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--green);
+  }
+
+  .lb-winrate {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-main">
+        <svg class="dice-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="8" width="24" height="24" rx="4" fill="white" stroke="white" stroke-width="1.5" transform="rotate(-10 14 20)"/>
+          <circle cx="9" cy="15" r="2" fill="#0d0d0d"/>
+          <circle cx="19" cy="13" r="2" fill="#0d0d0d"/>
+          <circle cx="14" cy="20" r="2" fill="#0d0d0d"/>
+          <circle cx="9" cy="25" r="2" fill="#0d0d0d"/>
+          <circle cx="19" cy="23" r="2" fill="#0d0d0d"/>
+          <rect x="16" y="4" width="20" height="20" rx="4" fill="white" stroke="white" stroke-width="1" transform="rotate(8 26 14)"/>
+          <circle cx="22" cy="9" r="1.5" fill="#0d0d0d"/>
+          <circle cx="30" cy="9" r="1.5" fill="#0d0d0d"/>
+          <circle cx="26" cy="14" r="1.5" fill="#0d0d0d"/>
+          <circle cx="22" cy="19" r="1.5" fill="#0d0d0d"/>
+          <circle cx="30" cy="19" r="1.5" fill="#0d0d0d"/>
+        </svg>
+        <span class="logo-text">dicey</span>
+      </div>
+      <span class="logo-sub">by Magic Eden</span>
+    </div>
+    <div class="top-right">
+      <div class="balance-pill">
+        <span class="balance-icon">$</span>
+        $2,340.50
+      </div>
+      <div class="icon-btn has-bonus" onclick="openRollBoost()">💎<span class="notif-dot"></span></div>
+      <div class="icon-btn" onclick="navigateToTab('quests')">👤</div>
+    </div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <div class="tab active" data-tab="parlays">💰 Parlays</div>
+    <div class="tab" data-tab="rapid">⚡ Rapid Fire <span class="live-badge-sm"><span class="live-dot-sm"></span>LIVE</span></div>
+    <div class="tab" data-tab="reroll">🎲 Reroll</div>
+    <div class="tab" data-tab="social">🤝 Tailgate</div>
+    <div class="tab" data-tab="leaderboard">📊 Leaderboard</div>
+    <div class="tab" data-tab="quests">🏆 Profile</div>
+  </div>
+
+  <!-- BONUS BANNER (triggers randomly) -->
+  <div class="bonus-banner" id="bonusBanner">
+    <div class="bonus-emoji">🎰</div>
+    <div class="bonus-info">
+      <div class="bonus-title">⚡ Bonus Triggered!</div>
+      <div class="bonus-desc">Next live bet gets <strong>25% payout boost.</strong> 60s remaining.</div>
+      <div class="bonus-timer-track"><div class="bonus-timer-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- ===== DICEY PARLAYS ===== -->
+  <div class="section active" id="parlays">
+    <!-- Streak banner -->
+    <div class="streak-banner">
+      <div class="streak-fire">🔥</div>
+      <div class="streak-info">
+        <div class="streak-count">12 Win Streak!</div>
+        <div class="streak-sub">Your longest streak this month</div>
+      </div>
+      <div class="streak-multiplier">1.5x XP</div>
+    </div>
+
+    <!-- Category pills -->
+    <div class="category-pills">
+      <div class="cat-pill active">
+        <span class="cat-icon">🔥</span>
+        <span class="cat-label">Popular</span>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-icon">🎮</span>
+        <span class="cat-label">Esports</span>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-icon">⚽</span>
+        <span class="cat-label">Soccer</span>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-icon">🏀</span>
+        <span class="cat-label">Basketball</span>
+      </div>
+      <div class="cat-pill">
+        <span class="cat-icon">🏒</span>
+        <span class="cat-label">Hockey</span>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="section-label">💰 One-Tap Parlays</div>
+
+      <div class="swipe-hint" id="swipeHint">
+        <span class="swipe-hand">👆</span>
+        Swipe left or right for more parlays
+        <span style="letter-spacing:-2px;">← →</span>
+      </div>
+
+      <div class="parlay-swipe-container" id="parlaySwiper">
+        <div class="swipe-feedback skip" id="swipeFeedbackSkip">← SKIP</div>
+        <div class="swipe-feedback next" id="swipeFeedbackNext">NEXT →</div>
+
+        <div class="parlay-card-wrapper" id="parlayCardWrapper">
+          <!-- Card injected by JS -->
+        </div>
+      </div>
+
+      <div class="parlay-dots" id="parlayDots"></div>
+      <div class="parlay-counter" id="parlayCounter"></div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== RAPID FIRE ===== -->
+  <div class="section" id="rapid">
+    <div class="content-area" style="padding-top:16px;">
+      <!-- Buy the Bonus -->
+      <div class="buy-bonus" id="buyBonusCard">
+        <div class="bb-compact">
+          <div class="bb-tag">🎰 Buy the Bonus</div>
+          <div class="bb-compact-row">
+            <button class="bb-btn" onclick="event.stopPropagation(); buyBonus()">Buy In – $25</button>
+            <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">ℹ️</button>
+          </div>
+        </div>
+        <div class="bb-details" id="bbDetails">
+          <div class="bb-title">Dicey Bonus Session</div>
+          <div class="bb-desc">10-min premium live session. Boosted odds, exclusive micro-markets, 3x bonus triggers.</div>
+          <div class="bb-perks">
+            <span class="bb-perk">✨ 2x payouts</span>
+            <span class="bb-perk">🎯 Exclusive markets</span>
+            <span class="bb-perk">🔥 3x bonuses</span>
+            <span class="bb-perk">⏱️ 10 min</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">⚡ Live Matches</div>
+
+      <!-- Live Match -->
+      <div class="live-match-card">
+        <div class="lm-header">
+          <div class="lm-live"><span class="live-dot"></span> LIVE</div>
+          <div class="lm-game">CS2 · BLAST Premier · Map 2</div>
+        </div>
+
+        <div class="lm-teams">
+          <div class="lm-team">
+            <div class="lm-team-logo">🟡</div>
+            <div class="lm-team-name">NAVI</div>
+            <div class="lm-team-tag">CT Side</div>
+          </div>
+          <div class="lm-score">
+            <div class="lm-score-nums">8<span class="sep">:</span>6</div>
+            <div class="lm-round">Round 15 · 1:23</div>
+          </div>
+          <div class="lm-team">
+            <div class="lm-team-logo">🔵</div>
+            <div class="lm-team-name">Vitality</div>
+            <div class="lm-team-tag">T Side</div>
+          </div>
+        </div>
+
+        <!-- Live Odds Graph -->
+        <div class="odds-graph-section">
+          <div class="odds-graph-header">
+            <div class="odds-graph-title">Win Probability</div>
+            <div class="odds-graph-legend">
+              <div class="legend-item">
+                <span class="legend-dot team-a"></span>
+                <span>NAVI</span>
+                <span class="legend-pct team-a" id="naviPct">62%</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot team-b"></span>
+                <span>Vitality</span>
+                <span class="legend-pct team-b" id="vitPct">38%</span>
+              </div>
+            </div>
+          </div>
+          <div class="odds-graph-canvas">
+            <canvas id="oddsCanvas"></canvas>
+          </div>
+          <div class="odds-graph-labels">
+            <span>Rd 1</span>
+            <span>Rd 5</span>
+            <span>Rd 10</span>
+            <span>Now</span>
+          </div>
+        </div>
+
+        <div class="micro-section">
+          <div class="micro-header">
+            <div class="micro-label">⚡ NEXT ROUND</div>
+            <div class="micro-timer" id="microTimer">⏱ 0:42</div>
+          </div>
+          <div class="micro-question">Who wins Round 15?</div>
+          <div class="micro-options">
+            <div class="micro-opt" onclick="selOpt(this)">
+              <div class="opt-team">🟡 NAVI</div>
+              <div class="opt-odds">1.65x</div>
+            </div>
+            <div class="micro-opt" onclick="selOpt(this)">
+              <div class="opt-team">🔵 Vitality</div>
+              <div class="opt-odds">2.20x</div>
+            </div>
+          </div>
+          <div class="amount-row">
+            <div class="amt-chip" onclick="selAmt(this)">$1</div>
+            <div class="amt-chip selected" onclick="selAmt(this)">$5</div>
+            <div class="amt-chip" onclick="selAmt(this)">$10</div>
+            <div class="amt-chip" onclick="selAmt(this)">$25</div>
+          </div>
+          <button class="fire-btn" onclick="fireBet()">🔥 FIRE BET</button>
+        </div>
+
+        <div class="queue-section">
+          <div class="queue-label">Up Next</div>
+          <div class="queue-item"><span class="qi-q">First kill Round 16?</span><span class="qi-t">~90s</span></div>
+          <div class="queue-item"><span class="qi-q">Bomb planted Round 16?</span><span class="qi-t">~120s</span></div>
+          <div class="queue-item"><span class="qi-q">Total kills R16 O/U 4.5?</span><span class="qi-t">~90s</span></div>
+        </div>
+      </div>
+
+      <!-- Second match preview -->
+      <div class="live-match-card" style="opacity:0.6;">
+        <div class="lm-header">
+          <div class="lm-live"><span class="live-dot"></span> LIVE</div>
+          <div class="lm-game">Valorant · VCT Americas · Map 1</div>
+        </div>
+        <div class="lm-teams">
+          <div class="lm-team">
+            <div class="lm-team-logo">🔴</div>
+            <div class="lm-team-name">SEN</div>
+            <div class="lm-team-tag">Attack</div>
+          </div>
+          <div class="lm-score">
+            <div class="lm-score-nums">4<span class="sep">:</span>5</div>
+            <div class="lm-round">Round 10 · Lotus</div>
+          </div>
+          <div class="lm-team">
+            <div class="lm-team-logo">🟢</div>
+            <div class="lm-team-name">LOUD</div>
+            <div class="lm-team-tag">Defense</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== QUESTS ===== -->
+  <div class="section" id="quests">
+    <div class="content-area" style="padding-top:16px;">
+      <div class="profile-card">
+        <div class="profile-rank-name">Diamond Roller</div>
+        <div class="profile-elo">1,847</div>
+        <div class="profile-pct">ELO Score · Top 8% of bettors</div>
+        <div class="profile-stats">
+          <div class="pstat"><div class="pstat-val">68%</div><div class="pstat-label">Win Rate</div></div>
+          <div class="pstat"><div class="pstat-val">142</div><div class="pstat-label">Bets</div></div>
+          <div class="pstat"><div class="pstat-val">12</div><div class="pstat-label">Streak</div></div>
+        </div>
+      </div>
+
+      <div class="section-label">🏅 Achievements</div>
+      <div class="achievements-scroll">
+        <div class="ach on"><div class="ach-icon">🔥</div><div class="ach-name">5-Win Streak</div></div>
+        <div class="ach on"><div class="ach-icon">🎯</div><div class="ach-name">Sharpshooter</div></div>
+        <div class="ach on"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div></div>
+        <div class="ach on"><div class="ach-icon">🎰</div><div class="ach-name">100 Parlays</div></div>
+        <div class="ach off"><div class="ach-icon">👑</div><div class="ach-name">Top 1%</div></div>
+        <div class="ach off"><div class="ach-icon">🏆</div><div class="ach-name">Grand Master</div></div>
+        <div class="ach off"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div></div>
+      </div>
+
+      <div class="section-label" style="margin-top:8px;">📋 Active Quests</div>
+
+      <div class="quest-card">
+        <div class="quest-emoji">🎯</div>
+        <div class="quest-body">
+          <div class="quest-name">Daily Roller</div>
+          <div class="quest-desc">Place 5 Dicey Parlays today</div>
+          <div class="quest-bar"><div class="quest-fill" style="width:60%"></div></div>
+        </div>
+        <div class="quest-reward"><div class="qr-val">$5</div><div class="qr-label">Bonus</div></div>
+      </div>
+
+      <div class="quest-card">
+        <div class="quest-emoji">⚡</div>
+        <div class="quest-body">
+          <div class="quest-name">Rapid Fire Master</div>
+          <div class="quest-desc">Win 10 micro-bets this week</div>
+          <div class="quest-bar"><div class="quest-fill" style="width:30%"></div></div>
+        </div>
+        <div class="quest-reward"><div class="qr-val">$15</div><div class="qr-label">Bonus</div></div>
+      </div>
+
+      <div class="quest-card">
+        <div class="quest-emoji">🏆</div>
+        <div class="quest-body">
+          <div class="quest-name">Parlay King</div>
+          <div class="quest-desc">Hit a 4+ leg parlay</div>
+          <div class="quest-bar"><div class="quest-fill" style="width:0%"></div></div>
+        </div>
+        <div class="quest-reward"><div class="qr-val">$50</div><div class="qr-label">Bonus</div></div>
+      </div>
+
+      <div class="quest-card">
+        <div class="quest-emoji">🤝</div>
+        <div class="quest-body">
+          <div class="quest-name">Squad Up</div>
+          <div class="quest-desc">Share 3 bet cards with friends</div>
+          <div class="quest-bar"><div class="quest-fill" style="width:66%"></div></div>
+        </div>
+        <div class="quest-reward"><div class="qr-val">$3</div><div class="qr-label">Bonus</div></div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== SOCIAL ===== -->
+  <div class="section" id="social">
+    <div class="content-area" style="padding-top:16px;">
+
+      <!-- Squad Parlays / Shared Pots -->
+      <div class="section-label">🤝 Squad Parlays — Shared Pots</div>
+
+      <div class="squad-card">
+        <div class="squad-header">
+          <div>
+            <div class="squad-title">🏆 Degen Squad #14</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">CS2 Major · Grand Final</div>
+          </div>
+          <div class="squad-pot">$120 pot</div>
+        </div>
+        <div class="squad-members">
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--green)">Y</div>
+            <div class="squad-member-name">You <span class="squad-member-you">YOU</span></div>
+            <div class="squad-member-amount">$30</div>
+          </div>
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--purple)">D</div>
+            <div class="squad-member-name">degenDave</div>
+            <div class="squad-member-amount">$40</div>
+          </div>
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--cyan)">S</div>
+            <div class="squad-member-name">sharpShelly</div>
+            <div class="squad-member-amount">$30</div>
+          </div>
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--text-dim)">?</div>
+            <div class="squad-member-name" style="color:var(--text-dim)">1 spot open</div>
+            <div class="squad-member-amount" style="color:var(--text-dim)">$20 min</div>
+          </div>
+        </div>
+        <div class="squad-body">
+          <div class="shared-leg"><span>NAVI ML · CS2</span><span style="color:var(--green);font-weight:700">1.50x</span></div>
+          <div class="shared-leg"><span>Over 26.5 rounds · Map 1</span><span style="color:var(--green);font-weight:700">1.85x</span></div>
+          <div class="shared-leg"><span>s1mple MVP</span><span style="color:var(--green);font-weight:700">3.20x</span></div>
+        </div>
+        <div class="squad-footer">
+          <div class="squad-status">
+            <span class="live-dot"></span>
+            <span>Starts in 23 min · 8.9x payout</span>
+          </div>
+          <button class="squad-join-btn">Join $20</button>
+        </div>
+      </div>
+
+      <div class="squad-card" style="opacity:0.7;">
+        <div class="squad-header">
+          <div>
+            <div class="squad-title">⚡ Friday Night Squad</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Multi-game · 5 legs</div>
+          </div>
+          <div class="squad-pot">$250 pot</div>
+        </div>
+        <div class="squad-members">
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--gold);color:#000">K</div>
+            <div class="squad-member-name">KingCrypto (host)</div>
+            <div class="squad-member-amount">$100</div>
+          </div>
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--pink)">R</div>
+            <div class="squad-member-name">RiskItAll</div>
+            <div class="squad-member-amount">$75</div>
+          </div>
+          <div class="squad-member">
+            <div class="squad-member-avatar" style="background:var(--text-dim)">?</div>
+            <div class="squad-member-name" style="color:var(--text-dim)">2 spots open</div>
+            <div class="squad-member-amount" style="color:var(--text-dim)">$25 min</div>
+          </div>
+        </div>
+        <div class="squad-footer">
+          <div class="squad-status">Full · 24.5x payout</div>
+          <button class="squad-join-btn">Join $25</button>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:8px;">🤝 Tailgate Feed</div>
+
+      <div class="share-card">
+        <div class="sc-header">
+          <div class="sc-avatar">D</div>
+          <div class="sc-user">
+            <div class="sc-username">degenDave 🔥</div>
+            <div class="sc-time">2 min ago · ELO 2,103</div>
+          </div>
+          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+        </div>
+        <div class="sc-body">
+          <div class="shared-leg"><span>NAVI ML · CS2</span><span class="shared-leg-status">✅</span></div>
+          <div class="shared-leg"><span>T1 -1.5 · LoL</span><span class="shared-leg-status">✅</span></div>
+          <div class="shared-leg"><span>SEN upset · Valorant</span><span class="shared-leg-status">⏳</span></div>
+        </div>
+        <div class="sc-footer">
+          <span>6.5x · $10 → $75</span>
+          <div class="sc-actions">
+            <span class="sc-action">❤️ 24</span>
+            <span class="sc-action">🔁 8</span>
+            <span class="sc-action">💬 3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="share-card">
+        <div class="sc-header">
+          <div class="sc-avatar" style="background:var(--cyan)">S</div>
+          <div class="sc-user">
+            <div class="sc-username">sharpShelly 🎯</div>
+            <div class="sc-time">12 min ago · ELO 1,956</div>
+          </div>
+          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+        </div>
+        <div class="sc-body">
+          <div class="shared-leg"><span>Over 35.5 kills · LoL</span><span class="shared-leg-status">✅</span></div>
+          <div class="shared-leg"><span>G2 2-0 · CS2</span><span class="shared-leg-status">✅</span></div>
+        </div>
+        <div class="sc-footer">
+          <span>4.8x · $20 → $96 ✅</span>
+          <div class="sc-actions">
+            <span class="sc-action">❤️ 67</span>
+            <span class="sc-action">🔁 31</span>
+            <span class="sc-action">💬 12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="share-card">
+        <div class="sc-header">
+          <div class="sc-avatar" style="background:var(--gold);color:#000">K</div>
+          <div class="sc-user">
+            <div class="sc-username">KingCrypto 👑</div>
+            <div class="sc-time">28 min ago · ELO 2,441</div>
+          </div>
+          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+        </div>
+        <div class="sc-body">
+          <div class="shared-leg"><span>Loud upset · Valorant</span><span class="shared-leg-status">❌</span></div>
+          <div class="shared-leg"><span>First blood &lt;1:30 · LoL</span><span class="shared-leg-status">✅</span></div>
+          <div class="shared-leg"><span>Ace in first half · CS2</span><span class="shared-leg-status">❌</span></div>
+        </div>
+        <div class="sc-footer">
+          <span>22x · $5 → $0 ❌</span>
+          <div class="sc-actions">
+            <span class="sc-action">❤️ 12</span>
+            <span class="sc-action">🔁 2</span>
+            <span class="sc-action">💬 7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== REROLL (Second Chance) ===== -->
+  <div class="section" id="reroll">
+    <div class="content-area" style="padding-top:16px;">
+      <div class="section-label">🎲 Second Chance — Reroll Missed Legs</div>
+
+      <!-- Active near-miss slip -->
+      <div class="reroll-slip">
+        <div class="reroll-slip-header">
+          <div>
+            <div class="reroll-slip-title">🔥 Degen Roll #247</div>
+            <div class="reroll-slip-status">❌ MISSED BY 1 LEG</div>
+          </div>
+          <div class="reroll-slip-odds">15.5x</div>
+        </div>
+
+        <div class="reroll-legs">
+          <div class="reroll-leg">
+            <div class="rl-left">
+              <div class="rl-status-icon hit">✅</div>
+              <div>
+                <div class="rl-pick-name">100T upset vs C9</div>
+                <div class="rl-pick-match">Valorant · VCT · Bo3</div>
+              </div>
+            </div>
+            <span class="rl-pick-odds">3.30x</span>
+          </div>
+
+          <div class="reroll-leg">
+            <div class="rl-left">
+              <div class="rl-status-icon hit">✅</div>
+              <div>
+                <div class="rl-pick-name">G2 2-0 exact score</div>
+                <div class="rl-pick-match">CS2 · EPL · vs FaZe</div>
+              </div>
+            </div>
+            <span class="rl-pick-odds">2.75x</span>
+          </div>
+
+          <div class="reroll-leg">
+            <div class="rl-left">
+              <div class="rl-status-icon hit">✅</div>
+              <div>
+                <div class="rl-pick-name">Over 35.5 kills</div>
+                <div class="rl-pick-match">LoL · LCS · TL vs FLY</div>
+              </div>
+            </div>
+            <span class="rl-pick-odds">2.20x</span>
+          </div>
+
+          <div class="reroll-leg missed">
+            <div class="rl-left">
+              <div class="rl-status-icon miss">❌</div>
+              <div>
+                <div class="rl-pick-name">SEN win pistol round</div>
+                <div class="rl-pick-match">Valorant · VCT · Rd 1</div>
+              </div>
+            </div>
+            <span class="rl-pick-odds" style="color:var(--red)">1.91x</span>
+          </div>
+        </div>
+
+        <div class="reroll-cta-section">
+          <div class="reroll-cta-label">🎲 Reroll Available</div>
+          <div class="reroll-cta-title">Reselect Your Missed Leg</div>
+          <div class="reroll-cta-desc">Pay a fee to replace the missed leg with a new pick. Your 3 winning legs stay locked in. Hit the new leg and the full parlay pays out.</div>
+
+          <div class="reroll-cta-price">
+            <div class="reroll-price-box">
+              <div class="reroll-price-val">$8</div>
+              <div class="reroll-price-label">Reroll Cost</div>
+            </div>
+            <div style="color:var(--text-dim);font-size:20px;">→</div>
+            <div class="reroll-potential-box">
+              <div class="reroll-potential-val">$77.50</div>
+              <div class="reroll-potential-label">Potential Win</div>
+            </div>
+          </div>
+
+          <button class="reroll-btn" onclick="doReroll()">🎲 REROLL LAST LEG — $8</button>
+          <div class="reroll-note">House edge applies. New leg selected from available live markets.</div>
+        </div>
+      </div>
+
+      <!-- Past slips -->
+      <div class="section-label" style="margin-top:8px;">📜 Recent Near-Misses</div>
+
+      <div class="old-slip-mini">
+        <div class="old-slip-info">
+          <div class="old-slip-name">🛡️ Safe Roll #312</div>
+          <div class="old-slip-meta">3 legs · Missed by 1 · Rerolled</div>
+        </div>
+        <div class="old-slip-result won">+$28.00 ✅</div>
+      </div>
+
+      <div class="old-slip-mini">
+        <div class="old-slip-info">
+          <div class="old-slip-name">🔥 Degen Roll #198</div>
+          <div class="old-slip-meta">4 legs · Missed by 1 · Rerolled</div>
+        </div>
+        <div class="old-slip-result lost">-$13.00 ❌</div>
+      </div>
+
+      <div class="old-slip-mini">
+        <div class="old-slip-info">
+          <div class="old-slip-name">💀 YOLO Roll #89</div>
+          <div class="old-slip-meta">5 legs · Missed by 1 · Not rerolled</div>
+        </div>
+        <div class="old-slip-result lost">-$2.00 ❌</div>
+      </div>
+
+      <div class="old-slip-mini">
+        <div class="old-slip-info">
+          <div class="old-slip-name">🔥 Degen Roll #154</div>
+          <div class="old-slip-meta">4 legs · Missed by 1 · Rerolled</div>
+        </div>
+        <div class="old-slip-result won">+$72.50 ✅</div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== LEADERBOARD ===== -->
+  <div class="section" id="leaderboard">
+    <div class="content-area" style="padding-top:16px;">
+      <div class="lb-header-card">
+        <div class="lb-your-rank-label">Your Rank</div>
+        <div class="lb-your-rank">#47</div>
+        <div class="lb-your-elo">ELO 1,847 · Diamond · Top 8%</div>
+      </div>
+
+      <div class="lb-tabs">
+        <div class="lb-tab active" onclick="selLbTab(this)">🏆 All Time</div>
+        <div class="lb-tab" onclick="selLbTab(this)">📅 Weekly</div>
+        <div class="lb-tab" onclick="selLbTab(this)">🔥 Streak</div>
+        <div class="lb-tab" onclick="selLbTab(this)">🎰 Parlays</div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank gold">1</div>
+        <div class="lb-avatar" style="background:var(--gold);color:#000">A</div>
+        <div class="lb-user-info">
+          <div class="lb-username">AceHighRoller 👑</div>
+          <div class="lb-user-meta">2,891 bets · 19 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">3,241</div>
+          <div class="lb-winrate">74% win</div>
+        </div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank silver">2</div>
+        <div class="lb-avatar" style="background:var(--cyan)">S</div>
+        <div class="lb-user-info">
+          <div class="lb-username">sharpShelly 🎯</div>
+          <div class="lb-user-meta">1,456 bets · 12 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">2,987</div>
+          <div class="lb-winrate">71% win</div>
+        </div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank bronze">3</div>
+        <div class="lb-avatar" style="background:var(--orange)">M</div>
+        <div class="lb-user-info">
+          <div class="lb-username">MegaDegen 🔥</div>
+          <div class="lb-user-meta">3,102 bets · 8 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">2,654</div>
+          <div class="lb-winrate">62% win</div>
+        </div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank">4</div>
+        <div class="lb-avatar" style="background:var(--purple)">K</div>
+        <div class="lb-user-info">
+          <div class="lb-username">KingCrypto 💎</div>
+          <div class="lb-user-meta">987 bets · 6 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">2,441</div>
+          <div class="lb-winrate">69% win</div>
+        </div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank">5</div>
+        <div class="lb-avatar" style="background:var(--pink)">D</div>
+        <div class="lb-user-info">
+          <div class="lb-username">degenDave 🎲</div>
+          <div class="lb-user-meta">2,340 bets · 5 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">2,103</div>
+          <div class="lb-winrate">58% win</div>
+        </div>
+      </div>
+
+      <div style="padding:4px 0"></div>
+
+      <div class="lb-row you">
+        <div class="lb-rank" style="color:var(--green)">47</div>
+        <div class="lb-avatar" style="background:var(--green)">Y</div>
+        <div class="lb-user-info">
+          <div class="lb-username">You 🎮</div>
+          <div class="lb-user-meta">142 bets · 12 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">1,847</div>
+          <div class="lb-winrate">68% win</div>
+        </div>
+      </div>
+
+      <div style="padding:4px 0"></div>
+
+      <div class="lb-row">
+        <div class="lb-rank">48</div>
+        <div class="lb-avatar" style="background:var(--text-dim)">R</div>
+        <div class="lb-user-info">
+          <div class="lb-username">RoundRobin99</div>
+          <div class="lb-user-meta">210 bets · 3 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">1,832</div>
+          <div class="lb-winrate">61% win</div>
+        </div>
+      </div>
+
+      <div class="lb-row">
+        <div class="lb-rank">49</div>
+        <div class="lb-avatar" style="background:var(--text-dim)">T</div>
+        <div class="lb-user-info">
+          <div class="lb-username">TiltMaster</div>
+          <div class="lb-user-meta">567 bets · 2 win streak</div>
+        </div>
+        <div class="lb-stats">
+          <div class="lb-elo">1,819</div>
+          <div class="lb-winrate">55% win</div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+</div>
+<!-- ROLL FOR BOOST OVERLAY -->
+<div class="roll-overlay" id="rollOverlay">
+  <button class="roll-overlay-close" onclick="closeRollBoost()">✕</button>
+  <div class="roll-overlay-card">
+    <div class="roll-boost-label">🎲 Roll for Your Boost</div>
+    <div class="roll-boost-title">Spin to Win a Payout Boost</div>
+    <div class="roll-boost-desc">Roll the dice to unlock a random boost on your next bet. Free roll every 4 hours.</div>
+
+    <div class="dice-roller">
+      <div class="dice-face" id="dice1">🎲</div>
+      <div class="dice-face" id="dice2">🎲</div>
+    </div>
+
+    <div class="boost-prizes">
+      <div class="boost-prize" data-val="5">5% boost</div>
+      <div class="boost-prize" data-val="10">10% boost</div>
+      <div class="boost-prize" data-val="15">15% boost</div>
+      <div class="boost-prize" data-val="25">25% boost</div>
+      <div class="boost-prize" data-val="50">50% boost</div>
+    </div>
+
+    <button class="roll-btn" id="rollBtn" onclick="rollForBoost()">🎲 ROLL THE DICE</button>
+
+    <div class="boost-result" id="boostResult">
+      <div class="boost-result-text" id="boostResultText"></div>
+      <div class="boost-result-sub">Applied to your next bet automatically</div>
+    </div>
+  </div>
+</div>
+
+<div class="resolution-overlay" id="resOverlay">
+  <button class="close-overlay" onclick="closeRes()">✕</button>
+  <div class="resolution-reel" id="resReel"></div>
+  <div class="res-result" id="resResult"></div>
+</div>
+
+<!-- CONFETTI -->
+<div class="confetti-layer" id="confetti"></div>
+
+<!-- BET TOAST -->
+<div class="bet-toast" id="betToast">
+  <div class="toast-info">
+    <span class="toast-emoji">🎲</span>
+    <div>
+      <div class="toast-text" id="toastText">Bet added!</div>
+      <div class="toast-sub" id="toastSub">NAVI Win · 1.65x · $5</div>
+    </div>
+  </div>
+  <button class="toast-btn" onclick="placeBet()">PLACE</button>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bn-item">
+    <div class="bn-icon">🔍</div>
+    <div class="bn-label">Explore</div>
+  </div>
+  <div class="bn-item">
+    <div class="bn-icon">♠️</div>
+    <div class="bn-label">Casino</div>
+  </div>
+  <div class="bn-item casino-tab">
+    <div class="bn-icon">🏈</div>
+    <div class="bn-label">Sports</div>
+  </div>
+</div>
+
+<script>
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  function navigateToTab(tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const tab = document.querySelector(`.tab[data-tab="${tabId}"]`);
+    if (tab) tab.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  // Category pills
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.cat-pill').forEach(c => c.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+
+  // Toggle chips
+  document.querySelectorAll('.toggle-chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.toggle-chip').forEach(t => t.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+
+  function selOpt(el) {
+    document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function selAmt(el) {
+    document.querySelectorAll('.amt-chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function fireBet() {
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+    showToast('Bet added!', 'NAVI Win · 1.65x · $5');
+  }
+
+  function showToast(text, sub) {
+    document.getElementById('toastText').textContent = text;
+    document.getElementById('toastSub').textContent = sub;
+    document.getElementById('betToast').classList.add('show');
+    setTimeout(() => document.getElementById('betToast').classList.remove('show'), 3000);
+  }
+
+  function placeBet() {
+    document.getElementById('betToast').classList.remove('show');
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 300);
+  }
+
+  function tailBet(btn) {
+    btn.textContent = '✅ Tailed';
+    btn.style.background = 'rgba(29,185,84,0.2)';
+    btn.style.borderColor = 'rgba(29,185,84,0.4)';
+    showToast('Parlay tailed!', 'Copied to your bet slip');
+  }
+
+  function buyBonus() {
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+    const b = document.getElementById('bonusBanner');
+    b.querySelector('.bonus-title').textContent = '🎰 BONUS SESSION ACTIVE';
+    b.querySelector('.bonus-desc').innerHTML = 'All micro-bets pay <strong>2x</strong> for 10 minutes.';
+    b.classList.add('show');
+    flash('rgba(29,185,84,0.2)');
+  }
+
+  function toggleBonusInfo() {
+    const details = document.getElementById('bbDetails');
+    const btn = document.querySelector('.bb-info-btn');
+    details.classList.toggle('open');
+    btn.classList.toggle('active');
+  }
+
+  function flash(color) {
+    const f = document.createElement('div');
+    f.style.cssText = `position:fixed;top:0;left:0;right:0;bottom:0;background:${color};z-index:999;pointer-events:none;`;
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 200);
+  }
+
+  // Resolution
+  function simulateResolution(tier) {
+    const overlay = document.getElementById('resOverlay');
+    const reel = document.getElementById('resReel');
+    const result = document.getElementById('resResult');
+
+    let legs, outcomes, bet;
+    if (tier === 'safe') {
+      legs = ['Team Liquid ML', 'NAVI ML', 'T1 -1.5 Maps'];
+      outcomes = [true, true, true];
+      bet = 10;
+    } else if (tier === 'degen') {
+      legs = ['100T upset vs C9', 'G2 2-0 exact', 'Over 35.5 kills', 'SEN win pistol'];
+      outcomes = [true, true, true, false];
+      bet = 5;
+    } else {
+      legs = ['Loud upset vs GenG', 'First blood <1:30', 'Ace in first half', 'Map 3 OT', 'MVP 30+ kills'];
+      outcomes = [true, true, false, false, false];
+      bet = 2;
+    }
+
+    reel.innerHTML = '';
+    result.innerHTML = '';
+    result.classList.remove('show');
+    overlay.classList.add('active');
+
+    legs.forEach((leg, i) => {
+      const el = document.createElement('div');
+      el.className = 'reel-leg';
+      el.innerHTML = `<div><div class="rl-pick">${leg}</div><div class="rl-status">Resolving...</div></div><div class="rl-result"></div>`;
+      reel.appendChild(el);
+    });
+
+    const reelLegs = reel.querySelectorAll('.reel-leg');
+    legs.forEach((_, i) => {
+      setTimeout(() => {
+        const leg = reelLegs[i];
+        leg.classList.add('revealed');
+        setTimeout(() => {
+          const won = outcomes[i];
+          leg.classList.add(won ? 'won' : 'lost');
+          leg.querySelector('.rl-result').textContent = won ? '✅' : '❌';
+          leg.querySelector('.rl-result').style.animation = 'pop 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+          leg.querySelector('.rl-status').textContent = won ? 'HIT' : 'MISS';
+          leg.querySelector('.rl-status').style.color = won ? 'var(--green)' : 'var(--red)';
+          document.getElementById('app').classList.add('shake');
+          setTimeout(() => document.getElementById('app').classList.remove('shake'), 350);
+          if (i === legs.length - 1) setTimeout(() => showRes(tier, outcomes, bet), 700);
+        }, 350);
+      }, i * 1100);
+    });
+  }
+
+  function showRes(tier, outcomes, bet) {
+    const result = document.getElementById('resResult');
+    const allWon = outcomes.every(o => o);
+    const nearMiss = outcomes.filter(o => !o).length === 1;
+
+    if (allWon) {
+      const payout = tier === 'safe' ? 28 : 77.5;
+      result.innerHTML = `
+        <div style="font-size:44px;margin-bottom:6px;">🎰🎰🎰</div>
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:var(--green);margin-bottom:6px;">JACKPOT</div>
+        <div class="res-amount win">+$${payout.toFixed(2)}</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">$${bet} → $${(payout+bet).toFixed(2)}</div>
+      `;
+      result.classList.add('show');
+      spawnConfetti();
+      document.getElementById('app').classList.add('shake');
+    } else if (nearMiss) {
+      result.innerHTML = `
+        <div style="font-size:36px;margin-bottom:6px;">😤</div>
+        <div class="res-amount miss">SO CLOSE</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Missed by ONE leg</div>
+        <div class="second-chance">
+          <div class="sc-label">🎲 Second Chance</div>
+          <div class="sc-text">Pay <strong>$3</strong> to re-roll the missed leg</div>
+          <button class="sc-btn" onclick="reroll()">🎲 Roll Again – $3</button>
+        </div>
+      `;
+      result.classList.add('show');
+    } else {
+      result.innerHTML = `
+        <div style="font-size:32px;margin-bottom:6px;">💨</div>
+        <div class="res-amount loss">Better luck next roll</div>
+        <div style="font-size:12px;color:var(--text-dim);margin-top:6px;">-$${bet}</div>
+      `;
+      result.classList.add('show');
+    }
+  }
+
+  function reroll() {
+    flash('rgba(245,158,11,0.2)');
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+
+    const failed = [...document.querySelectorAll('.reel-leg.lost')][0];
+    if (failed) {
+      failed.classList.remove('lost');
+      failed.querySelector('.rl-result').textContent = '🎲';
+      failed.querySelector('.rl-status').textContent = 'Re-rolling...';
+      failed.querySelector('.rl-status').style.color = 'var(--orange)';
+
+      setTimeout(() => {
+        const hit = Math.random() < 0.4;
+        failed.classList.add(hit ? 'won' : 'lost');
+        failed.querySelector('.rl-result').textContent = hit ? '✅' : '❌';
+        failed.querySelector('.rl-status').textContent = hit ? 'HIT' : 'MISS';
+        failed.querySelector('.rl-status').style.color = hit ? 'var(--green)' : 'var(--red)';
+        document.getElementById('app').classList.add('shake');
+        setTimeout(() => document.getElementById('app').classList.remove('shake'), 350);
+
+        const result = document.getElementById('resResult');
+        if (hit) {
+          result.innerHTML = `
+            <div style="font-size:44px;margin-bottom:6px;">🎰🎰🎰</div>
+            <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:3px;color:var(--green);margin-bottom:6px;">SECOND CHANCE HIT</div>
+            <div class="res-amount win">+$72.50</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">The re-roll paid off! 🎲</div>
+          `;
+          spawnConfetti();
+        } else {
+          result.innerHTML = `
+            <div style="font-size:32px;margin-bottom:6px;">💨</div>
+            <div class="res-amount loss">Not this time</div>
+            <div style="font-size:12px;color:var(--text-dim);margin-top:6px;">-$8 total</div>
+          `;
+        }
+      }, 1400);
+    }
+  }
+
+  function closeRes() {
+    document.getElementById('resOverlay').classList.remove('active');
+    document.getElementById('confetti').classList.remove('on');
+    document.getElementById('confetti').innerHTML = '';
+  }
+
+  function spawnConfetti() {
+    const c = document.getElementById('confetti');
+    c.classList.add('on');
+    const emojis = ['🎰','💰','🎲','✨','💎','🔥','⭐','🏆'];
+    for (let i = 0; i < 35; i++) {
+      setTimeout(() => {
+        const p = document.createElement('div');
+        p.className = 'conf';
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 100 + '%';
+        p.style.fontSize = (14 + Math.random() * 18) + 'px';
+        p.style.animationDuration = (2 + Math.random() * 3) + 's';
+        c.appendChild(p);
+        setTimeout(() => p.remove(), 5000);
+      }, i * 70);
+    }
+  }
+
+  // Random bonus trigger (15s demo)
+  setTimeout(() => {
+    document.getElementById('bonusBanner').classList.add('show');
+    document.getElementById('app').classList.add('shake');
+    setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+  }, 15000);
+
+  // Timer
+  let sec = 42;
+  setInterval(() => {
+    sec--;
+    if (sec < 0) sec = 90;
+    const t = document.getElementById('microTimer');
+    if (t) t.textContent = `⏱ ${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
+  }, 1000);
+
+  // Reroll interaction
+  function doReroll() {
+    const app = document.getElementById('app');
+    flash('rgba(245,158,11,0.2)');
+    app.classList.add('shake');
+    setTimeout(() => app.classList.remove('shake'), 400);
+
+    const missedLeg = document.querySelector('.reroll-leg.missed');
+    const icon = missedLeg.querySelector('.rl-status-icon');
+    const name = missedLeg.querySelector('.rl-pick-name');
+    const match = missedLeg.querySelector('.rl-pick-match');
+    const odds = missedLeg.querySelector('.rl-pick-odds');
+
+    // Animate to "rolling" state
+    icon.textContent = '🎲';
+    icon.className = 'rl-status-icon pending';
+    name.textContent = 'Reselecting...';
+    name.style.color = 'var(--orange)';
+    match.textContent = 'Finding new market...';
+
+    setTimeout(() => {
+      // New replacement leg
+      const newLegs = [
+        { name: 'NAVI win pistol rd', match: 'CS2 · Major · Rd 16', odds: '1.83x' },
+        { name: 'First blood Team A', match: 'LoL · LCK · Game 2', odds: '2.05x' },
+        { name: 'Over 2.5 maps', match: 'Valorant · VCT · SEN vs LOUD', odds: '1.71x' },
+      ];
+      const pick = newLegs[Math.floor(Math.random() * newLegs.length)];
+
+      name.textContent = pick.name;
+      name.style.color = 'var(--white)';
+      match.textContent = pick.match;
+      odds.textContent = pick.odds;
+      odds.style.color = 'var(--text-secondary)';
+
+      icon.textContent = '⏳';
+      icon.style.borderColor = 'var(--orange)';
+      icon.style.background = 'rgba(245,158,11,0.15)';
+
+      missedLeg.style.borderColor = 'rgba(245,158,11,0.3)';
+      missedLeg.style.background = 'rgba(245,158,11,0.04)';
+
+      // Update CTA
+      const ctaSection = document.querySelector('.reroll-cta-section');
+      ctaSection.innerHTML = `
+        <div style="font-size:14px;font-weight:800;color:var(--orange);margin-bottom:4px;">⏳ NEW LEG IN PLAY</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Waiting for <strong>${pick.name}</strong> to resolve...</div>
+        <div style="font-size:11px;color:var(--text-dim);">Potential payout: <span style="color:var(--green);font-weight:800;">$77.50</span></div>
+      `;
+
+      app.classList.add('shake');
+      setTimeout(() => app.classList.remove('shake'), 300);
+    }, 2000);
+  }
+
+  // Leaderboard tab toggle
+  function selLbTab(el) {
+    document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Swipe hint auto-hide after 6 seconds
+  setTimeout(() => {
+    const hint = document.getElementById('swipeHint');
+    if (hint) {
+      hint.style.transition = 'opacity 0.5s';
+      hint.style.opacity = '0';
+      setTimeout(() => hint.style.display = 'none', 500);
+    }
+  }, 6000);
+
+  // Roll Boost overlay
+  function openRollBoost() {
+    document.getElementById('rollOverlay').classList.add('active');
+  }
+
+  function closeRollBoost() {
+    document.getElementById('rollOverlay').classList.remove('active');
+  }
+
+  // Roll for Boost
+  function rollForBoost() {
+    const btn = document.getElementById('rollBtn');
+    const d1 = document.getElementById('dice1');
+    const d2 = document.getElementById('dice2');
+    const result = document.getElementById('boostResult');
+    const resultText = document.getElementById('boostResultText');
+
+    btn.disabled = true;
+    btn.textContent = 'ROLLING...';
+    d1.classList.add('rolling');
+    d2.classList.add('rolling');
+    result.classList.remove('show');
+
+    const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+
+    // Rapid face changes
+    let rollCount = 0;
+    const rollInterval = setInterval(() => {
+      d1.textContent = faces[Math.floor(Math.random() * 6)];
+      d2.textContent = faces[Math.floor(Math.random() * 6)];
+      rollCount++;
+    }, 80);
+
+    // Slow down and land
+    setTimeout(() => {
+      clearInterval(rollInterval);
+
+      // Final faces
+      const f1 = Math.floor(Math.random() * 6);
+      const f2 = Math.floor(Math.random() * 6);
+      d1.textContent = faces[f1];
+      d2.textContent = faces[f2];
+      d1.classList.remove('rolling');
+      d2.classList.remove('rolling');
+      d1.classList.add('landed');
+      d2.classList.add('landed');
+
+      // Determine boost from dice total
+      const total = f1 + f2 + 2;
+      let boost, prizeIdx;
+      if (total <= 4) { boost = '5%'; prizeIdx = 0; }
+      else if (total <= 6) { boost = '10%'; prizeIdx = 1; }
+      else if (total <= 8) { boost = '15%'; prizeIdx = 2; }
+      else if (total <= 10) { boost = '25%'; prizeIdx = 3; }
+      else { boost = '50%'; prizeIdx = 4; }
+
+      // Highlight won prize
+      document.querySelectorAll('.boost-prize').forEach((p, i) => {
+        p.classList.toggle('won', i === prizeIdx);
+      });
+
+      // Show result
+      resultText.textContent = `🎉 You rolled a ${boost} payout boost!`;
+      result.classList.add('show');
+      btn.textContent = `✅ ${boost} BOOST ACTIVE`;
+
+      // Shake
+      document.getElementById('app').classList.add('shake');
+      setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
+
+      // Flash
+      flash('rgba(255,215,0,0.15)');
+
+      // Remove diamond notification
+      const diamondBtn = document.querySelector('.icon-btn.has-bonus');
+      if (diamondBtn) {
+        const dot = diamondBtn.querySelector('.notif-dot');
+        if (dot) dot.remove();
+        diamondBtn.classList.remove('has-bonus');
+      }
+
+      // Remove landed class after a bit
+      setTimeout(() => {
+        d1.classList.remove('landed');
+        d2.classList.remove('landed');
+      }, 2000);
+    }, 1800);
+  }
+
+  // Live odds movement simulation
+  function simulateOddsMovement() {
+    const allOdds = document.querySelectorAll('.opt-odds');
+    if (allOdds.length === 0) return;
+
+    const idx = Math.floor(Math.random() * allOdds.length);
+    const el = allOdds[idx];
+    const current = parseFloat(el.textContent);
+    if (isNaN(current)) return;
+
+    const delta = (Math.random() - 0.5) * 0.1;
+    const newVal = Math.max(1.01, current + delta).toFixed(2);
+
+    el.textContent = newVal + 'x';
+    el.classList.remove('odds-up', 'odds-down');
+
+    if (delta > 0) {
+      el.classList.add('odds-up');
+    } else {
+      el.classList.add('odds-down');
+    }
+
+    setTimeout(() => {
+      el.classList.remove('odds-up', 'odds-down');
+    }, 1200);
+  }
+
+  // Run odds movement every 4-8s
+  setInterval(simulateOddsMovement, 4000 + Math.random() * 4000);
+
+  // Also shimmer the micro-bet odds
+  document.querySelectorAll('.opt-odds').forEach(el => el.classList.add('odds-live'));
+
+  // ========================================
+  // LIVE ODDS GRAPH
+  // ========================================
+  const oddsHistory = {
+    navi: [50, 48, 52, 55, 51, 58, 54, 60, 57, 63, 58, 61, 59, 62],
+    vit:  [50, 52, 48, 45, 49, 42, 46, 40, 43, 37, 42, 39, 41, 38],
+  };
+
+  function drawOddsGraph() {
+    const canvas = document.getElementById('oddsCanvas');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = container.offsetWidth * dpr;
+    canvas.height = container.offsetHeight * dpr;
+    canvas.style.width = container.offsetWidth + 'px';
+    canvas.style.height = container.offsetHeight + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    const w = container.offsetWidth;
+    const h = container.offsetHeight;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // 50% line
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, h / 2);
+    ctx.lineTo(w, h / 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const naviData = oddsHistory.navi;
+    const vitData = oddsHistory.vit;
+    const points = naviData.length;
+    const stepX = w / (points - 1);
+    const padding = 4;
+
+    function yFromPct(pct) {
+      return padding + ((100 - pct) / 100) * (h - padding * 2);
+    }
+
+    // NAVI fill
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    for (let i = 0; i < points; i++) {
+      const x = i * stepX;
+      const y = yFromPct(naviData[i]);
+      if (i === 0) ctx.lineTo(x, y);
+      else {
+        const prevX = (i - 1) * stepX;
+        const cpx = (prevX + x) / 2;
+        ctx.bezierCurveTo(cpx, yFromPct(naviData[i-1]), cpx, y, x, y);
+      }
+    }
+    ctx.lineTo(w, h);
+    ctx.closePath();
+    const naviFill = ctx.createLinearGradient(0, 0, 0, h);
+    naviFill.addColorStop(0, 'rgba(250,204,21,0.15)');
+    naviFill.addColorStop(1, 'rgba(250,204,21,0)');
+    ctx.fillStyle = naviFill;
+    ctx.fill();
+
+    // NAVI line
+    ctx.beginPath();
+    for (let i = 0; i < points; i++) {
+      const x = i * stepX;
+      const y = yFromPct(naviData[i]);
+      if (i === 0) ctx.moveTo(x, y);
+      else {
+        const prevX = (i - 1) * stepX;
+        const cpx = (prevX + x) / 2;
+        ctx.bezierCurveTo(cpx, yFromPct(naviData[i-1]), cpx, y, x, y);
+      }
+    }
+    ctx.strokeStyle = '#facc15';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // NAVI dot at end
+    const naviLastY = yFromPct(naviData[points-1]);
+    ctx.beginPath();
+    ctx.arc(w, naviLastY, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#facc15';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(w, naviLastY, 7, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(250,204,21,0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Vitality fill
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    for (let i = 0; i < points; i++) {
+      const x = i * stepX;
+      const y = yFromPct(vitData[i]);
+      if (i === 0) ctx.lineTo(x, y);
+      else {
+        const prevX = (i - 1) * stepX;
+        const cpx = (prevX + x) / 2;
+        ctx.bezierCurveTo(cpx, yFromPct(vitData[i-1]), cpx, y, x, y);
+      }
+    }
+    ctx.lineTo(w, h);
+    ctx.closePath();
+    const vitFill = ctx.createLinearGradient(0, 0, 0, h);
+    vitFill.addColorStop(0, 'rgba(59,130,246,0.1)');
+    vitFill.addColorStop(1, 'rgba(59,130,246,0)');
+    ctx.fillStyle = vitFill;
+    ctx.fill();
+
+    // Vitality line
+    ctx.beginPath();
+    for (let i = 0; i < points; i++) {
+      const x = i * stepX;
+      const y = yFromPct(vitData[i]);
+      if (i === 0) ctx.moveTo(x, y);
+      else {
+        const prevX = (i - 1) * stepX;
+        const cpx = (prevX + x) / 2;
+        ctx.bezierCurveTo(cpx, yFromPct(vitData[i-1]), cpx, y, x, y);
+      }
+    }
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Vitality dot at end
+    const vitLastY = yFromPct(vitData[points-1]);
+    ctx.beginPath();
+    ctx.arc(w, vitLastY, 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#3b82f6';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(w, vitLastY, 7, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(59,130,246,0.3)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Update odds graph with new data point every 3s
+  function updateOddsGraph() {
+    const lastNavi = oddsHistory.navi[oddsHistory.navi.length - 1];
+    const shift = (Math.random() - 0.45) * 5; // slight bias toward NAVI since they're ahead
+    const newNavi = Math.max(25, Math.min(85, lastNavi + shift));
+    const newVit = 100 - newNavi;
+
+    oddsHistory.navi.push(Math.round(newNavi));
+    oddsHistory.vit.push(Math.round(newVit));
+
+    // Keep last 20 points
+    if (oddsHistory.navi.length > 20) {
+      oddsHistory.navi.shift();
+      oddsHistory.vit.shift();
+    }
+
+    // Update percentage labels
+    const naviPctEl = document.getElementById('naviPct');
+    const vitPctEl = document.getElementById('vitPct');
+    if (naviPctEl) naviPctEl.textContent = Math.round(newNavi) + '%';
+    if (vitPctEl) vitPctEl.textContent = Math.round(newVit) + '%';
+
+    // Update the micro-bet odds to match
+    const microOpts = document.querySelectorAll('.micro-opt .opt-odds');
+    if (microOpts.length >= 2) {
+      const naviOdds = (100 / newNavi).toFixed(2);
+      const vitOdds = (100 / newVit).toFixed(2);
+      microOpts[0].textContent = naviOdds + 'x';
+      microOpts[1].textContent = vitOdds + 'x';
+    }
+
+    drawOddsGraph();
+  }
+
+  // Init graph
+  setTimeout(drawOddsGraph, 100);
+  window.addEventListener('resize', drawOddsGraph);
+  setInterval(updateOddsGraph, 3000);
+
+  // ========================================
+  // SWIPEABLE PARLAY CARDS
+  // ========================================
+  const parlayData = [
+    {
+      tier: 'safe', emoji: '🛡️', name: 'Safe Roll', tag: '3 legs · 67% hit rate',
+      odds: '2.8x', color: 'safe', bet: '$10', plays: '1.2k', resType: 'safe',
+      legs: [
+        { pick: 'Team Liquid ML', match: 'LoL · LEC · vs Fnatic', odds: '1.50x' },
+        { pick: 'NAVI ML', match: 'CS2 · Major · vs Vitality', odds: '1.67x' },
+        { pick: 'T1 -1.5 Maps', match: 'LoL · LCK · vs DRX', odds: '1.77x' },
+      ]
+    },
+    {
+      tier: 'degen', emoji: '🔥', name: 'Degen Roll', tag: '4 legs · 18% hit rate',
+      odds: '15.5x', color: 'degen', bet: '$5', plays: '843', resType: 'degen',
+      legs: [
+        { pick: '100T upset vs C9', match: 'Valorant · VCT · Bo3', odds: '3.30x' },
+        { pick: 'G2 2-0 exact score', match: 'CS2 · EPL · vs FaZe', odds: '2.75x' },
+        { pick: 'Over 35.5 kills', match: 'LoL · LCS · TL vs FLY', odds: '2.20x' },
+        { pick: 'SEN win pistol rd', match: 'Valorant · VCT · Rd 1', odds: '1.91x' },
+      ]
+    },
+    {
+      tier: 'yolo', emoji: '💀', name: 'YOLO Roll', tag: '5 legs · 3% hit rate',
+      odds: '83x', color: 'yolo', bet: '$2', plays: '2.4k', resType: 'yolo',
+      legs: [
+        { pick: 'Loud upset vs GenG', match: 'Valorant · Masters', odds: '4.40x' },
+        { pick: 'First blood under 1:30', match: 'LoL · Worlds · Game 1', odds: '3.80x' },
+        { pick: 'Ace in first half', match: 'CS2 · Major · Grand Final', odds: '6.00x' },
+        { pick: 'Map 3 overtime', match: 'Valorant · Masters · Finals', odds: '3.00x' },
+        { pick: 'MVP kills 30+', match: 'CS2 · Major · Grand Final', odds: '2.80x' },
+      ]
+    },
+    {
+      tier: 'mid', emoji: '⚡', name: 'Mid Roll', tag: '3 legs · 42% hit rate',
+      odds: '5.2x', color: 'mid', bet: '$10', plays: '1.8k', resType: 'safe',
+      legs: [
+        { pick: 'G2 ML', match: 'CS2 · EPL · vs FaZe', odds: '1.75x' },
+        { pick: 'Over 2.5 maps', match: 'Valorant · VCT · SEN vs LOUD', odds: '1.90x' },
+        { pick: 'GenG -1.5 maps', match: 'LoL · LCK · vs T1', odds: '1.55x' },
+      ]
+    },
+    {
+      tier: 'safe', emoji: '🛡️', name: 'Safe Roll #2', tag: '2 legs · 78% hit rate',
+      odds: '1.9x', color: 'safe', bet: '$25', plays: '3.1k', resType: 'safe',
+      legs: [
+        { pick: 'Fnatic ML', match: 'LoL · LEC · vs Rogue', odds: '1.35x' },
+        { pick: 'FaZe ML', match: 'CS2 · BLAST · vs MOUZ', odds: '1.42x' },
+      ]
+    },
+    {
+      tier: 'degen', emoji: '🔥', name: 'Degen Roll #2', tag: '5 legs · 8% hit rate',
+      odds: '28x', color: 'degen', bet: '$3', plays: '654', resType: 'degen',
+      legs: [
+        { pick: 'EG upset vs C9', match: 'Valorant · VCT · Bo3', odds: '2.80x' },
+        { pick: 'First blood < 45s', match: 'LoL · Worlds · Game 3', odds: '3.50x' },
+        { pick: 'NAVI 16-14 exact', match: 'CS2 · Major · Semifinal', odds: '8.00x' },
+        { pick: '40+ kills total', match: 'LoL · LCK · Game 1', odds: '2.10x' },
+        { pick: 'Pistol ace', match: 'Valorant · VCT · Map 2', odds: '12.0x' },
+      ]
+    },
+    {
+      tier: 'yolo', emoji: '💀', name: 'YOLO Roll #2', tag: '6 legs · 1% hit rate',
+      odds: '150x', color: 'yolo', bet: '$1', plays: '4.2k', resType: 'yolo',
+      legs: [
+        { pick: 'PRX upset vs GenG', match: 'Valorant · Masters · Bo5', odds: '4.00x' },
+        { pick: 'Sub-1min first blood', match: 'LoL · LPL · Finals', odds: '5.50x' },
+        { pick: 'Triple OT', match: 'CS2 · Major · Grand Final', odds: '7.00x' },
+        { pick: 'Knife kill', match: 'CS2 · BLAST · Map 3', odds: '15.0x' },
+        { pick: 'Flawless map', match: 'Valorant · VCT · Playoffs', odds: '9.00x' },
+        { pick: 'Baron steal', match: 'LoL · Worlds · Game 5', odds: '3.20x' },
+      ]
+    },
+  ];
+
+  let currentParlayIdx = 0;
+  let startX = 0;
+  let currentX = 0;
+  let isDragging = false;
+
+  function renderParlayCard(data) {
+    const legsHtml = data.legs.map(l => `
+      <div class="parlay-leg">
+        <div class="leg-left">
+          <span class="leg-pick">${l.pick}</span>
+          <span class="leg-match">${l.match}</span>
+        </div>
+        <span class="leg-odds">${l.odds}</span>
+      </div>
+    `).join('');
+
+    return `
+      <div class="parlay-card">
+        <div class="parlay-top ${data.color}"></div>
+        <div class="parlay-header">
+          <div class="parlay-tier">
+            <span class="tier-emoji">${data.emoji}</span>
+            <div class="tier-info">
+              <div class="tier-name">${data.name}</div>
+              <div class="tier-tag">${data.tag}</div>
+            </div>
+          </div>
+          <div class="parlay-odds-box">
+            <div class="parlay-odds-label">Payout</div>
+            <div class="parlay-odds-value">${data.odds}</div>
+          </div>
+        </div>
+        <div class="parlay-legs">${legsHtml}</div>
+        <div class="parlay-footer">
+          <div class="parlay-meta"><span>👥 ${data.plays} plays</span></div>
+          <button class="play-btn" onclick="event.stopPropagation(); simulateResolution('${data.resType}')">Play ${data.bet}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDots() {
+    const dots = document.getElementById('parlayDots');
+    dots.innerHTML = parlayData.map((_, i) =>
+      `<div class="parlay-dot ${i === currentParlayIdx ? 'active' : ''}" onclick="goToParlay(${i})"></div>`
+    ).join('');
+  }
+
+  function updateCounter() {
+    document.getElementById('parlayCounter').textContent =
+      `${currentParlayIdx + 1} of ${parlayData.length} parlays`;
+  }
+
+  function showParlay(direction) {
+    const wrapper = document.getElementById('parlayCardWrapper');
+
+    // Exit current card
+    wrapper.classList.add(direction === 'left' ? 'exit-left' : 'exit-right');
+
+    setTimeout(() => {
+      // Render new card
+      wrapper.innerHTML = renderParlayCard(parlayData[currentParlayIdx]);
+      wrapper.classList.remove('exit-left', 'exit-right');
+      wrapper.classList.add(direction === 'left' ? 'enter-from-right' : 'enter-from-left');
+
+      // Force reflow
+      wrapper.offsetHeight;
+
+      wrapper.classList.add('enter-active');
+      renderDots();
+      updateCounter();
+
+      setTimeout(() => {
+        wrapper.classList.remove('enter-from-right', 'enter-from-left', 'enter-active');
+      }, 400);
+    }, 300);
+  }
+
+  function goToParlay(idx) {
+    const dir = idx > currentParlayIdx ? 'left' : 'right';
+    currentParlayIdx = idx;
+    showParlay(dir);
+  }
+
+  // Touch handling
+  const swiper = document.getElementById('parlaySwiper');
+  const wrapper = document.getElementById('parlayCardWrapper');
+  const feedbackSkip = document.getElementById('swipeFeedbackSkip');
+  const feedbackNext = document.getElementById('swipeFeedbackNext');
+
+  swiper.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    wrapper.classList.add('swiping');
+  }, { passive: true });
+
+  swiper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    currentX = e.touches[0].clientX - startX;
+    wrapper.style.transform = `translateX(${currentX}px) rotate(${currentX * 0.02}deg)`;
+    wrapper.style.opacity = Math.max(0.4, 1 - Math.abs(currentX) / 400);
+
+    // Show feedback
+    if (currentX < -30) {
+      feedbackNext.classList.add('visible');
+      feedbackSkip.classList.remove('visible');
+    } else if (currentX > 30) {
+      feedbackSkip.classList.add('visible');
+      feedbackNext.classList.remove('visible');
+    } else {
+      feedbackSkip.classList.remove('visible');
+      feedbackNext.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  swiper.addEventListener('touchend', () => {
+    isDragging = false;
+    wrapper.classList.remove('swiping');
+    wrapper.style.transform = '';
+    wrapper.style.opacity = '';
+    feedbackSkip.classList.remove('visible');
+    feedbackNext.classList.remove('visible');
+
+    const threshold = 60;
+    if (currentX < -threshold && currentParlayIdx < parlayData.length - 1) {
+      currentParlayIdx++;
+      showParlay('left');
+    } else if (currentX > threshold && currentParlayIdx > 0) {
+      currentParlayIdx--;
+      showParlay('right');
+    }
+    currentX = 0;
+  });
+
+  // Mouse drag for desktop
+  swiper.addEventListener('mousedown', (e) => {
+    startX = e.clientX;
+    isDragging = true;
+    wrapper.classList.add('swiping');
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    currentX = e.clientX - startX;
+    wrapper.style.transform = `translateX(${currentX}px) rotate(${currentX * 0.02}deg)`;
+    wrapper.style.opacity = Math.max(0.4, 1 - Math.abs(currentX) / 400);
+
+    if (currentX < -30) {
+      feedbackNext.classList.add('visible');
+      feedbackSkip.classList.remove('visible');
+    } else if (currentX > 30) {
+      feedbackSkip.classList.add('visible');
+      feedbackNext.classList.remove('visible');
+    } else {
+      feedbackSkip.classList.remove('visible');
+      feedbackNext.classList.remove('visible');
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    wrapper.classList.remove('swiping');
+    wrapper.style.transform = '';
+    wrapper.style.opacity = '';
+    feedbackSkip.classList.remove('visible');
+    feedbackNext.classList.remove('visible');
+
+    const threshold = 60;
+    if (currentX < -threshold && currentParlayIdx < parlayData.length - 1) {
+      currentParlayIdx++;
+      showParlay('left');
+    } else if (currentX > threshold && currentParlayIdx > 0) {
+      currentParlayIdx--;
+      showParlay('right');
+    }
+    currentX = 0;
+  });
+
+  // Init first card
+  document.getElementById('parlayCardWrapper').innerHTML = renderParlayCard(parlayData[0]);
+  renderDots();
+  updateCounter();
+</script>
+
+</body>
+</html>
