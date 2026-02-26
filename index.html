@@ -704,12 +704,12 @@
 
   .lm-swiper {
     position: relative;
-    overflow: hidden;
-    touch-action: pan-y;
+    overflow: visible;
+    touch-action: pan-y pinch-zoom;
   }
 
   .lm-slide {
-    transition: opacity 0.3s, transform 0.3s;
+    /* transitions controlled by JS */
   }
 
   .lm-counter {
@@ -2363,6 +2363,66 @@
   }
 
   /* === SQUAD PARLAYS === */
+  .faze-logo {
+    display: inline-block;
+    width: 20px;
+    height: 12px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAQCAYAAADnEwSWAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAADaUlEQVR42q1UQWhcVRQ9977//0ySmSY4SRozaWZciEUGVLJwpYWiC1FcadyIgosqgqBGQTDwO4YUUQrVXdDoporNptWFmxShG6nC0EVNSVJpSyajdNI0zkycZOb/d6+LmUkmcSxWvHD5/3Pfe+fcc+77pKo8mEyefLcv+uaL/b1BoR66hkihAAiNaLwTKWB45xuhACDsrm0+VZWYoAnj2Mn8LedsiLfLqyunCAA/ODfn0DsT5z7pjz11tK8LVavgFlBbCIBNK0Dz7JhhdFjWrKueKJRopkbHb63eyIoI0w4n3+9+6PPZ+Se7nYeVNGAlQ022RECohAHWnpcG+kigCKA4s1ZBlQmtZgFAFYgyybW6xTl4x9ev/TqlIgaAbREjAvSJjyd65j+dexrrG3EEorCWAQAGQKTbZLrc6fMP3JsAky3VAvPcev2Xy+n7x7G8TKCI7vZVBwYPWpP7cdmKtLhouwoGgM1kMkcq+fz8q4k4iMmEDf1hlTAU8eiZRAwGZEv1wLxRpZ/PLy49qkHwNxm1kdxUHwDgtNUtAGdhYeHC6OHDr23K9uz0of5wywoLQERAYAUVKzBNiqEIT9brnKWW4B1t3gneVwxV1ckvLX5xohROvn+96FRqdS5ubVOxWqNKKG3MFXUmTMUPCHmeJc+TVqKZkUgEvu9HO3W2AyiiDhcL06dH0/csluVZB2q3IU536Xbqo9F+R4jYsANvfS3z2NDgFRbZMcQCYCYxVlH0olwul18BcNH3ff6nyQUAZmb5xlozDmgK8EbSqcWvh3tTrmERENdFYEV2JxEAEyFGhA/Xyjjrxo+tXLn8me/7nM1m5U5gLZkFAMZU3d506uqXyd6Uy0YEygqgiymMMkvrPjPUTP1eptmegZeLl376Cqqm2XBHGfcbzAC0BHB8r7k4YFiKgXVWghoYhCgTvi1XcarmvhAuXZwD4AII7uRZxyn22qYthKLfM+GlzZozeXMzdz0SOePAAtagEFLOrl79QRtn77kT/wZsD66FYsR1wu82yp5/u/b9wuPPj+P0yT87yB/u331XYMxGE46DmZt/eB9sbM2s/VZ4nYnkkbExN5bLKQBcaChg8R+DAOCYqns0nVqZuG9EoweT74EIfqMDwv8Y1PjBqntoeDjfM5R8i4hwpKHKXQH9BWzdiDMrxlbWAAAAAElFTkSuQmCC') no-repeat center/contain;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  .faze-logo-lg {
+    display: inline-block;
+    width: 32px;
+    height: 19px;
+    background: url('data:image/png;base64,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') no-repeat center/contain;
+  }
+  .navi-logo {
+    display: inline-block;
+    width: 15px;
+    height: 14px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAB2UlEQVR42rWSv2tTcRTFz7nf92LSNmmkSQcdqqJLitZHiP4PWYRC/gF3EfwHShFE/4aC7gYHcZCC0EWtQ1IdnJQODo3WmpcHNnlJvu99r0N/mEoHHTzjhXMP594P8JdShag2DP7BwNPmo25tUbWSkVNNTxtGtWFIqK5AACDeDS4Pv1frSRRsGkletds577dhBfJnUq+3VAQA2wuWU1uLkzBYT6MgTnrXdzY2FrLeUR8SDqtAq1X1r13EDZe6m1Q0xt2gSZGueCabwIZU9o+WewBAwsW9pQvRcH4vP9zJ+/nc62RfvwIMvSk+Gg/0oRnZlGQOBKBIAUBarapvw+CJL7JVNOGqTGevwCoo3E0cXiJjKEZv2b57AWAKhAFQBACZ+/nDkLpMhSfGVX2j95OR2wRQgvIzqMabNVcpPD+2fAPQqvJZ/lMpPbwYIxCzUAy8s6ZuQ/fYAZERvZuO9R2H7pJkxLi+PB8yWZsuv+8cdwYgAIwCb+G07hd4exC5BxZyp5htb+99Cc6VF9qdSWBIuEOzplLwZ+w3b41RPGcKXoXEenG+vX3w72ZnEhoSDgC8TL4kQOq7fbelGuuZ8od7JxOaqSpIQknoSZo+VjKjbm1xEskDjiH4n/oF+IvaHztLhOAAAAAASUVORK5CYII=') no-repeat center/contain;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  .navi-logo-lg {
+    display: inline-block;
+    width: 24px;
+    height: 22px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAADeElEQVR42rVVTWhcVRT+zrn3vdfJ5GeSqhBKddGFtdDESUbjxkZqFamtoJBd60qk0OLGrRADUhGqC1euxEU30oU7RYtI1GVAU9wY2xBCxoxNk5nMvJnM3Ln3HBeTJmlI1WJ64MLlLe793ne/H+AhjCpYFfQQDp4wquD9REqdQyfMzu+10tjQ6lLh8L6in5t7JWms5M+5dOR6cAWpFodfBwD7IGiBe3jVUmmoqyeOT8QZeksat2etwZsma45AFEzUAvDvfN3llQhKBLm7AOCRJPo0O0BfRxl+gwg5EO7AhQCBgpT+0wVE1wIR5PbC6GBlqXDKt575IS2OjhBBmfEYQhCID1D1AFkQGdD2n9qd0gLGmWjab9GxMB673tprJkPnZUOOOcdfmdi8kHSHqzMzo8NMaIMIIDK76Nsa3kYKIZr2m3slglSiytG433xpMnzGWM2oSAPNbre95qnjT+gnzuM3MDNU9X4MsCpochK8vlJ4spkWJt3ayDerS89OqB6LDZND6j02fFAlD6IEB9jKunfxQb7kWlgP62EabAnMfvvhoFBSALBE0Nry8HhXL77jmCMJcjMTh9O+HJ+s1u3lnkfVoimqilxom2uhGs5STEfRDL4rx+/VynSxJwmjUM1C1UPhYcmSBLtFEQfp5RgRmm2vghYBJdufXMh1y4u+pjPoNgSoXVxs3nKOvkDEKk49J5TLZuWdVkUub2LvQRxZacOJ4erWBcrGI0BBZAGwAAqIZnrwQb3BV6SlKYHSx4/Yi5k+fMhQ5qw5IOve2b5ozCR4uVI1n4tgvlUPk+kKHb/y2eyPqqCOikhpp7RAmkBEOUOHun14u1Xh96MEU6w6gIg5VPxPqohtfzwmdb9ATHMx3EJ8cPbszgeemtrDyURKJFQCM0ul3TS56CS1/Q3n+GMlublR5ue7Bn75ubL43EBk5US17q8PDt6ob6oPIuMWmN4yIwAgXR5+VUNBNc2rL+f/KhbPdLnV/LeqBdVaXlXHtFYafXdXbOx2+z/7oCMtDUSQcnneN1t6zqdaDETzrhE+YpHpTnqOWyLodpKCNt1+Xy8g/fPp0yoFVS1oqOQba7dO9QHAnd+HDy3/+lL2/6SsBQBRTcRDQ1O+956vzi62652Any12KNiD1weZ1T8Kh9dKY0N7F8o+Vl+nS+9tp32svn3s0h3zN0qo4djaEohTAAAAAElFTkSuQmCC') no-repeat center/contain;
+  }
+  .vit-logo {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAABwElEQVR42m2Rz2oTYRTFz70znRiNMy5jEqhoiz5B3XTRSDeGLrpxLRT6Fi76CH2A+g7uCrqIWxcuSlps8A8VrLGk+deZj2+mM98cFwnSgmdz4ZwflwMHAGCt3TTGNAGApNy8xpimtXYTAJCm6apzLs2ybIekkPQXsE9Ssizbcc6laZququd5u6pa8TxvW0QIoCQhAEoRoed524t8V0muLIL2cGgagFDEIyAcDk1DRNrzB1xRETkFoKpaiyLdEgF/fn7VEAGjSLdUtQZgzhljWs65EUnnyMNpP3qcDZa+XPTCJ448JOmccyNjTEuTJJnmeb4PQAFUnXMvgrp75ntlG0AVgOZ5vp8kyVTDMFwrC2tLoJeNDvqBJuuzbw/eBJqsZ5ODfgn0ysLaMAzXQB4HSTLrTGJu2LPgiFYZf62+pVXas+BoEnMjSWYd8jgQLDTrY68a+s/LtLgvghaJX3rHj+1V8Sl6ij0semJ88mi5ROU8qOcdaRQX0ow/SqMYBA/Dlywrv8cn9eV/8GV8NUFZ/0AIVN2PJb/22lf3nRyLRf39ZfxngtuaNxoMBveur7N35Pndm/4tLSYGAHS7Xf9//l89qgQGk2P8nQAAAABJRU5ErkJggg==') no-repeat center/contain;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  .vit-logo-lg {
+    display: inline-block;
+    width: 22px;
+    height: 28px;
+    background: url('data:image/png;base64,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') no-repeat center/contain;
+  }
+  .optic-logo {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAACLklEQVR42p2SS0hUYRzFz/9+3713fIyTjpbhg8QgHKlW5SLMCAZJWjbmpk2LrKAo3AXlA5pFi3CT0aKFQUQkGIHuelAS0RSW4KMxHxSFOOLV0ca5r+/fIrPAFtIPDmdxOHAWh7AZWte/4HVtKghsEfrLGQCi0WjeyKeR7YqVZhq/ctsGYAPhsG51dR1aao49Ur9ncSQSyV9YXIgrpVoBGE7WZ+WzDwY0SZ4eELqboYvp1VQPAEgA1NDQYI5NjA8CXO9k+Ka/FhioO1FUmR8WpdLUaPbD8r6pYaslcqS45ExP3YHJN0uzEoCaSCYvE6F+7Qcfn145Pfzwy/s7ju0d8x2Igh1y9XH7qj425ONwa2GHa2Y7gruoRYvFYobvu23ZjDeYTj8Yujf+dtx1vaiEeWVvbVnNs27r/Lv+RZFXaEyG8gM11oxbYXqlT2QikagBIawckexOxnuFiYJEb/bs/a7RF8EgNRKpTjNXSDOgnyuuzNWVoU6lU1afdNmtdrOMcJW8xOTh5d2U3R//eiMUMoPKU8xMr9Nz6pqN788Xrd1tZbU58aUF97PMqfBfrVg42HihPGrkietV+7cNnLwa+GjkCA6VBOZrjxZNB3eS/2000wThVVtzaz6YHdIEQfmM29NNrY7K3HKyyhOSJDPACoLoz4k8V0EI+OyJZqk8JhA0a8roK99T9DQ1v7zxKd0QrBsaA4A0BHvkk24KzQbm8L9s7GAGdaCdtlLqRCf/BJw6+jK51GAIAAAAAElFTkSuQmCC') no-repeat center/contain;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+  .optic-logo-lg {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAADy0lEQVR42tWVb2jVVRjHv89zfvf+7t0fvdO75p/FbOVcG2PpLYcv1IWBCiXBcAS+aYIUglD0RkTQKAkbelGQIEYhE5sLRIx62R3ii4iLQsSisbWp7e7uzv25bvf395zz9CK3pCRGROAD58058H0+fJ9zvgd41Ir+4Yzvr+WWXk4z9V8TMwALAG1tbY2lUmmrF3p1OtL0MHgRUQDIcdhvaW45NzAw4D9MmAHYTCazdnxi4r0wCrpEpIpAIAaI/u6aMRYQQCmWzI5NdR2H1Uz+l3k6+1ouogdFW1tbn56cKn6rtW4gIihH5ZXiXFS2U/6C+CJil4iI4VbbLoFdTaKGp6eLzQ82dRap29vbU/nCxNVI6wZFHCarEqfujOID4I4n8uljV3H9Gd/TdTrSDAA2Yudox7WXZwu+U7chmXjn+5eORKFmiTAze3lrr3Of1hTv3j2ptX6SiUyqpurQ8NDo+XODBzbN6Yn3T9+8uDuxgt14BYOIEEsS8sMeQl8j8qxs7KxsqFzvfxwFFsUR38uvy190AJiW51rWTI4VD4qIJCsSXw4PjZ4/nd23b86OX4AbVblJgl+yc+GcuhGG0XTtBreUPVPcXZ7Va9xKRanaRLY0biaDslGKYuMv1MxYAoL6+/mDZ976UQQH3fPKJsTyzNbfP1t+97PT1iX/1xrEJjYiLOUP2ykBIEuCrVKKdQWyxzCkZvs1TGXdBDsT0F0lPWvj36OC03RCAvkn4f/GvwBAg7eXErLpWwAAAABJRU5ErkJggg==') no-repeat center/contain;
+  }
   .squad-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -2475,6 +2535,326 @@
 
   .squad-join-btn:hover { background: var(--green-bright); transform: scale(1.03); }
 
+  /* === SQUAD JOIN OVERLAY === */
+  .squad-join-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .squad-join-overlay.active { opacity: 1; pointer-events: auto; }
+  .squad-join-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+  }
+  .squad-join-sheet {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    background: var(--bg-card);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 0 0 24px 0;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .squad-join-overlay.active .squad-join-sheet { transform: translateY(0); }
+  .sj-handle {
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    margin: 10px auto 0;
+  }
+  .sj-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sj-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sj-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .sj-close {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .sj-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .sj-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 14px 20px 6px;
+  }
+  .sj-existing-legs {
+    padding: 0 20px;
+  }
+  .sj-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 12px;
+  }
+  .sj-leg-name { color: var(--text-secondary); font-weight: 600; }
+  .sj-leg-odds { color: var(--green); font-weight: 700; }
+  .sj-leg-locked {
+    font-size: 9px;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+
+  /* Pick your leg */
+  .sj-pick-grid {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sj-pick {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sj-pick:hover { border-color: var(--border-light); background: rgba(255,255,255,0.05); }
+  .sj-pick.selected {
+    border-color: var(--green);
+    background: rgba(29,185,84,0.08);
+  }
+  .sj-pick-radio {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border-light);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .sj-pick.selected .sj-pick-radio {
+    border-color: var(--green);
+    background: var(--green);
+  }
+  .sj-pick.selected .sj-pick-radio::after {
+    content: '✓';
+    font-size: 10px;
+    color: var(--white);
+    font-weight: 800;
+  }
+  .sj-pick-info { flex: 1; }
+  .sj-pick-name { font-size: 12px; font-weight: 700; color: var(--white); }
+  .sj-pick-desc { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .sj-pick-odds {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--green);
+  }
+
+  /* Amount selector */
+  .sj-amount-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+  }
+  .sj-amt {
+    flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sj-amt:hover { border-color: var(--border-light); }
+  .sj-amt.selected {
+    border-color: var(--green);
+    background: rgba(29,185,84,0.08);
+    color: var(--green);
+  }
+
+  /* Summary */
+  .sj-summary {
+    margin: 14px 20px 0;
+    padding: 12px 14px;
+    background: rgba(29,185,84,0.04);
+    border: 1px solid rgba(29,185,84,0.15);
+    border-radius: 10px;
+  }
+  .sj-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 3px 0;
+  }
+  .sj-summary-row.total {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--white);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+  .sj-summary-row.total span:last-child { color: var(--green); }
+
+  /* Confirm button */
+  .sj-confirm-btn {
+    margin: 16px 20px 0;
+    width: calc(100% - 40px);
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--green);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .sj-confirm-btn:hover { background: var(--green-bright); transform: scale(1.015); }
+  .sj-confirm-btn:disabled {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* === BET RECEIPT TOAST === */
+  .bet-receipt-toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    width: calc(100% - 32px);
+    max-width: 400px;
+    background: var(--bg-card);
+    border: 1px solid rgba(29,185,84,0.3);
+    border-radius: 14px;
+    padding: 14px 16px;
+    z-index: 10001;
+    transition: transform 0.4s cubic-bezier(0.32,0.72,0,1), opacity 0.4s;
+    opacity: 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(29,185,84,0.1);
+  }
+  .bet-receipt-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  .brt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .brt-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--green);
+  }
+  .brt-badge-dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .brt-time { font-size: 10px; color: var(--text-dim); }
+  .brt-legs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .brt-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+  }
+  .brt-leg-name { color: var(--text-secondary); font-weight: 600; }
+  .brt-leg-odds { color: var(--green); font-weight: 700; font-size: 10px; }
+  .brt-leg.yours { border-left: 2px solid var(--green); }
+  .brt-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .brt-total {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .brt-total strong { color: var(--white); font-size: 13px; }
+  .brt-payout {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--green);
+  }
+  .brt-dismiss {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+
   /* Live odds movement indicator */
   .odds-up {
     color: var(--green) !important;
@@ -2558,7 +2938,7 @@
     gap: 3px;
   }
 
-  .bn-item .bn-icon { font-size: 18px; }
+  .bn-item .bn-icon { font-size: 18px; display: flex; align-items: center; justify-content: center; height: 22px; }
   .bn-item .bn-label { font-size: 10px; font-weight: 600; color: var(--text-muted); }
 
   .bn-item.active .bn-label { color: var(--white); }
@@ -2577,6 +2957,102 @@
   /* Sports active tab */
   .bn-item.sports-active .bn-label { color: var(--white); }
   .bn-item.sports-active .bn-icon { filter: brightness(2); }
+
+  /* === MICRO-BET RESULT ANIMATION === */
+  .micro-result-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    border-radius: var(--radius-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .micro-result-overlay.show { opacity: 1; pointer-events: auto; }
+  .micro-result-overlay.win { background: rgba(29,185,84,0.15); }
+  .micro-result-overlay.lose { background: rgba(239,68,68,0.15); }
+  .micro-result-emoji { font-size: 48px; animation: resultPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+  .micro-result-text { font-size: 22px; font-weight: 900; margin-top: 6px; }
+  .micro-result-text.win { color: var(--green); }
+  .micro-result-text.lose { color: var(--red); }
+  .micro-result-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .micro-result-share { margin-top: 12px; padding: 8px 20px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; display: none; }
+  .micro-result-share.show { display: inline-block; }
+  @keyframes resultPop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* === TAIL PULSE === */
+  .share-card.tail-pulse {
+    animation: tailCardPulse 0.4s ease-out;
+  }
+  @keyframes tailCardPulse {
+    0% { box-shadow: 0 0 0 0 rgba(29,185,84,0.4); }
+    50% { box-shadow: 0 0 16px 4px rgba(29,185,84,0.2); transform: scale(1.01); }
+    100% { box-shadow: none; transform: scale(1); }
+  }
+  .tailing-counter {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.8;
+  }
+  .tailing-dot {
+    width: 5px; height: 5px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* === FLOATING BETS ON GRAPH === */
+  .odds-graph-canvas {
+    position: relative;
+    overflow: visible;
+  }
+  .floating-bet {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 800;
+    pointer-events: none;
+    animation: floatUp 2s ease-out forwards;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    z-index: 3;
+  }
+  @keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-30px); }
+  }
+
+  /* === ACHIEVEMENT PROGRESS RINGS === */
+  .ach-ring {
+    position: absolute;
+    top: -3px; left: -3px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+  }
+  .ach-icon {
+    position: relative;
+  }
+  .ach-ring circle {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .ach-ring .ring-bg { stroke: rgba(255,255,255,0.06); }
+  .ach-ring .ring-fill { stroke: var(--green); transition: stroke-dashoffset 1s ease-out; }
 
   .spacer { height: 70px; }
 
@@ -3125,7 +3601,13 @@
         <div class="lm-swiper-track" id="lmTrack">
 
       <!-- Match 1: NAVI vs Vitality -->
-      <div class="live-match-card lm-slide" id="lmSlide0">
+      <div class="live-match-card lm-slide" id="lmSlide0" style="position:relative;">
+        <div class="micro-result-overlay" id="microResult">
+          <div class="micro-result-emoji" id="microResultEmoji">🎉</div>
+          <div class="micro-result-text" id="microResultText">+$8.25</div>
+          <div class="micro-result-sub" id="microResultSub">NAVI won Round 15</div>
+          <div class="micro-result-share" id="microResultShare" onclick="this.textContent='✅ Copied!'">📤 Share Win</div>
+        </div>
         <div class="lm-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="lm-live"><span class="live-dot"></span> LIVE</div>
@@ -3136,7 +3618,7 @@
 
         <div class="lm-teams">
           <div class="lm-team">
-            <div class="lm-team-logo">🟡</div>
+            <div class="lm-team-logo"><img src="data:image/png;base64,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" style="width:28px;height:auto;" alt="NAVI"></div>
             <div class="lm-team-name">NAVI</div>
             <div class="lm-team-tag">CT Side</div>
           </div>
@@ -3145,7 +3627,7 @@
             <div class="lm-round">Round 15 · 1:23</div>
           </div>
           <div class="lm-team">
-            <div class="lm-team-logo">🔵</div>
+            <div class="lm-team-logo"><img src="data:image/png;base64,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" style="width:22px;height:auto;" alt="Vitality"></div>
             <div class="lm-team-name">Vitality</div>
             <div class="lm-team-tag">T Side</div>
           </div>
@@ -3187,11 +3669,11 @@
           <div class="micro-question">Who wins Round 15?</div>
           <div class="micro-options">
             <div class="micro-opt" onclick="selOpt(this)">
-              <div class="opt-team">🟡 NAVI</div>
+              <div class="opt-team"><span class="navi-logo"></span> NAVI</div>
               <div class="opt-odds">1.65x</div>
             </div>
             <div class="micro-opt" onclick="selOpt(this)">
-              <div class="opt-team">🔵 Vitality</div>
+              <div class="opt-team"><span class="vit-logo"></span> Vitality</div>
               <div class="opt-odds">2.20x</div>
             </div>
           </div>
@@ -3245,7 +3727,7 @@
 
         <div class="lm-teams">
           <div class="lm-team">
-            <div class="lm-team-logo">🔴</div>
+            <div class="lm-team-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAcCAYAAAAX4C3rAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAET0lEQVR42tVXX2iVZRj/Pe/7fueczc1jVpMgQUIL5sSLSU0lTnQX3WTwDYuom27q2gpCOB0iiqD7brIuoj9+EgQWFoGNcjrZEHRna1RmTbQ5rGw5Ped73+fXxZlzbmf/3Fb6g/fueZ/n9/x/X+A2gQAAAREAA9tbd7e4aN0lDd4KDMJ/zMYCIWhYHUVNP1cq33T0/NBXBEwJUAcAKEJYAgeUl3IGHzVbh5SEcTUvFuf2FCzirgiQKtGcy2J4vNJDuA9YhEEJLE1VvT+ObWeShBMdbbvWR3LAK6uBEMgM87OAQl6XlZp1BaHz3gSEYMg72/in16/2dPc/ngBhItOcEQMWCk66uvxgx+aX1mfd21dVF8wzJeGnMCWABiPIGAPWCfZUKIlGa3C+6r/7dsw89tzJk5cVMILrTkod74wAeqpj885INOeDUMhZ7agYq9TQHJlX1zr76GUfAgE0OWv/SMOHEBwUMZbUYCfu1Cv9BmvRc6Hy5RNDQ2OcRhIAXJ0yUwIix8pHFtMHZ3a0PhuJTFZmRgQeOHp/d/nTxeiZSPeMcnGz9AT3x7AAECOGJEmY34Bweh8ZYtXhQsFtANwZwM+n45GuriCztOBcpSMEkHTcm9uK1W+uNmbNPxrUiDECkJN3KQphVvBwgzX3VZQEGe6InDtXDXs2He1/51rtL2VyubmClMSwncnZKz9t33zsrmz0cV4tAgBTR3g8KCpKCKaFdpkwF1F0Jgj7Y9iNSfmT/ofaGu7JmH1V1Stay/O0bNCJiF2pXWDmE+hMEHrb26O2nv73R1P/2t0Z19DsTC4f2ezUk7PGst5sBQxGRw2BhRy5qYhew7a+Ps84tpIkpR+3tzbmrd14RVVrY4RCCAXY0mhkU4WcHNACqQqgGBioLsuuX+ToqFuCv+5oe70lsnsvpt4DkLxz9oLXtyIN7wUxzlLrNlM1Q1FvdF2Dtb9X6B/4/tTpenbcIr0i4/jGOhwbc2hu9mfPDWY5ubfF/h0CMoJXYMzLDgDE1N3vWU+NRORqhWnqwy4Cv6AIQWkJRAHMmKksFEQOHQrDO9tY5zE051tBAWaMsQLwfNXv3np88BCLMFKaOfANVhCsHSqhBNOpR4GqA9QAHEk13np88HMWCq4eyZuK6GKhJHPGmFXWmmuPE6K2zMcDMVINT23pKX/W294eSVdXuqSuXwJJvyZy7mI1/HZJwz4nEgCAVM1bZ0a8nmjtKX9xuFBw2+YguaJESfq1kXN/ee29kPLJB3vLw3XlijBSmn+9Lj9RAUH6OzPOjVbDwa8vpk8/PzQ0xvb2CE1NNzZcSwullCzow7OsRBWggWg+stmR1L+7obv8IgDWotaXrugKXXiqJVgRyRjJnkv93g1Hyi+wCCmi/rj534gasJEARtPwzKbu8huMYzvxMdPl0L/01Le0EAAqgpHT49W47fjAARYKTpLE4xaF1H6zsLjVweLKbrrbAv8Cg9ASdHNpLdIAAAAASUVORK5CYII=" style="width:30px;height:auto;" alt="FaZe"></div>
             <div class="lm-team-name">FaZe</div>
             <div class="lm-team-tag">Hardpoint</div>
           </div>
@@ -3254,7 +3736,7 @@
             <div class="lm-round">Map 3 · 198-185</div>
           </div>
           <div class="lm-team">
-            <div class="lm-team-logo">🟢</div>
+            <div class="lm-team-logo"><img src="data:image/png;base64,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" style="width:28px;height:auto;" alt="OpTic"></div>
             <div class="lm-team-name">OpTic</div>
             <div class="lm-team-tag">Hardpoint</div>
           </div>
@@ -3296,11 +3778,11 @@
           <div class="micro-question">Who wins Hardpoint Map 3?</div>
           <div class="micro-options">
             <div class="micro-opt" onclick="selOpt(this)">
-              <div class="opt-team">🔴 FaZe</div>
+              <div class="opt-team"><span class="faze-logo"></span> FaZe</div>
               <div class="opt-odds">1.72x</div>
             </div>
             <div class="micro-opt" onclick="selOpt(this)">
-              <div class="opt-team">🟢 OpTic</div>
+              <div class="opt-team"><span class="optic-logo"></span> OpTic</div>
               <div class="opt-odds">2.15x</div>
             </div>
           </div>
@@ -3362,9 +3844,9 @@
         <div class="ach on"><div class="ach-icon">🎯</div><div class="ach-name">Sharpshooter</div></div>
         <div class="ach on"><div class="ach-icon">💎</div><div class="ach-name">Diamond</div></div>
         <div class="ach on"><div class="ach-icon">🎰</div><div class="ach-name">100 Parlays</div></div>
-        <div class="ach off"><div class="ach-icon">👑</div><div class="ach-name">Top 1%</div></div>
-        <div class="ach off"><div class="ach-icon">🏆</div><div class="ach-name">Grand Master</div></div>
-        <div class="ach off"><div class="ach-icon">⚡</div><div class="ach-name">Speed Demon</div></div>
+        <div class="ach off"><div class="ach-icon">👑<svg class="ach-ring" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="22"/><circle class="ring-fill" cx="24" cy="24" r="22" stroke-dasharray="138" stroke-dashoffset="55" transform="rotate(-90 24 24)"/></svg></div><div class="ach-name">Top 1% (60%)</div></div>
+        <div class="ach off"><div class="ach-icon">🏆<svg class="ach-ring" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="22"/><circle class="ring-fill" cx="24" cy="24" r="22" stroke-dasharray="138" stroke-dashoffset="110" transform="rotate(-90 24 24)"/></svg></div><div class="ach-name">Grand Master (20%)</div></div>
+        <div class="ach off"><div class="ach-icon">⚡<svg class="ach-ring" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="22"/><circle class="ring-fill" cx="24" cy="24" r="22" stroke-dasharray="138" stroke-dashoffset="83" transform="rotate(-90 24 24)"/></svg></div><div class="ach-name">Speed Demon (40%)</div></div>
       </div>
 
       <div class="section-label" style="margin-top:8px;">📋 Active Quests</div>
@@ -3459,7 +3941,7 @@
             <span class="live-dot"></span>
             <span>Starts in 23 min · 8.9x payout</span>
           </div>
-          <button class="squad-join-btn">Join $20</button>
+          <button class="squad-join-btn" onclick="openSquadJoin(0)">Join $20</button>
         </div>
       </div>
 
@@ -3490,7 +3972,7 @@
         </div>
         <div class="squad-footer">
           <div class="squad-status">Full · 24.5x payout</div>
-          <button class="squad-join-btn">Join $25</button>
+          <button class="squad-join-btn" onclick="openSquadJoin(1)">Join $25</button>
         </div>
       </div>
 
@@ -3505,6 +3987,7 @@
           </div>
           <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
         </div>
+        <div class="tailing-counter"><span class="tailing-dot"></span> 12 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>NAVI ML · CS2</span><span class="shared-leg-status">✅</span></div>
           <div class="shared-leg"><span>T1 -1.5 · LoL</span><span class="shared-leg-status">✅</span></div>
@@ -3529,6 +4012,7 @@
           </div>
           <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
         </div>
+        <div class="tailing-counter"><span class="tailing-dot"></span> 31 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>Over 35.5 kills · LoL</span><span class="shared-leg-status">✅</span></div>
           <div class="shared-leg"><span>G2 2-0 · CS2</span><span class="shared-leg-status">✅</span></div>
@@ -3552,6 +4036,7 @@
           </div>
           <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
         </div>
+        <div class="tailing-counter"><span class="tailing-dot"></span> 5 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>Loud upset · Valorant</span><span class="shared-leg-status">❌</span></div>
           <div class="shared-leg"><span>First blood &lt;1:30 · LoL</span><span class="shared-leg-status">✅</span></div>
@@ -3701,119 +4186,13 @@
       </div>
 
       <div class="lb-tabs">
-        <div class="lb-tab active" onclick="selLbTab(this)">🏆 All Time</div>
-        <div class="lb-tab" onclick="selLbTab(this)">📅 Weekly</div>
-        <div class="lb-tab" onclick="selLbTab(this)">🔥 Streak</div>
-        <div class="lb-tab" onclick="selLbTab(this)">🎰 Parlays</div>
+        <div class="lb-tab active" data-lb="alltime" onclick="selLbTab(this)">🏆 All Time</div>
+        <div class="lb-tab" data-lb="weekly" onclick="selLbTab(this)">📅 Weekly</div>
+        <div class="lb-tab" data-lb="streak" onclick="selLbTab(this)">🔥 Streak</div>
+        <div class="lb-tab" data-lb="parlays" onclick="selLbTab(this)">🎰 Parlays</div>
       </div>
 
-      <div class="lb-row">
-        <div class="lb-rank gold">1</div>
-        <div class="lb-avatar" style="background:var(--gold);color:#000">A</div>
-        <div class="lb-user-info">
-          <div class="lb-username">AceHighRoller 👑</div>
-          <div class="lb-user-meta">2,891 bets · 19 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">3,241</div>
-          <div class="lb-winrate">74% win</div>
-        </div>
-      </div>
-
-      <div class="lb-row">
-        <div class="lb-rank silver">2</div>
-        <div class="lb-avatar" style="background:var(--cyan)">S</div>
-        <div class="lb-user-info">
-          <div class="lb-username">sharpShelly 🎯</div>
-          <div class="lb-user-meta">1,456 bets · 12 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">2,987</div>
-          <div class="lb-winrate">71% win</div>
-        </div>
-      </div>
-
-      <div class="lb-row">
-        <div class="lb-rank bronze">3</div>
-        <div class="lb-avatar" style="background:var(--orange)">M</div>
-        <div class="lb-user-info">
-          <div class="lb-username">MegaDegen 🔥</div>
-          <div class="lb-user-meta">3,102 bets · 8 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">2,654</div>
-          <div class="lb-winrate">62% win</div>
-        </div>
-      </div>
-
-      <div class="lb-row">
-        <div class="lb-rank">4</div>
-        <div class="lb-avatar" style="background:var(--purple)">K</div>
-        <div class="lb-user-info">
-          <div class="lb-username">KingCrypto 💎</div>
-          <div class="lb-user-meta">987 bets · 6 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">2,441</div>
-          <div class="lb-winrate">69% win</div>
-        </div>
-      </div>
-
-      <div class="lb-row">
-        <div class="lb-rank">5</div>
-        <div class="lb-avatar" style="background:var(--pink)">D</div>
-        <div class="lb-user-info">
-          <div class="lb-username">degenDave 🎲</div>
-          <div class="lb-user-meta">2,340 bets · 5 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">2,103</div>
-          <div class="lb-winrate">58% win</div>
-        </div>
-      </div>
-
-      <div style="padding:4px 0"></div>
-
-      <div class="lb-row you">
-        <div class="lb-rank" style="color:var(--green)">47</div>
-        <div class="lb-avatar" style="background:var(--green)">Y</div>
-        <div class="lb-user-info">
-          <div class="lb-username">You 🎮</div>
-          <div class="lb-user-meta">142 bets · 12 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">1,847</div>
-          <div class="lb-winrate">68% win</div>
-        </div>
-      </div>
-
-      <div style="padding:4px 0"></div>
-
-      <div class="lb-row">
-        <div class="lb-rank">48</div>
-        <div class="lb-avatar" style="background:var(--text-dim)">R</div>
-        <div class="lb-user-info">
-          <div class="lb-username">RoundRobin99</div>
-          <div class="lb-user-meta">210 bets · 3 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">1,832</div>
-          <div class="lb-winrate">61% win</div>
-        </div>
-      </div>
-
-      <div class="lb-row">
-        <div class="lb-rank">49</div>
-        <div class="lb-avatar" style="background:var(--text-dim)">T</div>
-        <div class="lb-user-info">
-          <div class="lb-username">TiltMaster</div>
-          <div class="lb-user-meta">567 bets · 2 win streak</div>
-        </div>
-        <div class="lb-stats">
-          <div class="lb-elo">1,819</div>
-          <div class="lb-winrate">55% win</div>
-        </div>
-      </div>
+      <div id="lbRows"></div>
     </div>
     <div class="spacer"></div>
   </div>
@@ -3937,20 +4316,31 @@
     });
   });
 
+  let microBetActive = false; // tracks if user placed a bet this round
+  let selectedTeam = null;
+  let selectedAmount = 5;
+
   function selOpt(el) {
     document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
+    selectedTeam = el.querySelector('.opt-team').textContent;
   }
 
   function selAmt(el) {
     document.querySelectorAll('.amt-chip').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
+    selectedAmount = parseInt(el.textContent.replace('$', ''));
   }
 
   function fireBet() {
+    if (!document.querySelector('.micro-opt.selected')) return;
+    microBetActive = true;
+    playSound('bet');
     document.getElementById('app').classList.add('shake');
     setTimeout(() => document.getElementById('app').classList.remove('shake'), 400);
-    showToast('Bet added!', 'NAVI Win · 1.65x · $5');
+    const team = selectedTeam || 'NAVI Win';
+    const odds = document.querySelector('.micro-opt.selected .opt-odds').textContent;
+    showToast('Bet added!', `${team} · ${odds} · $${selectedAmount}`);
   }
 
   function showToast(text, sub) {
@@ -3967,16 +4357,98 @@
   }
 
   function tailBet(btn) {
+    playSound('bet');
     btn.textContent = '✅ Tailed';
     btn.style.background = 'rgba(29,185,84,0.2)';
     btn.style.borderColor = 'rgba(29,185,84,0.4)';
+    btn.style.pointerEvents = 'none';
+
+    // Pulse the parent card
+    const card = btn.closest('.share-card');
+    if (card) {
+      card.classList.add('tail-pulse');
+      setTimeout(() => card.classList.remove('tail-pulse'), 500);
+
+      // Increment tailing counter
+      const counter = card.querySelector('.tailing-counter');
+      if (counter) {
+        const text = counter.textContent;
+        const num = parseInt(text.match(/\d+/)[0]) + 1;
+        counter.innerHTML = `<span class="tailing-dot"></span> ${num} people tailing`;
+      }
+    }
+
     showToast('Parlay tailed!', 'Copied to your bet slip');
   }
+
+  // === MICRO-BET RESULT ANIMATION ===
+  function showMicroResult() {
+    if (!microBetActive) return; // only show if user placed a bet
+
+    const won = Math.random() > 0.4; // 60% win rate for demo
+    const overlay = document.getElementById('microResult');
+    const emoji = document.getElementById('microResultEmoji');
+    const text = document.getElementById('microResultText');
+    const sub = document.getElementById('microResultSub');
+    const share = document.getElementById('microResultShare');
+
+    overlay.classList.remove('win', 'lose');
+
+    if (won) {
+      const payout = (selectedAmount * parseFloat(document.querySelector('.micro-opt.selected .opt-odds')?.textContent || '1.65')).toFixed(2);
+      emoji.textContent = '🎉';
+      text.textContent = `+$${payout}`;
+      text.className = 'micro-result-text win';
+      sub.textContent = `${selectedTeam || 'Your pick'} won!`;
+      overlay.classList.add('win');
+      share.classList.add('show');
+      share.textContent = '📤 Share Win';
+      playSound('win');
+
+      // Mini confetti
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          const emojis = ['🎰','💰','✨','💎','⭐'];
+          p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          p.style.cssText = `position:fixed;top:-20px;left:${Math.random()*100}%;font-size:${14+Math.random()*14}px;z-index:10001;pointer-events:none;animation:confettiFall ${2+Math.random()*2}s linear forwards;`;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 4000);
+        }, i * 60);
+      }
+    } else {
+      emoji.textContent = '💨';
+      text.textContent = `-$${selectedAmount}`;
+      text.className = 'micro-result-text lose';
+      sub.textContent = `${selectedTeam || 'Your pick'} lost`;
+      overlay.classList.add('lose');
+      share.classList.remove('show');
+      playSound('lose');
+      flash('rgba(239,68,68,0.15)');
+    }
+
+    overlay.classList.add('show');
+
+    // Auto-dismiss after 3s, load next question
+    setTimeout(() => {
+      overlay.classList.remove('show');
+      microBetActive = false;
+      document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
+      selectedTeam = null;
+      // Cycle to next question
+      const questions = ['Who wins Round 16?', 'First kill Round 16?', 'Bomb planted Round 16?', 'Who wins Round 17?'];
+      const q = document.querySelector('.micro-question');
+      if (q) q.textContent = questions[Math.floor(Math.random() * questions.length)];
+    }, 3500);
+  }
+
+  // confettiFall animation is in CSS
 
   let bonusTimerCountdown = null;
   let bonusSecondsLeft = 600;
 
   function buyBonus() {
+    playSound('slot');
     const overlay = document.getElementById('bonusRoundOverlay');
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -4302,7 +4774,10 @@
   let sec = 42;
   setInterval(() => {
     sec--;
-    if (sec < 0) sec = 90;
+    if (sec < 0) {
+      showMicroResult();
+      sec = 90;
+    }
     const t = document.getElementById('microTimer');
     if (t) t.textContent = `⏱ ${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
   }, 1000);
@@ -4363,10 +4838,125 @@
   }
 
   // Leaderboard tab toggle
+  const lbData = {
+    alltime: {
+      rank: '#47', rankDetail: 'ELO 1,847 · Diamond · Top 8%',
+      statLabel: 'ELO',
+      rows: [
+        { rank: 1, cls: 'gold', avatar: 'A', avBg: 'var(--gold)', avColor: '#000', name: 'AceHighRoller 👑', meta: '2,891 bets · 19 win streak', stat: '3,241', rate: '74% win' },
+        { rank: 2, cls: 'silver', avatar: 'S', avBg: 'var(--cyan)', name: 'sharpShelly 🎯', meta: '1,456 bets · 12 win streak', stat: '2,987', rate: '71% win' },
+        { rank: 3, cls: 'bronze', avatar: 'M', avBg: 'var(--orange)', name: 'MegaDegen 🔥', meta: '3,102 bets · 8 win streak', stat: '2,654', rate: '62% win' },
+        { rank: 4, cls: '', avatar: 'K', avBg: 'var(--purple)', name: 'KingCrypto 💎', meta: '987 bets · 6 win streak', stat: '2,441', rate: '69% win' },
+        { rank: 5, cls: '', avatar: 'D', avBg: 'var(--pink)', name: 'degenDave 🎲', meta: '2,340 bets · 5 win streak', stat: '2,103', rate: '58% win' },
+        'spacer',
+        { rank: 47, cls: '', avatar: 'Y', avBg: 'var(--green)', name: 'You 🎮', meta: '142 bets · 12 win streak', stat: '1,847', rate: '68% win', you: true },
+        'spacer',
+        { rank: 48, cls: '', avatar: 'R', avBg: 'var(--text-dim)', name: 'RoundRobin99', meta: '210 bets · 3 win streak', stat: '1,832', rate: '61% win' },
+        { rank: 49, cls: '', avatar: 'T', avBg: 'var(--text-dim)', name: 'TiltMaster', meta: '567 bets · 2 win streak', stat: '1,819', rate: '55% win' },
+      ]
+    },
+    weekly: {
+      rank: '#12', rankDetail: '+385 ELO this week · Top 3%',
+      statLabel: 'Weekly ELO',
+      rows: [
+        { rank: 1, cls: 'gold', avatar: 'Z', avBg: 'var(--gold)', avColor: '#000', name: 'ZeroTilt 🧊', meta: '+812 ELO · 48 bets', stat: '+812', rate: '81% win' },
+        { rank: 2, cls: 'silver', avatar: 'N', avBg: 'var(--cyan)', name: 'NightOwlBets 🦉', meta: '+654 ELO · 92 bets', stat: '+654', rate: '72% win' },
+        { rank: 3, cls: 'bronze', avatar: 'A', avBg: 'var(--orange)', name: 'AceHighRoller 👑', meta: '+598 ELO · 61 bets', stat: '+598', rate: '70% win' },
+        { rank: 4, cls: '', avatar: 'L', avBg: 'var(--purple)', name: 'LuckyLuigi 🍀', meta: '+487 ELO · 35 bets', stat: '+487', rate: '77% win' },
+        { rank: 5, cls: '', avatar: 'F', avBg: 'var(--pink)', name: 'FireStarter 🔥', meta: '+412 ELO · 78 bets', stat: '+412', rate: '59% win' },
+        'spacer',
+        { rank: 12, cls: '', avatar: 'Y', avBg: 'var(--green)', name: 'You 🎮', meta: '+385 ELO · 28 bets', stat: '+385', rate: '75% win', you: true },
+        'spacer',
+        { rank: 13, cls: '', avatar: 'C', avBg: 'var(--text-dim)', name: 'ChipStack99', meta: '+371 ELO · 44 bets', stat: '+371', rate: '64% win' },
+        { rank: 14, cls: '', avatar: 'B', avBg: 'var(--text-dim)', name: 'BetBaron', meta: '+350 ELO · 31 bets', stat: '+350', rate: '68% win' },
+      ]
+    },
+    streak: {
+      rank: '#8', rankDetail: '12 current win streak · Top 2%',
+      statLabel: 'Streak',
+      rows: [
+        { rank: 1, cls: 'gold', avatar: 'X', avBg: 'var(--gold)', avColor: '#000', name: 'xStreakGod 🔥', meta: '34 win streak · still active', stat: '🔥 34', rate: '89% win' },
+        { rank: 2, cls: 'silver', avatar: 'W', avBg: 'var(--cyan)', name: 'WinMachine 🤖', meta: '28 win streak · still active', stat: '🔥 28', rate: '82% win' },
+        { rank: 3, cls: 'bronze', avatar: 'A', avBg: 'var(--orange)', name: 'AceHighRoller 👑', meta: '19 win streak · ended 2h ago', stat: '🔥 19', rate: '74% win' },
+        { rank: 4, cls: '', avatar: 'P', avBg: 'var(--purple)', name: 'ParlayPete 🎯', meta: '17 win streak · still active', stat: '🔥 17', rate: '71% win' },
+        { rank: 5, cls: '', avatar: 'H', avBg: 'var(--pink)', name: 'HotHand 🃏', meta: '15 win streak · ended today', stat: '🔥 15', rate: '66% win' },
+        { rank: 6, cls: '', avatar: 'N', avBg: 'var(--cyan)', name: 'NightOwlBets 🦉', meta: '14 win streak · still active', stat: '🔥 14', rate: '72% win' },
+        { rank: 7, cls: '', avatar: 'J', avBg: 'var(--text-dim)', name: 'JuiceKing', meta: '13 win streak · ended 5h ago', stat: '🔥 13', rate: '63% win' },
+        'spacer',
+        { rank: 8, cls: '', avatar: 'Y', avBg: 'var(--green)', name: 'You 🎮', meta: '12 win streak · still active 🟢', stat: '🔥 12', rate: '68% win', you: true },
+        'spacer',
+        { rank: 9, cls: '', avatar: 'M', avBg: 'var(--text-dim)', name: 'MegaDegen 🔥', meta: '11 win streak · ended 1h ago', stat: '🔥 11', rate: '62% win' },
+      ]
+    },
+    parlays: {
+      rank: '#23', rankDetail: '68% parlay hit rate · Top 6%',
+      statLabel: 'Parlays Hit',
+      rows: [
+        { rank: 1, cls: 'gold', avatar: 'P', avBg: 'var(--gold)', avColor: '#000', name: 'ParlayGOAT 🐐', meta: '312 parlays hit · 67 YOLO wins', stat: '312', rate: '41% hit' },
+        { rank: 2, cls: 'silver', avatar: 'S', avBg: 'var(--cyan)', name: 'sharpShelly 🎯', meta: '287 parlays hit · 42 YOLO wins', stat: '287', rate: '52% hit' },
+        { rank: 3, cls: 'bronze', avatar: 'D', avBg: 'var(--orange)', name: 'degenDave 🎲', meta: '241 parlays hit · 89 YOLO wins', stat: '241', rate: '28% hit' },
+        { rank: 4, cls: '', avatar: 'L', avBg: 'var(--purple)', name: 'LongShotLarry 🎰', meta: '198 parlays hit · 31 YOLO wins', stat: '198', rate: '35% hit' },
+        { rank: 5, cls: '', avatar: 'M', avBg: 'var(--pink)', name: 'MegaDegen 🔥', meta: '187 parlays hit · 55 YOLO wins', stat: '187', rate: '22% hit' },
+        'spacer',
+        { rank: 23, cls: '', avatar: 'Y', avBg: 'var(--green)', name: 'You 🎮', meta: '96 parlays hit · 8 YOLO wins', stat: '96', rate: '68% hit', you: true },
+        'spacer',
+        { rank: 24, cls: '', avatar: 'R', avBg: 'var(--text-dim)', name: 'RiskItAll', meta: '94 parlays hit · 22 YOLO wins', stat: '94', rate: '31% hit' },
+        { rank: 25, cls: '', avatar: 'G', avBg: 'var(--text-dim)', name: 'GambitKing', meta: '91 parlays hit · 15 YOLO wins', stat: '91', rate: '38% hit' },
+      ]
+    }
+  };
+
+  function renderLbRows(category) {
+    const data = lbData[category];
+    const container = document.getElementById('lbRows');
+
+    // Update header
+    document.querySelector('.lb-your-rank').textContent = data.rank;
+    document.querySelector('.lb-your-elo').textContent = data.rankDetail;
+
+    let html = '';
+    data.rows.forEach((row, i) => {
+      if (row === 'spacer') {
+        html += '<div style="padding:4px 0"></div>';
+        return;
+      }
+      const rankCls = row.cls ? ` ${row.cls}` : '';
+      const youCls = row.you ? ' you' : '';
+      const rankStyle = row.you ? ' style="color:var(--green)"' : '';
+      const avStyle = `background:${row.avBg}${row.avColor ? ';color:' + row.avColor : ''}`;
+      html += `
+        <div class="lb-row${youCls}" style="animation:cardSlideUp 0.3s ease-out ${i * 0.04}s both;">
+          <div class="lb-rank${rankCls}"${rankStyle}>${row.rank}</div>
+          <div class="lb-avatar" style="${avStyle}">${row.avatar}</div>
+          <div class="lb-user-info">
+            <div class="lb-username">${row.name}</div>
+            <div class="lb-user-meta">${row.meta}</div>
+          </div>
+          <div class="lb-stats">
+            <div class="lb-elo">${row.stat}</div>
+            <div class="lb-winrate">${row.rate}</div>
+          </div>
+        </div>`;
+    });
+
+    container.style.opacity = '0';
+    container.style.transform = 'translateY(6px)';
+    setTimeout(() => {
+      container.innerHTML = html;
+      container.style.transition = 'opacity 0.25s, transform 0.25s';
+      container.style.opacity = '1';
+      container.style.transform = 'translateY(0)';
+    }, 100);
+  }
+
   function selLbTab(el) {
     document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
+    renderLbRows(el.dataset.lb);
   }
+
+  // Init leaderboard with alltime
+  renderLbRows('alltime');
 
   // Swipe hint — only hides after user actually swipes
 
@@ -4392,6 +4982,7 @@
   // Roll Boost overlay
   function openRollBoost() {
     document.getElementById('rollOverlay').classList.add('active');
+    playSound('dice');
   }
 
   function closeRollBoost() {
@@ -4688,6 +5279,110 @@
     }
 
     drawOddsGraph();
+
+    // Spawn floating bet numbers
+    spawnFloatingBet(newNavi);
+  }
+
+  function spawnFloatingBet(naviPct) {
+    const container = document.querySelector('#lmSlide0 .odds-graph-canvas');
+    if (!container || !container.offsetWidth) return;
+
+    // Spawn 1-3 floating bet numbers
+    const count = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const bet = document.createElement('div');
+        bet.className = 'floating-bet';
+        const isNavi = Math.random() > 0.45;
+        const amount = [1, 3, 5, 10, 15, 20, 25, 50, 62, 100, 110][Math.floor(Math.random() * 11)];
+        bet.textContent = `+$${amount}`;
+        bet.style.color = isNavi ? '#ffc832' : '#5096ff';
+        bet.style.left = `${10 + Math.random() * 80}%`;
+        bet.style.top = isNavi ? `${15 + Math.random() * 25}%` : `${55 + Math.random() * 25}%`;
+        bet.style.fontSize = amount >= 50 ? '12px' : '10px';
+        container.appendChild(bet);
+        setTimeout(() => bet.remove(), 2000);
+      }, i * 400);
+    }
+  }
+
+  // === SOUND SYSTEM ===
+  let soundEnabled = true;
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    return audioCtx;
+  }
+
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn = document.getElementById('soundToggle');
+    btn.textContent = soundEnabled ? '🔊' : '🔇';
+    btn.classList.toggle('muted', !soundEnabled);
+  }
+
+  function playSound(type) {
+    if (!soundEnabled) return;
+    try {
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      gain.gain.value = 0.08;
+
+      if (type === 'bet') {
+        osc.frequency.value = 880;
+        osc.type = 'sine';
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
+      } else if (type === 'win') {
+        osc.frequency.value = 523;
+        osc.type = 'sine';
+        osc.start(ctx.currentTime);
+        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+        osc.frequency.setValueAtTime(1047, ctx.currentTime + 0.3);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.stop(ctx.currentTime + 0.5);
+      } else if (type === 'lose') {
+        osc.frequency.value = 300;
+        osc.type = 'sawtooth';
+        gain.gain.value = 0.04;
+        osc.frequency.linearRampToValueAtTime(150, ctx.currentTime + 0.3);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.3);
+      } else if (type === 'dice') {
+        for (let i = 0; i < 4; i++) {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = 400 + Math.random() * 800;
+          o.type = 'triangle';
+          g.gain.value = 0.05;
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05 + i * 0.08);
+          o.start(ctx.currentTime + i * 0.08);
+          o.stop(ctx.currentTime + 0.05 + i * 0.08);
+        }
+      } else if (type === 'slot') {
+        for (let i = 0; i < 6; i++) {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = 300 + i * 100;
+          o.type = 'sine';
+          g.gain.value = 0.06;
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12 + i * 0.12);
+          o.start(ctx.currentTime + i * 0.12);
+          o.stop(ctx.currentTime + 0.12 + i * 0.12);
+        }
+      }
+    } catch(e) {}
   }
 
   // Init graph
@@ -5230,29 +5925,129 @@
 
   // Touch/mouse swipe on live matches
   const lmSwiper = document.getElementById('lmSwiper');
-  lmSwiper.addEventListener('touchstart', e => { lmStartX = e.touches[0].clientX; lmDragging = true; });
-  lmSwiper.addEventListener('touchmove', e => { if (!lmDragging) return; });
-  lmSwiper.addEventListener('touchend', e => {
-    if (!lmDragging) return;
-    lmDragging = false;
-    const diff = e.changedTouches[0].clientX - lmStartX;
-    if (Math.abs(diff) > 50) {
-      if (diff < 0 && currentMatchIdx < totalMatches - 1) goToMatch(currentMatchIdx + 1);
-      if (diff > 0 && currentMatchIdx > 0) goToMatch(currentMatchIdx - 1);
-    }
-  });
+  let lmCurrentX = 0;
 
-  // Mouse swipe
-  lmSwiper.addEventListener('mousedown', e => { lmStartX = e.clientX; lmDragging = true; });
-  lmSwiper.addEventListener('mouseup', e => {
+  function getLmSlide() {
+    return document.getElementById('lmSlide' + currentMatchIdx);
+  }
+
+  function lmDragMove(clientX) {
+    if (!lmDragging) return;
+    lmCurrentX = clientX;
+    const diff = lmCurrentX - lmStartX;
+    const slide = getLmSlide();
+    if (!slide) return;
+
+    // Translate, rotate, and fade based on drag distance
+    const translateX = diff * 0.6;
+    const rotate = diff * 0.015;
+    const opacity = Math.max(0.5, 1 - Math.abs(diff) / 600);
+
+    slide.style.transition = 'none';
+    slide.style.transform = `translateX(${translateX}px) rotate(${rotate}deg)`;
+    slide.style.opacity = opacity;
+  }
+
+  function lmDragEnd(clientX) {
     if (!lmDragging) return;
     lmDragging = false;
-    const diff = e.clientX - lmStartX;
-    if (Math.abs(diff) > 50) {
-      if (diff < 0 && currentMatchIdx < totalMatches - 1) goToMatch(currentMatchIdx + 1);
-      if (diff > 0 && currentMatchIdx > 0) goToMatch(currentMatchIdx - 1);
+    const diff = clientX - lmStartX;
+    const slide = getLmSlide();
+
+    if (Math.abs(diff) > 60) {
+      if (diff < 0 && currentMatchIdx < totalMatches - 1) {
+        // Snap out left then show next
+        if (slide) {
+          slide.style.transition = 'transform 0.2s, opacity 0.2s';
+          slide.style.transform = 'translateX(-80px) rotate(-2deg)';
+          slide.style.opacity = '0';
+        }
+        setTimeout(() => {
+          if (slide) { slide.style.display = 'none'; slide.style.transform = ''; slide.style.opacity = ''; slide.style.transition = ''; }
+          currentMatchIdx++;
+          const next = getLmSlide();
+          if (next) {
+            next.style.display = '';
+            next.style.transform = 'translateX(60px)';
+            next.style.opacity = '0';
+            next.style.transition = 'none';
+            requestAnimationFrame(() => {
+              next.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+              next.style.transform = 'translateX(0)';
+              next.style.opacity = '1';
+            });
+          }
+          updateMatchDots();
+          if (currentMatchIdx === 1 && !window.canvas2Init) { initCanvas2(); window.canvas2Init = true; }
+          // Dismiss hint
+          const lmHint = document.getElementById('lmSwipeHint');
+          if (lmHint && lmHint.style.display !== 'none') {
+            lmHint.style.transition = 'opacity 0.4s';
+            lmHint.style.opacity = '0';
+            setTimeout(() => lmHint.style.display = 'none', 400);
+          }
+        }, 200);
+        return;
+      }
+      if (diff > 0 && currentMatchIdx > 0) {
+        if (slide) {
+          slide.style.transition = 'transform 0.2s, opacity 0.2s';
+          slide.style.transform = 'translateX(80px) rotate(2deg)';
+          slide.style.opacity = '0';
+        }
+        setTimeout(() => {
+          if (slide) { slide.style.display = 'none'; slide.style.transform = ''; slide.style.opacity = ''; slide.style.transition = ''; }
+          currentMatchIdx--;
+          const prev = getLmSlide();
+          if (prev) {
+            prev.style.display = '';
+            prev.style.transform = 'translateX(-60px)';
+            prev.style.opacity = '0';
+            prev.style.transition = 'none';
+            requestAnimationFrame(() => {
+              prev.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+              prev.style.transform = 'translateX(0)';
+              prev.style.opacity = '1';
+            });
+          }
+          updateMatchDots();
+          const lmHint = document.getElementById('lmSwipeHint');
+          if (lmHint && lmHint.style.display !== 'none') {
+            lmHint.style.transition = 'opacity 0.4s';
+            lmHint.style.opacity = '0';
+            setTimeout(() => lmHint.style.display = 'none', 400);
+          }
+        }, 200);
+        return;
+      }
     }
-  });
+
+    // Snap back
+    if (slide) {
+      slide.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+      slide.style.transform = 'translateX(0) rotate(0deg)';
+      slide.style.opacity = '1';
+      setTimeout(() => { slide.style.transition = ''; }, 300);
+    }
+  }
+
+  // Touch events
+  lmSwiper.addEventListener('touchstart', e => { lmStartX = e.touches[0].clientX; lmCurrentX = lmStartX; lmDragging = true; }, { passive: true });
+  lmSwiper.addEventListener('touchmove', e => {
+    if (!lmDragging) return;
+    const diff = Math.abs(e.touches[0].clientX - lmStartX);
+    if (diff > 10) {
+      e.preventDefault();
+    }
+    lmDragMove(e.touches[0].clientX);
+  }, { passive: false });
+  lmSwiper.addEventListener('touchend', e => { lmDragEnd(e.changedTouches[0].clientX); });
+  lmSwiper.addEventListener('touchcancel', e => { lmDragEnd(lmStartX); });
+
+  // Mouse events
+  lmSwiper.addEventListener('mousedown', e => { lmStartX = e.clientX; lmCurrentX = e.clientX; lmDragging = true; e.preventDefault(); });
+  document.addEventListener('mousemove', e => { if (lmDragging) { e.preventDefault(); lmDragMove(e.clientX); } });
+  document.addEventListener('mouseup', e => { if (lmDragging) lmDragEnd(e.clientX); });
 
   // Init second match canvas
   function initCanvas2() {
@@ -5316,7 +6111,29 @@
       document.getElementById('fazePct').textContent = Math.round(clamped) + '%';
       document.getElementById('opticPct').textContent = Math.round(100 - clamped) + '%';
       draw2();
+      spawnFloatingBet2();
     }, 3000);
+  }
+
+  function spawnFloatingBet2() {
+    const container = document.querySelector('#lmSlide1 .odds-graph-canvas');
+    if (!container || !container.offsetWidth) return;
+    const count = Math.floor(Math.random() * 3) + 1;
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const bet = document.createElement('div');
+        bet.className = 'floating-bet';
+        const isFaze = Math.random() > 0.45;
+        const amount = [1, 3, 5, 10, 15, 20, 25, 50, 62, 100, 110][Math.floor(Math.random() * 11)];
+        bet.textContent = `+$${amount}`;
+        bet.style.color = isFaze ? '#ef4444' : '#22c55e';
+        bet.style.left = `${10 + Math.random() * 80}%`;
+        bet.style.top = isFaze ? `${15 + Math.random() * 25}%` : `${55 + Math.random() * 25}%`;
+        bet.style.fontSize = amount >= 50 ? '12px' : '10px';
+        container.appendChild(bet);
+        setTimeout(() => bet.remove(), 2000);
+      }, i * 400);
+    }
   }
 
   // === STREAM OVERLAY ===
@@ -5326,25 +6143,274 @@
   const streamMatchData = [
     {
       game: 'CS2 · BLAST Premier',
-      teamA: '🟡 NAVI', teamB: 'Vitality 🔵',
+      teamA: '<span class="navi-logo"></span> NAVI', teamB: 'Vitality <span class="vit-logo"></span>',
       score: '8 : 6', round: 'Round 15',
       question: 'Who wins Round 15?',
-      optA: '🟡 NAVI', optB: '🔵 Vitality',
+      optA: '<span class="navi-logo"></span> NAVI', optB: '<span class="vit-logo"></span> Vitality',
       oddsA: '1.72x', oddsB: '2.39x',
       colorA: '255,200,50', colorB: '80,150,255',
       dotA: '#ffc832', dotB: '#5096ff',
     },
     {
       game: 'COD · CDL Major IV',
-      teamA: '🔴 FaZe', teamB: 'OpTic 🟢',
+      teamA: '<span class="faze-logo"></span> FaZe', teamB: 'OpTic <span class="optic-logo"></span>',
       score: '2 : 1', round: 'Map 3 · HP',
       question: 'Who wins Hardpoint Map 3?',
-      optA: '🔴 FaZe', optB: '🟢 OpTic',
+      optA: '<span class="faze-logo"></span> FaZe', optB: '<span class="optic-logo"></span> OpTic',
       oddsA: '1.72x', oddsB: '2.15x',
       colorA: '239,68,68', colorB: '34,197,94',
       dotA: '#ef4444', dotB: '#22c55e',
     }
   ];
+
+  // ========================================
+  // SQUAD JOIN SYSTEM
+  // ========================================
+  const squadData = [
+    {
+      title: '🏆 Degen Squad #14',
+      meta: 'CS2 Major · Grand Final · 3/4 members · $120 pot',
+      minBuy: 20,
+      lockedLegs: [
+        { name: 'NAVI ML · CS2', odds: '1.50x' },
+        { name: 'Over 26.5 rounds · Map 1', odds: '1.85x' },
+      ],
+      picks: [
+        { name: 's1mple MVP', desc: 'Match MVP — popular pick', odds: 3.20 },
+        { name: 'ZywOo 25+ kills', desc: 'Player prop — high ceiling', odds: 2.40 },
+        { name: 'Map 1 under 24.5 rounds', desc: 'Pace play — fast map', odds: 2.10 },
+        { name: 'NAVI 2-0 exact score', desc: 'Series sweep — YOLO pick', odds: 4.50 },
+      ],
+      baseOdds: 1.50 * 1.85, // locked leg combo
+    },
+    {
+      title: '⚡ Friday Night Squad',
+      meta: 'Multi-game · 5 legs · 2/4 members · $250 pot',
+      minBuy: 25,
+      lockedLegs: [
+        { name: '<span class="faze-logo"></span> FaZe ML · COD', odds: '1.45x' },
+        { name: 'T1 -1.5 · LoL', odds: '2.10x' },
+        { name: 'SEN upset · Valorant', odds: '3.80x' },
+      ],
+      picks: [
+        { name: 'Over 2.5 maps · CS2', desc: 'Close series prediction', odds: 1.85 },
+        { name: 'First blood u1:30 · LoL', desc: 'Early aggression play', odds: 2.60 },
+        { name: 'Ace in match · CS2', desc: 'Highlight reel — rare', odds: 5.00 },
+        { name: 'Total kills over 45.5', desc: 'High frag map play', odds: 1.95 },
+      ],
+      baseOdds: 1.45 * 2.10 * 3.80,
+    }
+  ];
+
+  let sjSelectedPick = -1;
+  let sjSelectedAmt = 30;
+  let sjCurrentSquad = 0;
+
+  function openSquadJoin(idx) {
+    sjCurrentSquad = idx;
+    sjSelectedPick = -1;
+    sjSelectedAmt = squadData[idx].minBuy === 25 ? 25 : 30;
+    const sq = squadData[idx];
+    playSound('bet');
+
+    // Update header
+    document.getElementById('sjTitle').textContent = sq.title;
+    document.getElementById('sjMeta').textContent = sq.meta;
+
+    // Update locked legs
+    const lockedHTML = sq.lockedLegs.map(l =>
+      `<div class="sj-leg"><span class="sj-leg-name">${l.name}</span><span><span class="sj-leg-odds">${l.odds}</span><span class="sj-leg-locked">LOCKED</span></span></div>`
+    ).join('');
+    document.getElementById('sjLockedLegs').innerHTML = lockedHTML;
+
+    // Update picks
+    const picksHTML = sq.picks.map((p, i) =>
+      `<div class="sj-pick" onclick="selectSquadPick(this, ${i})">
+        <div class="sj-pick-radio"></div>
+        <div class="sj-pick-info">
+          <div class="sj-pick-name">${p.name}</div>
+          <div class="sj-pick-desc">${p.desc}</div>
+        </div>
+        <div class="sj-pick-odds">${p.odds.toFixed(2)}x</div>
+      </div>`
+    ).join('');
+    document.getElementById('sjPickGrid').innerHTML = picksHTML;
+
+    // Update amounts
+    const amounts = sq.minBuy === 25 ? [25, 50, 75, 100] : [20, 30, 50, 100];
+    const amtHTML = amounts.map((a, i) =>
+      `<div class="sj-amt${i === (sq.minBuy === 25 ? 0 : 1) ? ' selected' : ''}" onclick="selectSquadAmt(this, ${a})">$${a}</div>`
+    ).join('');
+    document.getElementById('sjAmountRow').innerHTML = amtHTML;
+    sjSelectedAmt = amounts[sq.minBuy === 25 ? 0 : 1];
+
+    // Reset summary
+    document.getElementById('sjSummary').style.display = 'none';
+    document.getElementById('sjConfirmBtn').disabled = true;
+    document.getElementById('sjConfirmBtn').textContent = 'Select a leg to join';
+
+    document.getElementById('squadJoinOverlay').classList.add('active');
+  }
+
+  function closeSquadJoin() {
+    document.getElementById('squadJoinOverlay').classList.remove('active');
+  }
+
+  function selectSquadPick(el, idx) {
+    sjSelectedPick = idx;
+    document.querySelectorAll('.sj-pick').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    playSound('bet');
+    updateSquadSummary();
+  }
+
+  function selectSquadAmt(el, amt) {
+    sjSelectedAmt = amt;
+    document.querySelectorAll('.sj-amt').forEach(a => a.classList.remove('selected'));
+    el.classList.add('selected');
+    updateSquadSummary();
+  }
+
+  function updateSquadSummary() {
+    if (sjSelectedPick < 0) return;
+    const sq = squadData[sjCurrentSquad];
+    const pick = sq.picks[sjSelectedPick];
+    const combo = (sq.baseOdds * pick.odds).toFixed(2);
+    const payout = (sjSelectedAmt * parseFloat(combo)).toFixed(0);
+
+    document.getElementById('sjSummary').style.display = 'block';
+    document.getElementById('sjSumLeg').textContent = pick.name;
+    document.getElementById('sjSumOdds').textContent = pick.odds.toFixed(2) + 'x';
+    document.getElementById('sjSumCombo').textContent = combo + 'x';
+    document.getElementById('sjSumPayout').textContent = '$' + payout;
+
+    const btn = document.getElementById('sjConfirmBtn');
+    btn.disabled = false;
+    btn.textContent = `Confirm · $${sjSelectedAmt} Buy-in`;
+  }
+
+  function confirmSquadJoin() {
+    if (sjSelectedPick < 0) return;
+    const sq = squadData[sjCurrentSquad];
+    const pick = sq.picks[sjSelectedPick];
+    const combo = (sq.baseOdds * pick.odds).toFixed(2);
+    const payout = (sjSelectedAmt * parseFloat(combo)).toFixed(0);
+
+    playSound('win');
+
+    // Close the overlay
+    closeSquadJoin();
+
+    // === UPDATE THE SQUAD CARD ===
+    const cards = document.querySelectorAll('.squad-card');
+    const card = cards[sjCurrentSquad];
+    if (card) {
+      // Update the open spot to show "You"
+      const members = card.querySelectorAll('.squad-member');
+      const openSpot = members[members.length - 1]; // last member is the "? spot open"
+      if (openSpot) {
+        const avatar = openSpot.querySelector('.squad-member-avatar');
+        const name = openSpot.querySelector('.squad-member-name');
+        const amount = openSpot.querySelector('.squad-member-amount');
+        avatar.style.background = 'var(--green)';
+        avatar.style.color = '#fff';
+        avatar.textContent = 'Y';
+        name.style.color = '';
+        name.innerHTML = 'You <span class="squad-member-you">YOU</span>';
+        amount.style.color = '';
+        amount.textContent = '$' + sjSelectedAmt;
+      }
+
+      // Add the picked leg to the card body
+      const body = card.querySelector('.squad-body');
+      if (body) {
+        const newLeg = document.createElement('div');
+        newLeg.className = 'shared-leg';
+        newLeg.innerHTML = `<span>${pick.name} <span style="font-size:9px;color:var(--green);background:var(--green-dim);padding:1px 5px;border-radius:3px;margin-left:4px;">YOUR PICK</span></span><span style="color:var(--green);font-weight:700">${pick.odds.toFixed(2)}x</span>`;
+        newLeg.style.animation = 'slideUp 0.3s ease-out';
+        body.appendChild(newLeg);
+      }
+
+      // Update the pot
+      const pot = card.querySelector('.squad-pot');
+      if (pot) {
+        const currentPot = parseInt(pot.textContent.replace(/[^0-9]/g, ''));
+        pot.textContent = '$' + (currentPot + sjSelectedAmt) + ' pot';
+      }
+
+      // Update the footer
+      const status = card.querySelector('.squad-status');
+      if (status) {
+        status.innerHTML = '<span class="live-dot"></span><span>Starts in 23 min · ' + combo + 'x payout</span>';
+      }
+
+      // Update the button
+      const btn = card.querySelector('.squad-join-btn');
+      if (btn) {
+        btn.textContent = '✅ Joined';
+        btn.style.background = 'rgba(29,185,84,0.15)';
+        btn.style.border = '1px solid rgba(29,185,84,0.4)';
+        btn.style.color = '#1db954';
+        btn.style.cursor = 'default';
+        btn.onclick = null;
+      }
+
+      // Flash the card green
+      card.style.borderColor = 'rgba(29,185,84,0.4)';
+      card.style.boxShadow = '0 0 20px rgba(29,185,84,0.15)';
+      if (card.style.opacity === '0.7') card.style.opacity = '1';
+      setTimeout(() => {
+        card.style.borderColor = '';
+        card.style.boxShadow = '';
+      }, 2000);
+    }
+
+    // === SHOW BET RECEIPT TOAST ===
+    const allLegs = [...sq.lockedLegs.map(l => ({ name: l.name, odds: l.odds, yours: false })),
+      { name: pick.name, odds: pick.odds.toFixed(2) + 'x', yours: true }];
+
+    const legsHTML = allLegs.map(l =>
+      `<div class="brt-leg${l.yours ? ' yours' : ''}">
+        <span class="brt-leg-name">${l.name}${l.yours ? ' ★' : ''}</span>
+        <span class="brt-leg-odds">${l.odds}</span>
+      </div>`
+    ).join('');
+    document.getElementById('brtLegs').innerHTML = legsHTML;
+    document.getElementById('brtBuyIn').textContent = '$' + sjSelectedAmt;
+    document.getElementById('brtPayout').textContent = '→ $' + payout;
+    document.getElementById('brtTime').textContent = 'just now';
+
+    // Small delay so overlay closes first
+    setTimeout(() => {
+      const toast = document.getElementById('betReceiptToast');
+      toast.classList.add('show');
+      // Auto dismiss after 6s
+      setTimeout(() => toast.classList.remove('show'), 6000);
+    }, 400);
+
+    // Confetti for the win
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        const p = document.createElement('div');
+        const emojis = ['🎯','🤝','💰','✨','🎉'];
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.cssText = `position:fixed;top:-20px;left:${Math.random()*100}%;font-size:${14+Math.random()*12}px;z-index:10002;pointer-events:none;animation:confettiFall ${2+Math.random()*2}s linear forwards;`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 4000);
+      }, i * 80);
+    }
+  }
+
+  // Attach confirm button listener (more reliable than inline onclick in iframe contexts)
+  document.getElementById('sjConfirmBtn').addEventListener('click', confirmSquadJoin);
+  document.getElementById('sjConfirmBtn').addEventListener('touchend', function(e) {
+    e.preventDefault();
+    if (!this.disabled) confirmSquadJoin();
+  });
+
+  function dismissReceipt() {
+    document.getElementById('betReceiptToast').classList.remove('show');
+  }
 
   function openStream(matchIdx = 0) {
     const m = streamMatchData[matchIdx];
@@ -5358,8 +6424,8 @@
     document.getElementById('streamRound').textContent = m.round;
     document.querySelector('.stream-bet-question').textContent = m.question;
     const opts = document.querySelectorAll('.stream-bet-opt');
-    opts[0].querySelector('.sbo-team').textContent = m.optA;
-    opts[1].querySelector('.sbo-team').textContent = m.optB;
+    opts[0].querySelector('.sbo-team').innerHTML = m.optA;
+    opts[1].querySelector('.sbo-team').innerHTML = m.optB;
     document.getElementById('streamOdds1').textContent = m.oddsA;
     document.getElementById('streamOdds2').textContent = m.oddsB;
 
@@ -5575,6 +6641,100 @@
     <button class="br-close" id="brClose" onclick="closeBonusRound()">LET'S GO</button>
   </div>
 
+  <!-- SQUAD JOIN OVERLAY -->
+  <div class="squad-join-overlay" id="squadJoinOverlay">
+    <div class="squad-join-backdrop" onclick="closeSquadJoin()"></div>
+    <div class="squad-join-sheet">
+      <div class="sj-handle"></div>
+      <div class="sj-header">
+        <div class="sj-header-top">
+          <div class="sj-title" id="sjTitle">🏆 Degen Squad #14</div>
+          <div class="sj-close" onclick="closeSquadJoin()">✕</div>
+        </div>
+        <div class="sj-meta" id="sjMeta">CS2 Major · Grand Final · 3/4 members · $120 pot</div>
+      </div>
+
+      <div class="sj-section-label">Locked Legs (set by host)</div>
+      <div class="sj-existing-legs" id="sjLockedLegs">
+        <div class="sj-leg">
+          <span class="sj-leg-name">NAVI ML · CS2</span>
+          <span><span class="sj-leg-odds">1.50x</span><span class="sj-leg-locked">LOCKED</span></span>
+        </div>
+        <div class="sj-leg">
+          <span class="sj-leg-name">Over 26.5 rounds · Map 1</span>
+          <span><span class="sj-leg-odds">1.85x</span><span class="sj-leg-locked">LOCKED</span></span>
+        </div>
+      </div>
+
+      <div class="sj-section-label">Pick your leg (adds to parlay)</div>
+      <div class="sj-pick-grid" id="sjPickGrid">
+        <div class="sj-pick" onclick="selectSquadPick(this, 0)">
+          <div class="sj-pick-radio"></div>
+          <div class="sj-pick-info">
+            <div class="sj-pick-name">s1mple MVP</div>
+            <div class="sj-pick-desc">Match MVP — popular pick</div>
+          </div>
+          <div class="sj-pick-odds">3.20x</div>
+        </div>
+        <div class="sj-pick" onclick="selectSquadPick(this, 1)">
+          <div class="sj-pick-radio"></div>
+          <div class="sj-pick-info">
+            <div class="sj-pick-name">ZywOo 25+ kills</div>
+            <div class="sj-pick-desc">Player prop — high ceiling</div>
+          </div>
+          <div class="sj-pick-odds">2.40x</div>
+        </div>
+        <div class="sj-pick" onclick="selectSquadPick(this, 2)">
+          <div class="sj-pick-radio"></div>
+          <div class="sj-pick-info">
+            <div class="sj-pick-name">Map 1 under 24.5 rounds</div>
+            <div class="sj-pick-desc">Pace play — fast map</div>
+          </div>
+          <div class="sj-pick-odds">2.10x</div>
+        </div>
+        <div class="sj-pick" onclick="selectSquadPick(this, 3)">
+          <div class="sj-pick-radio"></div>
+          <div class="sj-pick-info">
+            <div class="sj-pick-name">NAVI 2-0 exact score</div>
+            <div class="sj-pick-desc">Series sweep — YOLO pick</div>
+          </div>
+          <div class="sj-pick-odds">4.50x</div>
+        </div>
+      </div>
+
+      <div class="sj-section-label">Buy-in amount</div>
+      <div class="sj-amount-row" id="sjAmountRow">
+        <div class="sj-amt" onclick="selectSquadAmt(this, 20)">$20</div>
+        <div class="sj-amt selected" onclick="selectSquadAmt(this, 30)">$30</div>
+        <div class="sj-amt" onclick="selectSquadAmt(this, 50)">$50</div>
+        <div class="sj-amt" onclick="selectSquadAmt(this, 100)">$100</div>
+      </div>
+
+      <div class="sj-summary" id="sjSummary" style="display:none;">
+        <div class="sj-summary-row"><span>Your leg</span><span id="sjSumLeg">—</span></div>
+        <div class="sj-summary-row"><span>Leg odds</span><span id="sjSumOdds">—</span></div>
+        <div class="sj-summary-row"><span>Combined parlay</span><span id="sjSumCombo">—</span></div>
+        <div class="sj-summary-row total"><span>Potential payout</span><span id="sjSumPayout">—</span></div>
+      </div>
+
+      <button class="sj-confirm-btn" id="sjConfirmBtn" disabled>Select a leg to join</button>
+    </div>
+  </div>
+
+  <!-- BET RECEIPT TOAST -->
+  <div class="bet-receipt-toast" id="betReceiptToast">
+    <div class="brt-header">
+      <div class="brt-badge"><span class="brt-badge-dot"></span> SQUAD BET CONFIRMED</div>
+      <div class="brt-time" id="brtTime">just now</div>
+    </div>
+    <div class="brt-legs" id="brtLegs"></div>
+    <div class="brt-footer">
+      <div class="brt-total">Buy-in: <strong id="brtBuyIn">$30</strong></div>
+      <div class="brt-payout" id="brtPayout">→ $267</div>
+    </div>
+    <div class="brt-dismiss" onclick="dismissReceipt()">tap to dismiss</div>
+  </div>
+
   <!-- STREAM OVERLAY -->
   <div class="stream-overlay" id="streamOverlay">
     <div class="stream-header">
@@ -5591,12 +6751,12 @@
     </div>
 
     <div class="stream-scorebug">
-      <div class="sb-team">🟡 NAVI</div>
+      <div class="sb-team"><span class="navi-logo"></span> NAVI</div>
       <div class="sb-center">
         <div class="sb-score" id="streamScore">8 : 6</div>
         <div class="sb-round" id="streamRound">Round 15</div>
       </div>
-      <div class="sb-team">Vitality 🔵</div>
+      <div class="sb-team">Vitality <span class="vit-logo"></span></div>
     </div>
 
     <div class="stream-bet-panel">
@@ -5604,11 +6764,11 @@
       <div class="stream-bet-question">Who wins Round 15?</div>
       <div class="stream-bet-options">
         <div class="stream-bet-opt selected" onclick="selectStreamOpt(this)">
-          <div class="sbo-team">🟡 NAVI</div>
+          <div class="sbo-team"><span class="navi-logo"></span> NAVI</div>
           <div class="sbo-odds" id="streamOdds1">1.72x</div>
         </div>
         <div class="stream-bet-opt" onclick="selectStreamOpt(this)">
-          <div class="sbo-team">🔵 Vitality</div>
+          <div class="sbo-team"><span class="vit-logo"></span> Vitality</div>
           <div class="sbo-odds" id="streamOdds2">2.39x</div>
         </div>
       </div>
