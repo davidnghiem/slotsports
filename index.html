@@ -223,10 +223,39 @@
   }
 
   /* === TAB NAV === */
+  .tab-nav-wrapper {
+    position: relative;
+  }
+
+  .tab-nav-wrapper::after {
+    content: '›';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 1px;
+    width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    background: linear-gradient(90deg, transparent, var(--bg) 50%);
+    pointer-events: none;
+    z-index: 2;
+    color: rgba(255,255,255,0.25);
+    font-size: 18px;
+    animation: subtlePulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes subtlePulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
   .tab-nav {
     display: flex;
     background: var(--bg);
     padding: 0 12px;
+    padding-right: 48px;
     gap: 0;
     border-bottom: 1px solid var(--border);
     overflow-x: auto;
@@ -710,6 +739,226 @@
     color: var(--text-muted);
   }
 
+  .watch-live-btn {
+    background: rgba(29,185,84,0.15);
+    border: 1px solid rgba(29,185,84,0.4);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: all 0.2s;
+    animation: watchPulse 2.5s ease-in-out infinite;
+  }
+  .watch-live-btn:hover {
+    background: rgba(29,185,84,0.25);
+  }
+  @keyframes watchPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(29,185,84,0); }
+    50% { box-shadow: 0 0 8px 2px rgba(29,185,84,0.25); }
+  }
+
+  /* Stream overlay */
+  .stream-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    background: #000;
+    display: none;
+    flex-direction: column;
+  }
+  .stream-overlay.open {
+    display: flex;
+  }
+
+  .stream-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+    background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+  }
+  .stream-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stream-close {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .stream-live-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(239,68,68,0.2);
+    border: 1px solid rgba(239,68,68,0.4);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+  }
+  .stream-match-info {
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+  .stream-viewers {
+    color: var(--text-muted);
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .stream-video {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .stream-video canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Floating score bug */
+  .stream-scorebug {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+  }
+  .sb-team {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+  }
+  .sb-score {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 2px;
+  }
+  .sb-round {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 1px;
+  }
+
+  /* Bottom bet panel */
+  .stream-bet-panel {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 70%, transparent 100%);
+    padding: 40px 16px 24px;
+    z-index: 10;
+  }
+  .stream-bet-question {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .stream-bet-timer {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .stream-bet-options {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .stream-bet-opt {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .stream-bet-opt:hover, .stream-bet-opt.selected {
+    border-color: var(--green);
+    background: rgba(29,185,84,0.1);
+  }
+  .stream-bet-opt .sbo-team {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 3px;
+  }
+  .stream-bet-opt .sbo-odds {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--green);
+  }
+  .stream-chips {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .stream-chip {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .stream-chip.active {
+    color: var(--green);
+    border-color: var(--green);
+    background: rgba(29,185,84,0.1);
+  }
+  .stream-fire-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--green);
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--bg);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
   .lm-teams {
     display: flex;
     align-items: center;
@@ -974,7 +1223,7 @@
 
   /* === BONUS BANNER === */
   .bonus-banner {
-    margin: 12px 16px;
+    margin: 12px 16px 0;
     background: linear-gradient(135deg, rgba(29,185,84,0.08), rgba(29,185,84,0.03));
     border: 1px solid var(--green-border);
     border-radius: var(--radius-lg);
@@ -1010,11 +1259,14 @@
   .bonus-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 
   .bonus-timer-track {
-    height: 3px;
+    height: 4px;
     background: rgba(255,255,255,0.06);
     border-radius: 2px;
     margin-top: 8px;
-    overflow: hidden;
+    overflow: visible;
+    clip-path: inset(-4px 0px -4px 0px);
+    position: relative;
+    z-index: 3;
   }
   .bonus-timer-bar {
     height: 100%;
@@ -1022,6 +1274,25 @@
     border-radius: 2px;
     width: 100%;
     animation: countdown 60s linear forwards;
+    position: relative;
+    z-index: 3;
+  }
+  .bonus-timer-bar::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 6px 2px rgba(255,255,255,0.8), 0 0 12px 4px rgba(29,185,84,0.6), 0 0 20px 6px rgba(255,200,50,0.3);
+    animation: fuseFlicker 0.15s ease-in-out infinite alternate;
+  }
+  @keyframes fuseFlicker {
+    0% { opacity: 0.7; transform: translateY(-50%) scale(0.8); }
+    100% { opacity: 1; transform: translateY(-50%) scale(1.2); }
   }
   @keyframes countdown {
     0% { width: 100%; }
@@ -1050,8 +1321,21 @@
     flex: 1;
     text-align: center;
     margin-bottom: 0;
-    padding: 9px 8px;
-    font-size: 11px;
+    padding: 10px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    background: rgba(168,85,247,0.12);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 10px;
+    color: var(--purple);
+    animation: bbTagGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes bbTagGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(168,85,247,0); }
+    50% { box-shadow: 0 0 10px 2px rgba(168,85,247,0.2); }
   }
 
   .bb-compact .bb-btn {
@@ -1066,12 +1350,15 @@
   }
 
   .bb-info-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    font-size: 14px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 11px;
+    font-weight: 700;
+    font-style: italic;
+    font-family: Georgia, serif;
+    color: var(--text-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -2015,16 +2302,16 @@
   .toast-sub { font-size: 11px; color: var(--green); font-weight: 600; }
 
   .toast-btn {
-    background: var(--green);
-    color: var(--white);
-    border: none;
+    background: rgba(255,255,255,0.1);
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.15);
     border-radius: var(--radius-sm);
-    padding: 8px 16px;
-    font-weight: 800;
-    font-size: 12px;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 11px;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    text-transform: none;
+    letter-spacing: 0.3px;
   }
 
   /* Dicey SVG Logo */
@@ -2432,13 +2719,15 @@
   </div>
 
   <!-- TAB NAV -->
+  <div class="tab-nav-wrapper">
   <div class="tab-nav">
     <div class="tab active" data-tab="parlays">💰 Parlays</div>
     <div class="tab" data-tab="rapid">⚡ Rapid Fire <span class="live-badge-sm"><span class="live-dot-sm"></span>LIVE</span></div>
     <div class="tab" data-tab="reroll">🎲 Reroll</div>
-    <div class="tab" data-tab="social">🤝 Tailgate</div>
+    <div class="tab" data-tab="social">🤝 Comm</div>
     <div class="tab" data-tab="leaderboard">📊 Leaderboard</div>
     <div class="tab" data-tab="quests">🏆 Profile</div>
+  </div>
   </div>
 
   <!-- BONUS BANNER (triggers randomly) -->
@@ -2447,21 +2736,12 @@
     <div class="bonus-info">
       <div class="bonus-title">⚡ Bonus Triggered!</div>
       <div class="bonus-desc">Next live bet gets <strong>25% payout boost.</strong> 60s remaining.</div>
-      <div class="bonus-timer-track"><div class="bonus-timer-bar"></div></div>
     </div>
+    <div class="bonus-timer-track" style="position:absolute; bottom:6px; left:12px; right:12px;"><div class="bonus-timer-bar"></div></div>
   </div>
 
   <!-- ===== DICEY PARLAYS ===== -->
   <div class="section active" id="parlays">
-    <!-- Streak banner -->
-    <div class="streak-banner">
-      <div class="streak-fire">🔥</div>
-      <div class="streak-info">
-        <div class="streak-count">12 Win Streak!</div>
-        <div class="streak-sub">Your longest streak this month</div>
-      </div>
-      <div class="streak-multiplier">1.5x XP</div>
-    </div>
 
     <!-- Category pills -->
     <div class="category-pills">
@@ -2513,14 +2793,23 @@
 
   <!-- ===== RAPID FIRE ===== -->
   <div class="section" id="rapid">
-    <div class="content-area" style="padding-top:16px;">
+    <div class="content-area" style="padding-top:0;">
+      <!-- Streak banner -->
+      <div class="streak-banner" style="margin-top:10px; margin-bottom:10px;">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-info">
+          <div class="streak-count">12 Win Streak!</div>
+          <div class="streak-sub">You're on fire right now 🔥</div>
+        </div>
+        <div class="streak-multiplier">1.5x XP</div>
+      </div>
       <!-- Buy the Bonus -->
       <div class="buy-bonus" id="buyBonusCard">
         <div class="bb-compact">
-          <div class="bb-tag">🎰 Buy the Bonus</div>
+          <div class="bb-tag">Buy The Bonus</div>
           <div class="bb-compact-row">
             <button class="bb-btn" onclick="event.stopPropagation(); buyBonus()">Buy In – $25</button>
-            <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">ℹ️</button>
+            <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
           </div>
         </div>
         <div class="bb-details" id="bbDetails">
@@ -2540,7 +2829,10 @@
       <!-- Live Match -->
       <div class="live-match-card">
         <div class="lm-header">
-          <div class="lm-live"><span class="live-dot"></span> LIVE</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="lm-live"><span class="live-dot"></span> LIVE</div>
+            <button class="watch-live-btn" onclick="openStream()">▶ Watch</button>
+          </div>
           <div class="lm-game">CS2 · BLAST Premier · Map 2</div>
         </div>
 
@@ -2611,7 +2903,7 @@
             <div class="amt-chip" onclick="selAmt(this)">$10</div>
             <div class="amt-chip" onclick="selAmt(this)">$25</div>
           </div>
-          <button class="fire-btn" onclick="fireBet()">🔥 FIRE BET</button>
+          <button class="fire-btn" onclick="fireBet()">FIRE BET</button>
         </div>
 
         <div class="queue-section">
@@ -3173,7 +3465,7 @@
       <div class="toast-sub" id="toastSub">NAVI Win · 1.65x · $5</div>
     </div>
   </div>
-  <button class="toast-btn" onclick="placeBet()">PLACE</button>
+  <button class="toast-btn" onclick="placeBet()">Bet Receipt</button>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -3520,15 +3812,25 @@
     el.classList.add('active');
   }
 
-  // Swipe hint auto-hide after 6 seconds
-  setTimeout(() => {
-    const hint = document.getElementById('swipeHint');
-    if (hint) {
-      hint.style.transition = 'opacity 0.5s';
-      hint.style.opacity = '0';
-      setTimeout(() => hint.style.display = 'none', 500);
-    }
-  }, 6000);
+  // Swipe hint — only hides after user actually swipes
+
+  // Auto-dismiss bonus banner when fuse runs out
+  const bonusTimerBar = document.querySelector('.bonus-timer-bar');
+  if (bonusTimerBar) {
+    bonusTimerBar.addEventListener('animationend', () => {
+      const banner = document.getElementById('bonusBanner');
+      if (banner) {
+        banner.style.transition = 'opacity 0.5s, transform 0.5s';
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          banner.classList.remove('show');
+          banner.style.opacity = '';
+          banner.style.transform = '';
+        }, 500);
+      }
+    });
+  }
 
   // Roll Boost overlay
   function openRollBoost() {
@@ -3968,6 +4270,14 @@
   function showParlay(direction) {
     const wrapper = document.getElementById('parlayCardWrapper');
 
+    // Hide swipe hint on first swipe
+    const hint = document.getElementById('swipeHint');
+    if (hint && hint.style.display !== 'none') {
+      hint.style.transition = 'opacity 0.4s';
+      hint.style.opacity = '0';
+      setTimeout(() => hint.style.display = 'none', 400);
+    }
+
     // Exit current card
     wrapper.classList.add(direction === 'left' ? 'exit-left' : 'exit-right');
 
@@ -4096,7 +4406,247 @@
   document.getElementById('parlayCardWrapper').innerHTML = renderParlayCard(parlayData[0]);
   renderDots();
   updateCounter();
+  // === STREAM OVERLAY ===
+  let streamAnimFrame = null;
+  let streamTimerInterval = null;
+
+  function openStream() {
+    const overlay = document.getElementById('streamOverlay');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    startStreamCanvas();
+    startStreamTimer();
+  }
+
+  function closeStream() {
+    const overlay = document.getElementById('streamOverlay');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (streamAnimFrame) cancelAnimationFrame(streamAnimFrame);
+    if (streamTimerInterval) clearInterval(streamTimerInterval);
+  }
+
+  function startStreamCanvas() {
+    const canvas = document.getElementById('streamCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = canvas.offsetHeight * 2;
+    ctx.scale(2, 2);
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+
+    // Fake gameplay scene
+    let particles = [];
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        size: Math.random() * 3 + 1,
+        color: Math.random() > 0.5 ? 'rgba(255,200,50,' : 'rgba(80,150,255,',
+        alpha: Math.random() * 0.4 + 0.1
+      });
+    }
+
+    // Map geometry (fake top-down CS2 layout)
+    const mapElements = [];
+    for (let i = 0; i < 15; i++) {
+      mapElements.push({
+        x: Math.random() * w * 0.8 + w * 0.1,
+        y: Math.random() * h * 0.6 + h * 0.2,
+        w: Math.random() * 60 + 20,
+        h: Math.random() * 40 + 15,
+        color: `rgba(${40 + Math.random()*30}, ${50 + Math.random()*30}, ${45 + Math.random()*30}, 0.6)`
+      });
+    }
+
+    // Player dots
+    let players = [];
+    for (let i = 0; i < 10; i++) {
+      players.push({
+        x: Math.random() * w * 0.7 + w * 0.15,
+        y: Math.random() * h * 0.5 + h * 0.25,
+        team: i < 5 ? 'ct' : 't',
+        tx: Math.random() * w * 0.7 + w * 0.15,
+        ty: Math.random() * h * 0.5 + h * 0.25,
+        alive: Math.random() > 0.15
+      });
+    }
+
+    function animate() {
+      ctx.fillStyle = '#1a1f1a';
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw map grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+      ctx.lineWidth = 0.5;
+      for (let x = 0; x < w; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Map structures
+      mapElements.forEach(el => {
+        ctx.fillStyle = el.color;
+        ctx.fillRect(el.x, el.y, el.w, el.h);
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.strokeRect(el.x, el.y, el.w, el.h);
+      });
+
+      // Players
+      players.forEach(p => {
+        if (!p.alive) return;
+        // Move toward target
+        p.x += (p.tx - p.x) * 0.01;
+        p.y += (p.ty - p.y) * 0.01;
+        if (Math.abs(p.tx - p.x) < 2) {
+          p.tx = Math.random() * w * 0.7 + w * 0.15;
+          p.ty = Math.random() * h * 0.5 + h * 0.25;
+        }
+
+        // Glow
+        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 12);
+        const baseColor = p.team === 'ct' ? '80,150,255' : '255,200,50';
+        grd.addColorStop(0, `rgba(${baseColor},0.3)`);
+        grd.addColorStop(1, `rgba(${baseColor},0)`);
+        ctx.fillStyle = grd;
+        ctx.fillRect(p.x - 12, p.y - 12, 24, 24);
+
+        // Dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = p.team === 'ct' ? '#5096ff' : '#ffc832';
+        ctx.fill();
+      });
+
+      // Floating particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + p.alpha + ')';
+        ctx.fill();
+      });
+
+      // Occasional "gunfire" flash
+      if (Math.random() < 0.02) {
+        const aliveP = players.filter(p => p.alive);
+        if (aliveP.length) {
+          const shooter = aliveP[Math.floor(Math.random() * aliveP.length)];
+          ctx.beginPath();
+          ctx.arc(shooter.x, shooter.y, 15, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,200,0.4)';
+          ctx.fill();
+        }
+      }
+
+      // Scan line effect
+      const scanY = (Date.now() * 0.05) % h;
+      ctx.fillStyle = 'rgba(255,255,255,0.015)';
+      ctx.fillRect(0, scanY, w, 2);
+
+      streamAnimFrame = requestAnimationFrame(animate);
+    }
+    animate();
+  }
+
+  let streamSeconds = 28;
+  function startStreamTimer() {
+    streamSeconds = 28;
+    streamTimerInterval = setInterval(() => {
+      streamSeconds--;
+      if (streamSeconds <= 0) streamSeconds = 90;
+      const min = Math.floor(streamSeconds / 60);
+      const sec = streamSeconds % 60;
+      document.getElementById('streamTimer').textContent = `⏱ Next micro-bet in ${min}:${String(sec).padStart(2, '0')}`;
+    }, 1000);
+  }
+
+  function selectStreamOpt(el) {
+    el.parentElement.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function selectStreamChip(el) {
+    el.parentElement.querySelectorAll('.stream-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function fireStreamBet() {
+    const btn = document.querySelector('.stream-fire-btn');
+    btn.textContent = '✅ BET PLACED!';
+    btn.style.background = 'rgba(29,185,84,0.3)';
+    btn.style.color = '#1db954';
+    btn.style.border = '1px solid rgba(29,185,84,0.5)';
+
+    // Screen flash
+    const flash = document.createElement('div');
+    flash.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(29,185,84,0.15);z-index:99999;pointer-events:none;';
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 200);
+
+    setTimeout(() => {
+      btn.textContent = 'FIRE BET';
+      btn.style.background = 'var(--green)';
+      btn.style.color = 'var(--bg)';
+      btn.style.border = 'none';
+    }, 2000);
+  }
+
 </script>
+
+  <!-- STREAM OVERLAY -->
+  <div class="stream-overlay" id="streamOverlay">
+    <div class="stream-header">
+      <div class="stream-header-left">
+        <button class="stream-close" onclick="closeStream()">✕</button>
+        <div class="stream-live-pill"><span class="live-dot"></span> LIVE</div>
+        <div class="stream-match-info">CS2 · BLAST Premier</div>
+      </div>
+      <div class="stream-viewers">👁 12.4k</div>
+    </div>
+
+    <div class="stream-video">
+      <canvas id="streamCanvas"></canvas>
+    </div>
+
+    <div class="stream-scorebug">
+      <div class="sb-team">🟡 NAVI</div>
+      <div style="text-align:center">
+        <div class="sb-score" id="streamScore">8 : 6</div>
+        <div class="sb-round" id="streamRound">Round 15</div>
+      </div>
+      <div class="sb-team">Vitality 🔵</div>
+    </div>
+
+    <div class="stream-bet-panel">
+      <div class="stream-bet-timer" id="streamTimer">⏱ Next micro-bet in 0:28</div>
+      <div class="stream-bet-question">Who wins Round 15?</div>
+      <div class="stream-bet-options">
+        <div class="stream-bet-opt selected" onclick="selectStreamOpt(this)">
+          <div class="sbo-team">🟡 NAVI</div>
+          <div class="sbo-odds" id="streamOdds1">1.72x</div>
+        </div>
+        <div class="stream-bet-opt" onclick="selectStreamOpt(this)">
+          <div class="sbo-team">🔵 Vitality</div>
+          <div class="sbo-odds" id="streamOdds2">2.39x</div>
+        </div>
+      </div>
+      <div class="stream-chips">
+        <div class="stream-chip" onclick="selectStreamChip(this)">$1</div>
+        <div class="stream-chip active" onclick="selectStreamChip(this)">$5</div>
+        <div class="stream-chip" onclick="selectStreamChip(this)">$10</div>
+        <div class="stream-chip" onclick="selectStreamChip(this)">$25</div>
+      </div>
+      <button class="stream-fire-btn" onclick="fireStreamBet()">FIRE BET</button>
+    </div>
+  </div>
 
 </body>
 </html>
