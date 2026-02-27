@@ -76,7 +76,7 @@
   .logo-main {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 0px;
   }
 
   .logo-dice {
@@ -88,7 +88,8 @@
     font-weight: 800;
     font-size: 20px;
     letter-spacing: -0.5px;
-    color: var(--white);
+    color: var(--green);
+    font-style: italic;
   }
 
   .logo-sub {
@@ -722,7 +723,7 @@
     display: flex;
     justify-content: center;
     gap: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 2px;
   }
 
   .lm-header {
@@ -1311,7 +1312,7 @@
 
   /* === BONUS BANNER === */
   .bonus-banner {
-    margin: 12px 16px 0;
+    margin: 12px 16px 16px;
     background: linear-gradient(135deg, rgba(29,185,84,0.08), rgba(29,185,84,0.03));
     border: 1px solid var(--green-border);
     border-radius: var(--radius-lg);
@@ -2096,6 +2097,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
     font-size: 12px;
     color: var(--text-muted);
   }
@@ -2943,6 +2946,64 @@
   }
 
   /* === BOTTOM NAV (matches Dicey) === */
+  /* Esports Ticker Carousel */
+  .esports-ticker {
+    padding: 0;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 10px;
+    animation: tickerScroll 25s linear infinite;
+    width: max-content;
+    padding: 0 4px;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ticker-card {
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 10px;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .ticker-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .ticker-time {
+    font-size: 9px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .ticker-team {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
+    gap: 6px;
+  }
+  .ticker-team-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -2990,6 +3051,30 @@
     border-radius: 10px;
     margin: 4px 6px;
     padding: 8px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .bn-item.casino-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      rgba(255,255,255,0.06) 35%,
+      rgba(255,255,255,0.15) 50%,
+      rgba(255,255,255,0.06) 65%,
+      transparent 80%
+    );
+    animation: sheenSweep 3s ease-in-out infinite;
+  }
+  @keyframes sheenSweep {
+    0% { left: -100%; }
+    40% { left: 150%; }
+    100% { left: 150%; }
   }
 
   .bn-item.casino-tab .bn-label { color: var(--white); }
@@ -3044,7 +3129,6 @@
     font-size: 10px;
     color: var(--green);
     font-weight: 600;
-    margin-top: 6px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -3094,7 +3178,118 @@
   .ach-ring .ring-bg { stroke: rgba(255,255,255,0.06); }
   .ach-ring .ring-fill { stroke: var(--green); transition: stroke-dashoffset 1s ease-out; }
 
-  .spacer { height: 70px; }
+  .spacer { height: 120px; }
+
+  /* === MY BETS === */
+  .mybets-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .mybets-filter {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mybets-filter.active {
+    background: rgba(29,185,84,0.12);
+    color: var(--green);
+    border-color: var(--green-border);
+  }
+  .mybets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mybets-slip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: opacity 0.2s;
+  }
+  .mybets-slip.hidden { display: none; }
+  .mybets-slip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 8px;
+  }
+  .mybets-status {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .mybets-status.open { color: var(--gold); }
+  .mybets-status.won { color: var(--green); }
+  .mybets-status.lost { color: #ef4444; }
+  .mybets-date {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .mybets-legs {
+    padding: 0 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mybets-leg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--white);
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .mybets-leg:last-child { border-bottom: none; }
+  .mybets-leg-odds {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 11px;
+  }
+  .mybets-slip-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px 10px;
+    background: rgba(0,0,0,0.2);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .mybets-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .mybets-summary-item {
+    text-align: center;
+    flex: 1;
+  }
+  .mybets-summary-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .mybets-summary-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
 
   /* === BET TOAST === */
   .bet-toast {
@@ -3556,6 +3751,7 @@
     <div class="tab" data-tab="social">🤝 Comm</div>
     <div class="tab" data-tab="leaderboard">📊 Leaderboard</div>
     <div class="tab" data-tab="quests">🏆 Profile</div>
+    <div class="tab" data-tab="mybets">🎫 My Bets</div>
   </div>
   </div>
 
@@ -3879,6 +4075,7 @@
         <div class="parlay-dot" data-action="goToMatch" data-idx="1"></div>
       </div>
     </div>
+    <div class="esports-ticker ticker-slot"><div class="ticker-track"></div></div>
     <div class="spacer"></div>
   </div>
 
@@ -3948,6 +4145,168 @@
         </div>
         <div class="quest-reward"><div class="qr-val">$3</div><div class="qr-label">Bonus</div></div>
       </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- ===== MY BETS ===== -->
+  <div class="section" id="mybets">
+    <div class="content-area" class="pt-16">
+      <div class="section-label">🎫 Bet History</div>
+
+      <!-- Filter tabs -->
+      <div class="mybets-filters">
+        <div class="mybets-filter active" data-action="filterBets" data-filter="all">All</div>
+        <div class="mybets-filter" data-action="filterBets" data-filter="open">Open</div>
+        <div class="mybets-filter" data-action="filterBets" data-filter="won">Won</div>
+        <div class="mybets-filter" data-action="filterBets" data-filter="lost">Lost</div>
+      </div>
+
+      <!-- Bet slips -->
+      <div class="mybets-list" id="mybetsList">
+
+        <div class="mybets-slip" data-status="open">
+          <div class="mybets-slip-header">
+            <div class="mybets-status open">⏳ OPEN</div>
+            <div class="mybets-date">Today · 2:14 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>NAVI ML</span><span class="mybets-leg-odds">1.72x</span></div>
+            <div class="mybets-leg"><span>Over 26.5 rounds</span><span class="mybets-leg-odds">1.91x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$10</strong></div>
+            <div class="mybets-payout">Potential: <strong class="txt-green-bold">$32.86</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="open">
+          <div class="mybets-slip-header">
+            <div class="mybets-status open">⏳ OPEN</div>
+            <div class="mybets-date">Today · 1:48 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>FaZe -1.5 maps</span><span class="mybets-leg-odds">2.19x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$5</strong></div>
+            <div class="mybets-payout">Potential: <strong class="txt-green-bold">$10.95</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="won">
+          <div class="mybets-slip-header">
+            <div class="mybets-status won">✅ WON</div>
+            <div class="mybets-date">Yesterday · 6:32 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>T1 ML · LoL</span><span class="mybets-leg-odds">1.45x</span></div>
+            <div class="mybets-leg"><span>G2 2-0 · CS2</span><span class="mybets-leg-odds">2.10x</span></div>
+            <div class="mybets-leg"><span>SEN ML · Valorant</span><span class="mybets-leg-odds">1.80x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$20</strong></div>
+            <div class="mybets-payout">Won: <strong class="txt-green-bold">+$109.62</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="lost">
+          <div class="mybets-slip-header">
+            <div class="mybets-status lost">❌ LOST</div>
+            <div class="mybets-date">Yesterday · 3:15 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>Loud upset · Valorant</span><span class="mybets-leg-odds">4.50x</span></div>
+            <div class="mybets-leg"><span>First blood &lt;1:30</span><span class="mybets-leg-odds">2.20x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$15</strong></div>
+            <div class="mybets-payout">Lost: <strong style="color:#ef4444;">-$15.00</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="won">
+          <div class="mybets-slip-header">
+            <div class="mybets-status won">✅ WON</div>
+            <div class="mybets-date">2 days ago · 8:10 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>NAVI ML · CS2</span><span class="mybets-leg-odds">1.65x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$25</strong></div>
+            <div class="mybets-payout">Won: <strong class="txt-green-bold">+$41.25</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="lost">
+          <div class="mybets-slip-header">
+            <div class="mybets-status lost">❌ LOST</div>
+            <div class="mybets-date">2 days ago · 5:45 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>OpTic ML · COD</span><span class="mybets-leg-odds">2.69x</span></div>
+            <div class="mybets-leg"><span>Over 3.5 maps</span><span class="mybets-leg-odds">1.75x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$10</strong></div>
+            <div class="mybets-payout">Lost: <strong style="color:#ef4444;">-$10.00</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="won">
+          <div class="mybets-slip-header">
+            <div class="mybets-status won">✅ WON</div>
+            <div class="mybets-date">3 days ago · 2:00 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>Gen.G ML · LoL</span><span class="mybets-leg-odds">1.30x</span></div>
+            <div class="mybets-leg"><span>Under 25.5 kills</span><span class="mybets-leg-odds">1.85x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$30</strong></div>
+            <div class="mybets-payout">Won: <strong class="txt-green-bold">+$72.15</strong></div>
+          </div>
+        </div>
+
+        <div class="mybets-slip" data-status="lost">
+          <div class="mybets-slip-header">
+            <div class="mybets-status lost">❌ LOST</div>
+            <div class="mybets-date">4 days ago · 7:22 PM</div>
+          </div>
+          <div class="mybets-legs">
+            <div class="mybets-leg"><span>Astralis ML · CS2</span><span class="mybets-leg-odds">3.20x</span></div>
+            <div class="mybets-leg"><span>Ace in match</span><span class="mybets-leg-odds">2.80x</span></div>
+            <div class="mybets-leg"><span>Pistol round win</span><span class="mybets-leg-odds">1.90x</span></div>
+          </div>
+          <div class="mybets-slip-footer">
+            <div class="mybets-stake">Stake: <strong>$5</strong></div>
+            <div class="mybets-payout">Lost: <strong style="color:#ef4444;">-$5.00</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Summary -->
+      <div class="mybets-summary">
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val">8</div>
+          <div class="mybets-summary-label">Total Bets</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" style="color:var(--green);">3W</div>
+          <div class="mybets-summary-label">Won</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" style="color:#ef4444;">3L</div>
+          <div class="mybets-summary-label">Lost</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" style="color:var(--green);">+$193.02</div>
+          <div class="mybets-summary-label">Net P/L</div>
+        </div>
+      </div>
+
     </div>
     <div class="spacer"></div>
   </div>
@@ -4045,7 +4404,6 @@
           </div>
           <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
-        <div class="tailing-counter"><span class="tailing-dot"></span> 12 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>NAVI ML · CS2</span><span class="shared-leg-status">✅</span></div>
           <div class="shared-leg"><span>T1 -1.5 · LoL</span><span class="shared-leg-status">✅</span></div>
@@ -4053,6 +4411,7 @@
         </div>
         <div class="sc-footer">
           <span>6.5x · $10 → $75</span>
+          <div class="tailing-counter"><span class="tailing-dot"></span> 12 people tailing</div>
           <div class="sc-actions">
             <span class="sc-action">❤️ 24</span>
             <span class="sc-action">🔁 8</span>
@@ -4070,13 +4429,13 @@
           </div>
           <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
-        <div class="tailing-counter"><span class="tailing-dot"></span> 31 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>Over 35.5 kills · LoL</span><span class="shared-leg-status">✅</span></div>
           <div class="shared-leg"><span>G2 2-0 · CS2</span><span class="shared-leg-status">✅</span></div>
         </div>
         <div class="sc-footer">
           <span>4.8x · $20 → $96 ✅</span>
+          <div class="tailing-counter"><span class="tailing-dot"></span> 31 people tailing</div>
           <div class="sc-actions">
             <span class="sc-action">❤️ 67</span>
             <span class="sc-action">🔁 31</span>
@@ -4094,7 +4453,6 @@
           </div>
           <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
-        <div class="tailing-counter"><span class="tailing-dot"></span> 5 people tailing</div>
         <div class="sc-body">
           <div class="shared-leg"><span>Loud upset · Valorant</span><span class="shared-leg-status">❌</span></div>
           <div class="shared-leg"><span>First blood &lt;1:30 · LoL</span><span class="shared-leg-status">✅</span></div>
@@ -4102,6 +4460,7 @@
         </div>
         <div class="sc-footer">
           <span>22x · $5 → $0 ❌</span>
+          <div class="tailing-counter"><span class="tailing-dot"></span> 5 people tailing</div>
           <div class="sc-actions">
             <span class="sc-action">❤️ 12</span>
             <span class="sc-action">🔁 2</span>
@@ -4247,7 +4606,7 @@
         <div class="lb-tab active" data-lb="alltime" data-action="selLbTab">🏆 All Time</div>
         <div class="lb-tab" data-lb="weekly" data-action="selLbTab">📅 Weekly</div>
         <div class="lb-tab" data-lb="streak" data-action="selLbTab">🔥 Streak</div>
-        <div class="lb-tab" data-lb="parlays" data-action="selLbTab">🎰 Parlays</div>
+        <div class="lb-tab" data-lb="parlays" data-action="selLbTab">💰 Parlays</div>
       </div>
 
       <div id="lbRows"></div>
@@ -6854,6 +7213,50 @@
     } catch(err) { console.error('fireStreamBet error:', err); }
   }
 
+  // === ESPORTS TICKER ===
+  const tickerGames = [
+    { time: 'Tomorrow 2:00 PM', game: 'CS2 · BLAST', teamA: 'NAVI', teamB: 'G2', colorA: '#f0c800', colorB: '#111' },
+    { time: 'Tomorrow 4:30 PM', game: 'LoL · LCK', teamA: 'T1', teamB: 'Gen.G', colorA: '#e2012d', colorB: '#aa8b2a' },
+    { time: 'Tomorrow 6:00 PM', game: 'Valorant · VCT', teamA: 'SEN', teamB: 'LOUD', colorA: '#e6164a', colorB: '#78d64b' },
+    { time: 'Fri 1:00 PM', game: 'CS2 · EPL', teamA: 'Vitality', teamB: 'Astralis', colorA: '#ffcb00', colorB: '#ff6900' },
+    { time: 'Fri 3:30 PM', game: 'COD · CDL', teamA: 'FaZe', teamB: 'OpTic', colorA: '#e00', colorB: '#6bc44c' },
+    { time: 'Fri 5:00 PM', game: 'Dota 2 · ESL', teamA: 'Spirit', teamB: 'Gaimin', colorA: '#4a9ad9', colorB: '#8b5cf6' },
+    { time: 'Sat 12:00 PM', game: 'Valorant · VCT', teamA: 'DRX', teamB: '100T', colorA: '#5ba0e0', colorB: '#e2012d' },
+    { time: 'Sat 4:00 PM', game: 'LoL · LEC', teamA: 'G2', teamB: 'Fnatic', colorA: '#111', colorB: '#ff5900' },
+  ];
+
+  function renderTickerCard(g) {
+    const dotA = `<span style="width:10px;height:10px;border-radius:50%;background:${g.colorA};flex-shrink:0;display:inline-block;"></span>`;
+    const dotB = `<span style="width:10px;height:10px;border-radius:50%;background:${g.colorB};flex-shrink:0;display:inline-block;"></span>`;
+    return `<div class="ticker-card">
+      <div class="ticker-header"><div class="ticker-time">${g.time}</div><span class="ticker-time">${g.game}</span></div>
+      <div class="ticker-team">${dotA}<span class="ticker-team-name">${g.teamA}</span></div>
+      <div class="ticker-team">${dotB}<span class="ticker-team-name">${g.teamB}</span></div>
+    </div>`;
+  }
+
+  (function initTicker() {
+    const html = tickerGames.map(renderTickerCard).join('');
+    document.querySelectorAll('.ticker-slot .ticker-track').forEach(track => {
+      track.innerHTML = html + html; // duplicate for seamless loop
+    });
+  })();
+
+  // === MY BETS FILTER ===
+  function filterBets(el) {
+    document.querySelectorAll('.mybets-filter').forEach(f => f.classList.remove('active'));
+    el.classList.add('active');
+    const filter = el.getAttribute('data-filter');
+    document.querySelectorAll('.mybets-slip').forEach(slip => {
+      const status = slip.getAttribute('data-status');
+      if (filter === 'all' || status === filter) {
+        slip.classList.remove('hidden');
+      } else {
+        slip.classList.add('hidden');
+      }
+    });
+  }
+
   // === CENTRALIZED EVENT DELEGATION ===
   // All click/touch events routed through a single handler
   // No more inline onclick - everything uses data-action attributes
@@ -6909,6 +7312,9 @@
       // Social
       case 'tailBet': tailBet(target); break;
       case 'copyShare': target.textContent = '✅ Copied!'; break;
+
+      // My Bets
+      case 'filterBets': filterBets(target); break;
 
       // Receipt
       case 'dismissReceipt': dismissReceipt(); break;
