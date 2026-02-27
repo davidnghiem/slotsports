@@ -2970,7 +2970,7 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 7px 10px;
-    min-width: 150px;
+    width: 145px;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -3184,6 +3184,7 @@
   .mybets-filters {
     display: flex;
     gap: 8px;
+    margin-top: 12px;
     margin-bottom: 16px;
   }
   .mybets-filter {
@@ -3268,7 +3269,7 @@
   .mybets-summary {
     display: flex;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 0;
     padding: 14px;
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -4081,7 +4082,7 @@
 
   <!-- ===== QUESTS ===== -->
   <div class="section" id="quests">
-    <div class="content-area" class="pt-16">
+    <div class="content-area pt-16">
       <div class="profile-card">
         <div class="profile-rank-name">Diamond Roller</div>
         <div class="profile-elo">1,847</div>
@@ -4151,8 +4152,28 @@
 
   <!-- ===== MY BETS ===== -->
   <div class="section" id="mybets">
-    <div class="content-area" class="pt-16">
+    <div class="content-area pt-16">
       <div class="section-label">🎫 Bet History</div>
+
+      <!-- Summary -->
+      <div class="mybets-summary" id="mybetsSummary">
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" id="mbTotal">8</div>
+          <div class="mybets-summary-label">Total Bets</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" id="mbWon" style="color:var(--green);">3W</div>
+          <div class="mybets-summary-label">Won</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" id="mbLost" style="color:#ef4444;">3L</div>
+          <div class="mybets-summary-label">Lost</div>
+        </div>
+        <div class="mybets-summary-item">
+          <div class="mybets-summary-val" id="mbPL" style="color:var(--green);">+$193.02</div>
+          <div class="mybets-summary-label">Net P/L</div>
+        </div>
+      </div>
 
       <!-- Filter tabs -->
       <div class="mybets-filters">
@@ -4287,33 +4308,13 @@
 
       </div>
 
-      <!-- Summary -->
-      <div class="mybets-summary">
-        <div class="mybets-summary-item">
-          <div class="mybets-summary-val">8</div>
-          <div class="mybets-summary-label">Total Bets</div>
-        </div>
-        <div class="mybets-summary-item">
-          <div class="mybets-summary-val" style="color:var(--green);">3W</div>
-          <div class="mybets-summary-label">Won</div>
-        </div>
-        <div class="mybets-summary-item">
-          <div class="mybets-summary-val" style="color:#ef4444;">3L</div>
-          <div class="mybets-summary-label">Lost</div>
-        </div>
-        <div class="mybets-summary-item">
-          <div class="mybets-summary-val" style="color:var(--green);">+$193.02</div>
-          <div class="mybets-summary-label">Net P/L</div>
-        </div>
-      </div>
-
     </div>
     <div class="spacer"></div>
   </div>
 
   <!-- ===== SOCIAL ===== -->
   <div class="section" id="social">
-    <div class="content-area" class="pt-16">
+    <div class="content-area pt-16">
 
       <!-- Squad Parlays / Shared Pots -->
       <div class="section-label">🤝 Squad Parlays — Shared Pots</div>
@@ -4474,7 +4475,7 @@
 
   <!-- ===== REROLL (Second Chance) ===== -->
   <div class="section" id="reroll">
-    <div class="content-area" class="pt-16">
+    <div class="content-area pt-16">
       <div class="section-label">🎲 Second Chance — Reroll Missed Legs</div>
 
       <!-- Active near-miss slip -->
@@ -4595,7 +4596,7 @@
 
   <!-- ===== LEADERBOARD ===== -->
   <div class="section" id="leaderboard">
-    <div class="content-area" class="pt-16">
+    <div class="content-area pt-16">
       <div class="lb-header-card">
         <div class="lb-your-rank-label">Your Rank</div>
         <div class="lb-your-rank">#47</div>
@@ -7215,9 +7216,9 @@
 
   // === ESPORTS TICKER ===
   const tickerGames = [
-    { time: 'Tomorrow 2:00 PM', game: 'CS2 · BLAST', teamA: 'NAVI', teamB: 'G2', colorA: '#f0c800', colorB: '#111' },
-    { time: 'Tomorrow 4:30 PM', game: 'LoL · LCK', teamA: 'T1', teamB: 'Gen.G', colorA: '#e2012d', colorB: '#aa8b2a' },
-    { time: 'Tomorrow 6:00 PM', game: 'Valorant · VCT', teamA: 'SEN', teamB: 'LOUD', colorA: '#e6164a', colorB: '#78d64b' },
+    { time: 'Tmrw 2:00 PM', game: 'CS2 · BLAST', teamA: 'NAVI', teamB: 'G2', colorA: '#f0c800', colorB: '#111' },
+    { time: 'Tmrw 4:30 PM', game: 'LoL · LCK', teamA: 'T1', teamB: 'Gen.G', colorA: '#e2012d', colorB: '#aa8b2a' },
+    { time: 'Tmrw 6:00 PM', game: 'Valorant · VCT', teamA: 'SEN', teamB: 'LOUD', colorA: '#e6164a', colorB: '#78d64b' },
     { time: 'Fri 1:00 PM', game: 'CS2 · EPL', teamA: 'Vitality', teamB: 'Astralis', colorA: '#ffcb00', colorB: '#ff6900' },
     { time: 'Fri 3:30 PM', game: 'COD · CDL', teamA: 'FaZe', teamB: 'OpTic', colorA: '#e00', colorB: '#6bc44c' },
     { time: 'Fri 5:00 PM', game: 'Dota 2 · ESL', teamA: 'Spirit', teamB: 'Gaimin', colorA: '#4a9ad9', colorB: '#8b5cf6' },
@@ -7247,14 +7248,27 @@
     document.querySelectorAll('.mybets-filter').forEach(f => f.classList.remove('active'));
     el.classList.add('active');
     const filter = el.getAttribute('data-filter');
+    let shown = 0, won = 0, lost = 0, open = 0;
     document.querySelectorAll('.mybets-slip').forEach(slip => {
       const status = slip.getAttribute('data-status');
       if (filter === 'all' || status === filter) {
         slip.classList.remove('hidden');
+        shown++;
+        if (status === 'won') won++;
+        if (status === 'lost') lost++;
+        if (status === 'open') open++;
       } else {
         slip.classList.add('hidden');
       }
     });
+    document.getElementById('mbTotal').textContent = shown;
+    document.getElementById('mbWon').textContent = won + 'W';
+    document.getElementById('mbLost').textContent = lost + 'L';
+    // Update P/L based on filter
+    const plMap = { all: '+$193.02', open: '$0.00', won: '+$223.02', lost: '-$30.00' };
+    const plEl = document.getElementById('mbPL');
+    plEl.textContent = plMap[filter] || '+$193.02';
+    plEl.style.color = filter === 'lost' ? '#ef4444' : 'var(--green)';
   }
 
   // === CENTRALIZED EVENT DELEGATION ===
