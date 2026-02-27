@@ -931,8 +931,11 @@
   .stream-bet-panel {
     position: relative;
     background: rgba(0,0,0,0.95);
-    padding: 16px 16px 24px;
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom, 0px));
     z-index: 50;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
   }
   .stream-bet-question {
     font-size: 13px;
@@ -981,10 +984,11 @@
     display: flex;
     gap: 6px;
     justify-content: center;
-    margin-bottom: 12px;
+    align-items: center;
+    margin-bottom: 0;
   }
   .stream-chip {
-    padding: 5px 14px;
+    padding: 8px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
@@ -999,25 +1003,7 @@
     border-color: var(--green);
     background: rgba(29,185,84,0.1);
   }
-  .stream-fire-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--green);
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--bg);
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
-  .stream-fire-btn.inactive {
-    background: rgba(255,255,255,0.06);
-    color: var(--text-dim);
-    cursor: not-allowed;
-  }
+  /* stream bet button - rebuilt via JS */
 
   .lm-teams {
     display: flex;
@@ -2828,11 +2814,13 @@
     z-index: 10001;
     transition: transform 0.4s cubic-bezier(0.32,0.72,0,1), opacity 0.4s;
     opacity: 0;
+    pointer-events: none;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(29,185,84,0.1);
   }
   .bet-receipt-toast.show {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
+    pointer-events: auto;
   }
   .brt-header {
     display: flex;
@@ -3514,6 +3502,14 @@
     font-size: 10px;
     color: var(--text-muted);
   }
+
+  /* Utility classes (refactored from inline styles) */
+  .txt-dim-sm { font-size: 12px; color: var(--text-dim); }
+  .txt-dim-xs { font-size: 10px; color: var(--text-dim); }
+  .txt-green-bold { color: var(--green); font-weight: 700; }
+  .pt-16 { padding-top: 16px; }
+  .mt-8 { margin-top: 8px; }
+
 </style>
 </head>
 <body>
@@ -3546,8 +3542,8 @@
         <span class="balance-icon">$</span>
         $2,340.50
       </div>
-      <div class="icon-btn has-bonus" onclick="openRollBoost()">💎<span class="notif-dot"></span></div>
-      <div class="icon-btn" onclick="navigateToTab('quests')">👤</div>
+      <div class="icon-btn has-bonus" data-action="openRollBoost">💎<span class="notif-dot"></span></div>
+      <div class="icon-btn" data-action="navigateToQuests">👤</div>
     </div>
   </div>
 
@@ -3658,12 +3654,12 @@
           <div class="micro-result-emoji" id="microResultEmoji">🎉</div>
           <div class="micro-result-text" id="microResultText">+$8.25</div>
           <div class="micro-result-sub" id="microResultSub">NAVI won Round 15</div>
-          <div class="micro-result-share" id="microResultShare" onclick="this.textContent='✅ Copied!'">📤 Share Win</div>
+          <div class="micro-result-share" id="microResultShare" data-action="copyShare">📤 Share Win</div>
         </div>
         <div class="lm-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="lm-live"><span class="live-dot"></span> LIVE</div>
-            <button class="watch-live-btn" onclick="openStream(0)">▶ Watch</button>
+            <button class="watch-live-btn" data-action="openStream" data-idx="0">▶ Watch</button>
           </div>
           <div class="lm-game">CS2 · BLAST Premier · Map 2</div>
         </div>
@@ -3720,30 +3716,30 @@
           </div>
           <div class="micro-question">Who wins Round 15?</div>
           <div class="micro-options">
-            <div class="micro-opt" onclick="selOpt(this)">
+            <div class="micro-opt" data-action="selOpt">
               <div class="opt-team"><span class="navi-logo"></span> NAVI</div>
               <div class="opt-odds">1.65x</div>
             </div>
-            <div class="micro-opt" onclick="selOpt(this)">
+            <div class="micro-opt" data-action="selOpt">
               <div class="opt-team"><span class="vit-logo"></span> Vitality</div>
               <div class="opt-odds">2.20x</div>
             </div>
           </div>
           <div class="amount-row">
-            <div class="amt-chip" onclick="selAmt(this)">$1</div>
-            <div class="amt-chip selected" onclick="selAmt(this)">$5</div>
-            <div class="amt-chip" onclick="selAmt(this)">$10</div>
-            <div class="amt-chip" onclick="selAmt(this)">$25</div>
+            <div class="amt-chip" data-action="selAmt">$1</div>
+            <div class="amt-chip selected" data-action="selAmt">$5</div>
+            <div class="amt-chip" data-action="selAmt">$10</div>
+            <div class="amt-chip" data-action="selAmt">$25</div>
           </div>
-          <button class="fire-btn inactive" onclick="fireBet()">BET</button>
+          <button class="fire-btn inactive" data-action="fireBet">BET</button>
 
           <!-- Buy the Bonus (inline below bet) -->
           <div class="buy-bonus bb-inline" id="buyBonusCard">
             <div class="bb-compact">
               <div class="bb-tag">🎰 BUY THE BONUS</div>
               <div class="bb-compact-row">
-                <button class="bb-btn bb-btn-muted" onclick="event.stopPropagation(); buyBonus()">BUY IN – $25</button>
-                <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
+                <button class="bb-btn bb-btn-muted" data-action="buyBonus">BUY IN – $25</button>
+                <button class="bb-info-btn" data-action="toggleBonusInfo">i</button>
               </div>
             </div>
             <div class="bb-details" id="bbDetails">
@@ -3772,7 +3768,7 @@
         <div class="lm-header">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="lm-live"><span class="live-dot"></span> LIVE</div>
-            <button class="watch-live-btn" onclick="openStream(1)">▶ Watch</button>
+            <button class="watch-live-btn" data-action="openStream" data-idx="1">▶ Watch</button>
           </div>
           <div class="lm-game">COD · CDL Major IV · Map 3</div>
         </div>
@@ -3829,29 +3825,39 @@
           </div>
           <div class="micro-question">Who wins Hardpoint Map 3?</div>
           <div class="micro-options">
-            <div class="micro-opt" onclick="selOpt(this)">
+            <div class="micro-opt" data-action="selOpt">
               <div class="opt-team"><span class="faze-logo"></span> FaZe</div>
               <div class="opt-odds">1.72x</div>
             </div>
-            <div class="micro-opt" onclick="selOpt(this)">
+            <div class="micro-opt" data-action="selOpt">
               <div class="opt-team"><span class="optic-logo"></span> OpTic</div>
               <div class="opt-odds">2.15x</div>
             </div>
           </div>
           <div class="amount-row">
-            <div class="amt-chip" onclick="selAmt(this)">$1</div>
-            <div class="amt-chip selected" onclick="selAmt(this)">$5</div>
-            <div class="amt-chip" onclick="selAmt(this)">$10</div>
-            <div class="amt-chip" onclick="selAmt(this)">$25</div>
+            <div class="amt-chip" data-action="selAmt">$1</div>
+            <div class="amt-chip selected" data-action="selAmt">$5</div>
+            <div class="amt-chip" data-action="selAmt">$10</div>
+            <div class="amt-chip" data-action="selAmt">$25</div>
           </div>
-          <button class="fire-btn inactive" onclick="fireBet()">BET</button>
+          <button class="fire-btn inactive" data-action="fireBet">BET</button>
 
           <div class="buy-bonus bb-inline">
             <div class="bb-compact">
               <div class="bb-tag">🎰 BUY THE BONUS</div>
               <div class="bb-compact-row">
-                <button class="bb-btn bb-btn-muted" onclick="event.stopPropagation(); buyBonus()">BUY IN – $25</button>
-                <button class="bb-info-btn" onclick="event.stopPropagation(); toggleBonusInfo()">i</button>
+                <button class="bb-btn bb-btn-muted" data-action="buyBonus">BUY IN – $25</button>
+                <button class="bb-info-btn" data-action="toggleBonusInfo">i</button>
+              </div>
+            </div>
+            <div class="bb-details">
+              <div class="bb-title">Dicey Bonus Session</div>
+              <div class="bb-desc">10-min premium live session. Boosted odds, exclusive micro-markets, 3x bonus triggers.</div>
+              <div class="bb-perks">
+                <span class="bb-perk">✨ 2x payouts</span>
+                <span class="bb-perk">🎯 Exclusive markets</span>
+                <span class="bb-perk">🔥 3x bonuses</span>
+                <span class="bb-perk">⏱️ 10 min</span>
               </div>
             </div>
           </div>
@@ -3869,8 +3875,8 @@
       </div><!-- end lm-swiper -->
 
       <div class="lm-dots" id="lmDots">
-        <div class="parlay-dot active" onclick="goToMatch(0)"></div>
-        <div class="parlay-dot" onclick="goToMatch(1)"></div>
+        <div class="parlay-dot active" data-action="goToMatch" data-idx="0"></div>
+        <div class="parlay-dot" data-action="goToMatch" data-idx="1"></div>
       </div>
     </div>
     <div class="spacer"></div>
@@ -3878,7 +3884,7 @@
 
   <!-- ===== QUESTS ===== -->
   <div class="section" id="quests">
-    <div class="content-area" style="padding-top:16px;">
+    <div class="content-area" class="pt-16">
       <div class="profile-card">
         <div class="profile-rank-name">Diamond Roller</div>
         <div class="profile-elo">1,847</div>
@@ -3901,7 +3907,7 @@
         <div class="ach off"><div class="ach-icon">⚡<svg class="ach-ring" viewBox="0 0 48 48"><circle class="ring-bg" cx="24" cy="24" r="22"/><circle class="ring-fill" cx="24" cy="24" r="22" stroke-dasharray="138" stroke-dashoffset="83" transform="rotate(-90 24 24)"/></svg></div><div class="ach-name">Speed Demon (40%)</div></div>
       </div>
 
-      <div class="section-label" style="margin-top:8px;">📋 Active Quests</div>
+      <div class="section-label" class="mt-8">📋 Active Quests</div>
 
       <div class="quest-card">
         <div class="quest-emoji">🎯</div>
@@ -3948,7 +3954,7 @@
 
   <!-- ===== SOCIAL ===== -->
   <div class="section" id="social">
-    <div class="content-area" style="padding-top:16px;">
+    <div class="content-area" class="pt-16">
 
       <!-- Squad Parlays / Shared Pots -->
       <div class="section-label">🤝 Squad Parlays — Shared Pots</div>
@@ -3984,16 +3990,16 @@
           </div>
         </div>
         <div class="squad-body">
-          <div class="shared-leg"><span>NAVI ML · CS2</span><span style="color:var(--green);font-weight:700">1.50x</span></div>
-          <div class="shared-leg"><span>Over 26.5 rounds · Map 1</span><span style="color:var(--green);font-weight:700">1.85x</span></div>
-          <div class="shared-leg"><span>s1mple MVP</span><span style="color:var(--green);font-weight:700">3.20x</span></div>
+          <div class="shared-leg"><span>NAVI ML · CS2</span><span class="txt-green-bold">1.50x</span></div>
+          <div class="shared-leg"><span>Over 26.5 rounds · Map 1</span><span class="txt-green-bold">1.85x</span></div>
+          <div class="shared-leg"><span>s1mple MVP</span><span class="txt-green-bold">3.20x</span></div>
         </div>
         <div class="squad-footer">
           <div class="squad-status">
             <span class="live-dot"></span>
             <span>Starts in 23 min · 8.9x payout</span>
           </div>
-          <button class="squad-join-btn" onclick="openSquadJoin(0)">Join $20</button>
+          <button class="squad-join-btn" data-action="openSquadJoin" data-idx="0">Join $20</button>
         </div>
       </div>
 
@@ -4024,11 +4030,11 @@
         </div>
         <div class="squad-footer">
           <div class="squad-status">Full · 24.5x payout</div>
-          <button class="squad-join-btn" onclick="openSquadJoin(1)">Join $25</button>
+          <button class="squad-join-btn" data-action="openSquadJoin" data-idx="1">Join $25</button>
         </div>
       </div>
 
-      <div class="section-label" style="margin-top:8px;">🤝 Tailgate Feed</div>
+      <div class="section-label" class="mt-8">🤝 Tailgate Feed</div>
 
       <div class="share-card">
         <div class="sc-header">
@@ -4037,7 +4043,7 @@
             <div class="sc-username">degenDave 🔥</div>
             <div class="sc-time">2 min ago · ELO 2,103</div>
           </div>
-          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+          <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
         <div class="tailing-counter"><span class="tailing-dot"></span> 12 people tailing</div>
         <div class="sc-body">
@@ -4062,7 +4068,7 @@
             <div class="sc-username">sharpShelly 🎯</div>
             <div class="sc-time">12 min ago · ELO 1,956</div>
           </div>
-          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+          <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
         <div class="tailing-counter"><span class="tailing-dot"></span> 31 people tailing</div>
         <div class="sc-body">
@@ -4086,7 +4092,7 @@
             <div class="sc-username">KingCrypto 👑</div>
             <div class="sc-time">28 min ago · ELO 2,441</div>
           </div>
-          <button class="tail-btn" onclick="tailBet(this)">🎯 Tail</button>
+          <button class="tail-btn" data-action="tailBet">🎯 Tail</button>
         </div>
         <div class="tailing-counter"><span class="tailing-dot"></span> 5 people tailing</div>
         <div class="sc-body">
@@ -4109,7 +4115,7 @@
 
   <!-- ===== REROLL (Second Chance) ===== -->
   <div class="section" id="reroll">
-    <div class="content-area" style="padding-top:16px;">
+    <div class="content-area" class="pt-16">
       <div class="section-label">🎲 Second Chance — Reroll Missed Legs</div>
 
       <!-- Active near-miss slip -->
@@ -4185,13 +4191,13 @@
             </div>
           </div>
 
-          <button class="reroll-btn" onclick="doReroll()">🎲 REROLL LAST LEG — $8</button>
+          <button class="reroll-btn" data-action="doReroll">🎲 REROLL LAST LEG — $8</button>
           <div class="reroll-note">House edge applies. New leg selected from available live markets.</div>
         </div>
       </div>
 
       <!-- Past slips -->
-      <div class="section-label" style="margin-top:8px;">📜 Recent Near-Misses</div>
+      <div class="section-label" class="mt-8">📜 Recent Near-Misses</div>
 
       <div class="old-slip-mini">
         <div class="old-slip-info">
@@ -4230,7 +4236,7 @@
 
   <!-- ===== LEADERBOARD ===== -->
   <div class="section" id="leaderboard">
-    <div class="content-area" style="padding-top:16px;">
+    <div class="content-area" class="pt-16">
       <div class="lb-header-card">
         <div class="lb-your-rank-label">Your Rank</div>
         <div class="lb-your-rank">#47</div>
@@ -4238,10 +4244,10 @@
       </div>
 
       <div class="lb-tabs">
-        <div class="lb-tab active" data-lb="alltime" onclick="selLbTab(this)">🏆 All Time</div>
-        <div class="lb-tab" data-lb="weekly" onclick="selLbTab(this)">📅 Weekly</div>
-        <div class="lb-tab" data-lb="streak" onclick="selLbTab(this)">🔥 Streak</div>
-        <div class="lb-tab" data-lb="parlays" onclick="selLbTab(this)">🎰 Parlays</div>
+        <div class="lb-tab active" data-lb="alltime" data-action="selLbTab">🏆 All Time</div>
+        <div class="lb-tab" data-lb="weekly" data-action="selLbTab">📅 Weekly</div>
+        <div class="lb-tab" data-lb="streak" data-action="selLbTab">🔥 Streak</div>
+        <div class="lb-tab" data-lb="parlays" data-action="selLbTab">🎰 Parlays</div>
       </div>
 
       <div id="lbRows"></div>
@@ -4251,7 +4257,7 @@
 </div>
 <!-- ROLL FOR BOOST OVERLAY -->
 <div class="roll-overlay" id="rollOverlay">
-  <button class="roll-overlay-close" onclick="closeRollBoost()">✕</button>
+  <button class="roll-overlay-close" data-action="closeRollBoost">✕</button>
   <div class="roll-overlay-card">
     <div class="roll-boost-label">🎲 Roll for Your Boost</div>
     <div class="roll-boost-title">Spin to Win a Payout Boost</div>
@@ -4270,7 +4276,7 @@
       <div class="boost-prize" data-val="50">50% boost</div>
     </div>
 
-    <button class="roll-btn" id="rollBtn" onclick="rollForBoost()">🎲 ROLL THE DICE</button>
+    <button class="roll-btn" id="rollBtn" data-action="rollForBoost">🎲 ROLL THE DICE</button>
 
     <div class="boost-result" id="boostResult">
       <div class="boost-result-text" id="boostResultText"></div>
@@ -4280,7 +4286,7 @@
 </div>
 
 <div class="resolution-overlay" id="resOverlay">
-  <button class="close-overlay" onclick="closeRes()">✕</button>
+  <button class="close-overlay" data-action="closeRes">✕</button>
   <div class="resolution-reel" id="resReel"></div>
   <div class="res-result" id="resResult"></div>
 </div>
@@ -4297,7 +4303,7 @@
       <div class="toast-sub" id="toastSub">NAVI Win · 1.65x · $5</div>
     </div>
   </div>
-  <button class="toast-btn" onclick="placeBet()">Bet Receipt</button>
+  <button class="toast-btn" data-action="placeBet">Bet Receipt</button>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -4372,7 +4378,30 @@
   let selectedTeam = null;
   let selectedAmount = 5;
 
+  // === UNIFIED TOGGLE/SELECT UTILITIES ===
+  function toggleSelect(el, siblingSelector, onSelect, onDeselect) {
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+      if (onDeselect) onDeselect();
+      return;
+    }
+    document.querySelectorAll(siblingSelector).forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    if (onSelect) onSelect(el);
+  }
+
+  function updateBtnState(btnSelector, hasSelection) {
+    const btn = document.querySelector(btnSelector);
+    if (!btn) return;
+    if (hasSelection) {
+      btn.classList.remove('inactive');
+    } else {
+      btn.classList.add('inactive');
+    }
+  }
+
   function updateBetBtn() {
+    updateBtnState('.fire-btn', document.querySelector('.micro-opt.selected'));
     document.querySelectorAll('.fire-btn').forEach(b => {
       if (document.querySelector('.micro-opt.selected')) {
         b.classList.remove('inactive');
@@ -4383,15 +4412,10 @@
   }
 
   function selOpt(el) {
-    if (el.classList.contains('selected')) {
-      el.classList.remove('selected');
-      selectedTeam = '';
-      updateBetBtn();
-      return;
-    }
-    document.querySelectorAll('.micro-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedTeam = el.querySelector('.opt-team').textContent;
+    toggleSelect(el, '.micro-opt', 
+      (e) => { selectedTeam = e.querySelector('.opt-team').textContent; },
+      () => { selectedTeam = ''; }
+    );
     updateBetBtn();
   }
 
@@ -4629,11 +4653,13 @@
     }
   }
 
-  function toggleBonusInfo() {
-    const details = document.getElementById('bbDetails');
-    const btn = document.querySelector('.bb-info-btn');
-    details.classList.toggle('open');
-    btn.classList.toggle('active');
+  function toggleBonusInfo(el) {
+    // Find the details panel in the same match card as the clicked button
+    const card = el ? el.closest('.lm-slide, .match-card') : null;
+    const details = card ? card.querySelector('.bb-details') : document.getElementById('bbDetails');
+    const btn = el || document.querySelector('.bb-info-btn');
+    if (details) details.classList.toggle('open');
+    if (btn) btn.classList.toggle('active');
   }
 
   function flash(color) {
@@ -4720,7 +4746,7 @@
         <div class="second-chance">
           <div class="sc-label">🎲 Second Chance</div>
           <div class="sc-text">Pay <strong>$3</strong> to re-roll the missed leg</div>
-          <button class="sc-btn" onclick="reroll()">🎲 Roll Again – $3</button>
+          <button class="sc-btn" data-action="reroll">🎲 Roll Again – $3</button>
         </div>
       `;
       result.classList.add('show');
@@ -5396,13 +5422,6 @@
     return audioCtx;
   }
 
-  function toggleSound() {
-    soundEnabled = !soundEnabled;
-    const btn = document.getElementById('soundToggle');
-    btn.textContent = soundEnabled ? '🔊' : '🔇';
-    btn.classList.toggle('muted', !soundEnabled);
-  }
-
   function playSound(type) {
     if (!soundEnabled) return;
     try {
@@ -5785,7 +5804,7 @@
         <div class="parlay-legs">${legsHtml}</div>
         <div class="parlay-footer">
           <div class="parlay-meta"><span>👥 ${data.plays} plays</span></div>
-          <button class="play-btn" onclick="event.stopPropagation(); simulateResolution('${data.resType}')">Play ${data.bet}</button>
+          <button class="play-btn" data-action="simulateResolution" data-res-type="${data.resType}">Play ${data.bet}</button>
         </div>
       </div>
     `;
@@ -5794,7 +5813,7 @@
   function renderDots() {
     const dots = document.getElementById('parlayDots');
     dots.innerHTML = parlayData.map((_, i) =>
-      `<div class="parlay-dot ${i === currentParlayIdx ? 'active' : ''}" onclick="goToParlay(${i})"></div>`
+      `<div class="parlay-dot ${i === currentParlayIdx ? 'active' : ''}" data-action="goToParlay" data-idx="${i}"></div>`
     ).join('');
   }
 
@@ -6316,7 +6335,7 @@
 
     // Update picks
     const picksHTML = sq.picks.map((p, i) =>
-      `<div class="sj-pick" onclick="selectSquadPick(this, ${i})">
+      `<div class="sj-pick" data-action="selectSquadPick" data-idx="${i}">
         <div class="sj-pick-radio"></div>
         <div class="sj-pick-info">
           <div class="sj-pick-name">${p.name}</div>
@@ -6330,7 +6349,7 @@
     // Update amounts
     const amounts = sq.minBuy === 25 ? [25, 50, 75, 100] : [20, 30, 50, 100];
     const amtHTML = amounts.map((a, i) =>
-      `<div class="sj-amt${i === (sq.minBuy === 25 ? 0 : 1) ? ' selected' : ''}" onclick="selectSquadAmt(this, ${a})">$${a}</div>`
+      `<div class="sj-amt${i === (sq.minBuy === 25 ? 0 : 1) ? ' selected' : ''}" data-action="selectSquadAmt" data-amt="${a}">$${a}</div>`
     ).join('');
     document.getElementById('sjAmountRow').innerHTML = amtHTML;
     sjSelectedAmt = amounts[sq.minBuy === 25 ? 0 : 1];
@@ -6417,7 +6436,7 @@
       if (body) {
         const newLeg = document.createElement('div');
         newLeg.className = 'shared-leg';
-        newLeg.innerHTML = `<span>${pick.name} <span style="font-size:9px;color:var(--green);background:var(--green-dim);padding:1px 5px;border-radius:3px;margin-left:4px;">YOUR PICK</span></span><span style="color:var(--green);font-weight:700">${pick.odds.toFixed(2)}x</span>`;
+        newLeg.innerHTML = `<span>${pick.name} <span style="font-size:9px;color:var(--green);background:var(--green-dim);padding:1px 5px;border-radius:3px;margin-left:4px;">YOUR PICK</span></span><span class="txt-green-bold">${pick.odds.toFixed(2)}x</span>`;
         newLeg.style.animation = 'slideUp 0.3s ease-out';
         body.appendChild(newLeg);
       }
@@ -6483,7 +6502,7 @@
     for (let i = 0; i < 10; i++) {
       setTimeout(() => {
         const p = document.createElement('div');
-        const emojis = ['🎯','🤝','💰','✨','🎉'];
+        const emojis = ['🎲'];
         p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         p.style.cssText = `position:fixed;top:-20px;left:${Math.random()*100}%;font-size:${14+Math.random()*12}px;z-index:10002;pointer-events:none;animation:confettiFall ${2+Math.random()*2}s linear forwards;`;
         document.body.appendChild(p);
@@ -6491,13 +6510,6 @@
       }, i * 80);
     }
   }
-
-  // Attach confirm button listener (more reliable than inline onclick in iframe contexts)
-  document.getElementById('sjConfirmBtn').addEventListener('click', confirmSquadJoin);
-  document.getElementById('sjConfirmBtn').addEventListener('touchend', function(e) {
-    e.preventDefault();
-    if (!this.disabled) confirmSquadJoin();
-  });
 
   function dismissReceipt() {
     document.getElementById('betReceiptToast').classList.remove('show');
@@ -6527,14 +6539,10 @@
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    document.querySelector('.bottom-nav').style.display = 'none';
     // Reset selections
     document.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
-    const streamBtn = document.querySelector('.stream-fire-btn');
-    streamBtn.classList.add('inactive');
-    streamBtn.textContent = 'BET';
-    streamBtn.style.background = '';
-    streamBtn.style.color = '';
-    streamBtn.style.border = '';
+    rebuildStreamBetBtn();
     startStreamCanvas(matchIdx);
     startStreamTimer();
   }
@@ -6543,6 +6551,7 @@
     const overlay = document.getElementById('streamOverlay');
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    document.querySelector('.bottom-nav').style.display = '';
     if (streamAnimFrame) cancelAnimationFrame(streamAnimFrame);
     if (streamTimerInterval) clearInterval(streamTimerInterval);
   }
@@ -6691,22 +6700,24 @@
   }
 
   function updateStreamBetBtn() {
-    const btn = document.querySelector('.stream-fire-btn');
-    if (document.querySelector('.stream-bet-opt.selected')) {
-      btn.classList.remove('inactive');
+    const btn = document.getElementById('streamBetBtn');
+    if (!btn) return;
+    const hasSel = !!document.querySelector('.stream-bet-opt.selected');
+    if (hasSel) {
+      btn.style.background = 'var(--green)';
+      btn.style.color = 'var(--bg)';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.cursor = 'pointer';
     } else {
-      btn.classList.add('inactive');
+      btn.style.background = 'rgba(255,255,255,0.06)';
+      btn.style.color = 'var(--text-dim)';
+      btn.style.borderColor = 'rgba(255,255,255,0.1)';
+      btn.style.cursor = 'not-allowed';
     }
   }
 
   function selectStreamOpt(el) {
-    if (el.classList.contains('selected')) {
-      el.classList.remove('selected');
-      updateStreamBetBtn();
-      return;
-    }
-    el.parentElement.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
+    toggleSelect(el, '.stream-bet-opt', null, null);
     updateStreamBetBtn();
   }
 
@@ -6715,12 +6726,40 @@
     el.classList.add('active');
   }
 
+  // Build the stream bet button fresh via JS - no HTML button element
+  function rebuildStreamBetBtn() {
+    const wrap = document.getElementById('streamBetBtnWrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const btn = document.createElement('div');
+    btn.id = 'streamBetBtn';
+    btn.textContent = 'BET';
+    btn.style.cssText = 'display:flex;align-items:center;justify-content:center;padding:8px 35px;background:rgba(255,255,255,0.06);color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);border-radius:20px;font-size:12px;font-weight:800;text-align:center;cursor:not-allowed;letter-spacing:1px;text-transform:uppercase;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(29,185,84,0.3);box-sizing:border-box;flex-shrink:0;min-width:120px;';
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      fireStreamBet();
+    });
+    btn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      fireStreamBet();
+    });
+
+    wrap.appendChild(btn);
+  }
+
+  // Call once on load
+  rebuildStreamBetBtn();
+
   function fireStreamBet() {
-    if (!document.querySelector('.stream-bet-opt.selected')) return;
-    const btn = document.querySelector('.stream-fire-btn');
-    const selectedOpt = document.querySelector('.stream-bet-opt.selected');
-    const team = selectedOpt.querySelector('.sbo-team').textContent.trim();
-    const odds = selectedOpt.querySelector('.sbo-odds').textContent.trim();
+    try {
+    const sel = document.querySelector('.stream-bet-opt.selected');
+    if (!sel) return;
+    const btn = document.getElementById('streamBetBtn');
+    if (!btn) return;
+    const team = sel.querySelector('.sbo-team').textContent.trim();
+    const odds = sel.querySelector('.sbo-odds').textContent.trim();
     const chip = document.querySelector('.stream-chip.active');
     const amount = chip ? chip.textContent.trim() : '$5';
 
@@ -6812,18 +6851,83 @@
       document.querySelectorAll('.stream-bet-opt').forEach(o => o.classList.remove('selected'));
       updateStreamBetBtn();
     }, 3000);
+    } catch(err) { console.error('fireStreamBet error:', err); }
   }
 
-  // Stream bet event listeners (backup for onclick in overlay context)
-  document.querySelectorAll('.stream-bet-opt').forEach(opt => {
-    opt.addEventListener('click', function() { selectStreamOpt(this); });
-    opt.addEventListener('touchend', function(e) { e.preventDefault(); selectStreamOpt(this); });
+  // === CENTRALIZED EVENT DELEGATION ===
+  // All click/touch events routed through a single handler
+  // No more inline onclick - everything uses data-action attributes
+  document.addEventListener('click', function(e) {
+    const target = e.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.getAttribute('data-action');
+    const idx = target.getAttribute('data-idx');
+    const amt = target.getAttribute('data-amt');
+
+    switch (action) {
+      // Navigation
+      case 'navigateToQuests': navigateToTab('quests'); break;
+      case 'goToMatch': goToMatch(parseInt(idx)); break;
+      case 'goToParlay': goToParlay(parseInt(idx)); break;
+
+      // Micro-bet
+      case 'selOpt': selOpt(target); break;
+      case 'selAmt': selAmt(target); break;
+      case 'fireBet': fireBet(); break;
+      case 'placeBet': placeBet(); break;
+
+      // Stream overlay
+      case 'openStream': openStream(parseInt(idx)); break;
+      case 'closeStream': closeStream(); break;
+      case 'selectStreamOpt': selectStreamOpt(target); break;
+      case 'selectStreamChip': selectStreamChip(target); break;
+
+      // Squad parlays
+      case 'openSquadJoin': openSquadJoin(parseInt(idx)); break;
+      case 'closeSquadJoin': closeSquadJoin(); break;
+      case 'selectSquadPick': selectSquadPick(target, parseInt(idx)); break;
+      case 'selectSquadAmt': selectSquadAmt(target, parseInt(amt)); break;
+      case 'confirmSquadJoin': if (!target.disabled) confirmSquadJoin(); break;
+
+      // Bonus/resolution
+      case 'buyBonus': e.stopPropagation(); buyBonus(); break;
+      case 'toggleBonusInfo': e.stopPropagation(); toggleBonusInfo(target); break;
+      case 'closeBonusRound': closeBonusRound(); break;
+      case 'simulateResolution': e.stopPropagation(); simulateResolution(target.getAttribute('data-res-type')); break;
+      case 'reroll': reroll(); break;
+      case 'doReroll': doReroll(); break;
+      case 'closeRes': closeRes(); break;
+
+      // Roll boost
+      case 'openRollBoost': openRollBoost(); break;
+      case 'closeRollBoost': closeRollBoost(); break;
+      case 'rollForBoost': rollForBoost(); break;
+
+      // Leaderboard
+      case 'selLbTab': selLbTab(target); break;
+
+      // Social
+      case 'tailBet': tailBet(target); break;
+      case 'copyShare': target.textContent = '✅ Copied!'; break;
+
+      // Receipt
+      case 'dismissReceipt': dismissReceipt(); break;
+    }
   });
-  document.querySelector('.stream-fire-btn').addEventListener('click', fireStreamBet);
-  document.querySelector('.stream-fire-btn').addEventListener('touchend', function(e) {
-    e.preventDefault();
-    if (!this.classList.contains('inactive')) fireStreamBet();
-  });
+
+  // Direct listener failsafe for squad confirm button
+  const _sjb = document.getElementById('sjConfirmBtn');
+  if (_sjb) {
+    _sjb.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!this.disabled) confirmSquadJoin();
+    });
+    _sjb.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!this.disabled) confirmSquadJoin();
+    });
+  }
 
 </script>
 
@@ -6846,18 +6950,18 @@
       <div class="br-timer-label">remaining</div>
       <div class="br-timer-bar-track"><div class="br-timer-bar" id="brTimerBar"></div></div>
     </div>
-    <button class="br-close" id="brClose" onclick="closeBonusRound()">LET'S GO</button>
+    <button class="br-close" id="brClose" data-action="closeBonusRound">LET'S GO</button>
   </div>
 
   <!-- SQUAD JOIN OVERLAY -->
   <div class="squad-join-overlay" id="squadJoinOverlay">
-    <div class="squad-join-backdrop" onclick="closeSquadJoin()"></div>
+    <div class="squad-join-backdrop" data-action="closeSquadJoin"></div>
     <div class="squad-join-sheet">
       <div class="sj-handle"></div>
       <div class="sj-header">
         <div class="sj-header-top">
           <div class="sj-title" id="sjTitle">🏆 Degen Squad #14</div>
-          <div class="sj-close" onclick="closeSquadJoin()">✕</div>
+          <div class="sj-close" data-action="closeSquadJoin">✕</div>
         </div>
         <div class="sj-meta" id="sjMeta">CS2 Major · Grand Final · 3/4 members · $120 pot</div>
       </div>
@@ -6876,7 +6980,7 @@
 
       <div class="sj-section-label">Pick your leg (adds to parlay)</div>
       <div class="sj-pick-grid" id="sjPickGrid">
-        <div class="sj-pick" onclick="selectSquadPick(this, 0)">
+        <div class="sj-pick" data-action="selectSquadPick" data-idx="0">
           <div class="sj-pick-radio"></div>
           <div class="sj-pick-info">
             <div class="sj-pick-name">s1mple MVP</div>
@@ -6884,7 +6988,7 @@
           </div>
           <div class="sj-pick-odds">3.20x</div>
         </div>
-        <div class="sj-pick" onclick="selectSquadPick(this, 1)">
+        <div class="sj-pick" data-action="selectSquadPick" data-idx="1">
           <div class="sj-pick-radio"></div>
           <div class="sj-pick-info">
             <div class="sj-pick-name">ZywOo 25+ kills</div>
@@ -6892,7 +6996,7 @@
           </div>
           <div class="sj-pick-odds">2.40x</div>
         </div>
-        <div class="sj-pick" onclick="selectSquadPick(this, 2)">
+        <div class="sj-pick" data-action="selectSquadPick" data-idx="2">
           <div class="sj-pick-radio"></div>
           <div class="sj-pick-info">
             <div class="sj-pick-name">Map 1 under 24.5 rounds</div>
@@ -6900,7 +7004,7 @@
           </div>
           <div class="sj-pick-odds">2.10x</div>
         </div>
-        <div class="sj-pick" onclick="selectSquadPick(this, 3)">
+        <div class="sj-pick" data-action="selectSquadPick" data-idx="3">
           <div class="sj-pick-radio"></div>
           <div class="sj-pick-info">
             <div class="sj-pick-name">NAVI 2-0 exact score</div>
@@ -6912,10 +7016,10 @@
 
       <div class="sj-section-label">Buy-in amount</div>
       <div class="sj-amount-row" id="sjAmountRow">
-        <div class="sj-amt" onclick="selectSquadAmt(this, 20)">$20</div>
-        <div class="sj-amt selected" onclick="selectSquadAmt(this, 30)">$30</div>
-        <div class="sj-amt" onclick="selectSquadAmt(this, 50)">$50</div>
-        <div class="sj-amt" onclick="selectSquadAmt(this, 100)">$100</div>
+        <div class="sj-amt" data-action="selectSquadAmt" data-amt="20">$20</div>
+        <div class="sj-amt selected" data-action="selectSquadAmt" data-amt="30">$30</div>
+        <div class="sj-amt" data-action="selectSquadAmt" data-amt="50">$50</div>
+        <div class="sj-amt" data-action="selectSquadAmt" data-amt="100">$100</div>
       </div>
 
       <div class="sj-summary" id="sjSummary" style="display:none;">
@@ -6925,7 +7029,7 @@
         <div class="sj-summary-row total"><span>Potential payout</span><span id="sjSumPayout">—</span></div>
       </div>
 
-      <button class="sj-confirm-btn" id="sjConfirmBtn" disabled>Select a leg to join</button>
+      <button class="sj-confirm-btn" id="sjConfirmBtn" data-action="confirmSquadJoin" disabled>Select a leg to join</button>
     </div>
   </div>
 
@@ -6940,14 +7044,14 @@
       <div class="brt-total">Buy-in: <strong id="brtBuyIn">$30</strong></div>
       <div class="brt-payout" id="brtPayout">→ $267</div>
     </div>
-    <div class="brt-dismiss" onclick="dismissReceipt()">tap to dismiss</div>
+    <div class="brt-dismiss" data-action="dismissReceipt">tap to dismiss</div>
   </div>
 
   <!-- STREAM OVERLAY -->
   <div class="stream-overlay" id="streamOverlay">
     <div class="stream-header">
       <div class="stream-header-left">
-        <button class="stream-close" onclick="closeStream()">✕</button>
+        <button class="stream-close" data-action="closeStream">✕</button>
         <div class="stream-live-pill"><span class="live-dot"></span> LIVE</div>
         <div class="stream-match-info">CS2 · BLAST Premier</div>
       </div>
@@ -6979,22 +7083,22 @@
       <div class="stream-bet-timer" id="streamTimer">⏱ Next micro-bet in 0:28</div>
       <div class="stream-bet-question">Who wins Round 15?</div>
       <div class="stream-bet-options">
-        <div class="stream-bet-opt" onclick="selectStreamOpt(this)">
+        <div class="stream-bet-opt" data-action="selectStreamOpt">
           <div class="sbo-team"><span class="navi-logo"></span> NAVI</div>
           <div class="sbo-odds" id="streamOdds1">1.72x</div>
         </div>
-        <div class="stream-bet-opt" onclick="selectStreamOpt(this)">
+        <div class="stream-bet-opt" data-action="selectStreamOpt">
           <div class="sbo-team"><span class="vit-logo"></span> Vitality</div>
           <div class="sbo-odds" id="streamOdds2">2.39x</div>
         </div>
       </div>
       <div class="stream-chips">
-        <div class="stream-chip" onclick="selectStreamChip(this)">$1</div>
-        <div class="stream-chip active" onclick="selectStreamChip(this)">$5</div>
-        <div class="stream-chip" onclick="selectStreamChip(this)">$10</div>
-        <div class="stream-chip" onclick="selectStreamChip(this)">$25</div>
+        <div class="stream-chip" data-action="selectStreamChip">$1</div>
+        <div class="stream-chip active" data-action="selectStreamChip">$5</div>
+        <div class="stream-chip" data-action="selectStreamChip">$10</div>
+        <div class="stream-chip" data-action="selectStreamChip">$25</div>
+        <div id="streamBetBtnWrap"></div>
       </div>
-      <button class="stream-fire-btn inactive" onclick="fireStreamBet()">BET</button>
     </div>
   </div>
 
