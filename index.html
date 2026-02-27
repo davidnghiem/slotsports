@@ -3079,6 +3079,17 @@
 
   .bn-item.casino-tab .bn-label { color: var(--white); }
 
+  /* Esports active tab */
+  .bn-item.esports-active {
+    background: rgba(29,185,84,0.06);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius-lg);
+    margin: 4px 2px;
+    padding: 6px 0 4px;
+  }
+  .bn-item.esports-active .bn-label { color: var(--white); }
+  .bn-item.esports-active .bn-icon { filter: none; }
+
   /* Sports active tab */
   .bn-item.sports-active .bn-label { color: var(--white); }
   .bn-item.sports-active .bn-icon { filter: brightness(2); }
@@ -3178,7 +3189,7 @@
   .ach-ring .ring-bg { stroke: rgba(255,255,255,0.06); }
   .ach-ring .ring-fill { stroke: var(--green); transition: stroke-dashoffset 1s ease-out; }
 
-  .spacer { height: 120px; }
+  .spacer { height: 60px; }
 
   /* === MY BETS === */
   .mybets-filters {
@@ -3775,21 +3786,21 @@
         <span class="cat-icon">🔥</span>
         <span class="cat-label">Popular</span>
       </div>
-      <div class="cat-pill" data-category="esports">
-        <span class="cat-icon">🎮</span>
-        <span class="cat-label">Esports</span>
+      <div class="cat-pill" data-category="cs2">
+        <span class="cat-icon">🔫</span>
+        <span class="cat-label">CS2</span>
       </div>
-      <div class="cat-pill" data-category="soccer">
-        <span class="cat-icon">⚽</span>
-        <span class="cat-label">Soccer</span>
+      <div class="cat-pill" data-category="valorant">
+        <span class="cat-icon">🪄</span>
+        <span class="cat-label">Valorant</span>
       </div>
-      <div class="cat-pill" data-category="basketball">
-        <span class="cat-icon">🏀</span>
-        <span class="cat-label">Basketball</span>
+      <div class="cat-pill" data-category="cod">
+        <span class="cat-icon">🎖️</span>
+        <span class="cat-label">COD</span>
       </div>
-      <div class="cat-pill" data-category="hockey">
-        <span class="cat-icon">🏒</span>
-        <span class="cat-label">Hockey</span>
+      <div class="cat-pill" data-category="lol">
+        <span class="cat-icon">⚔️</span>
+        <span class="cat-label">LoL</span>
       </div>
     </div>
 
@@ -4676,9 +4687,13 @@
     <div class="bn-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAB90lEQVR42p2UTYsTQRCGaz4DgqLxGoObm4c9etODuKAgrHr3pCjeFPwFnv0nOfkPvInogBeDSGAhEMFFJJmP7sl2V/frYXuWTjbJJnmhmeqh6qE+miK6QADCZfZOAhATEZ2c1O/runrh/iW7whIiorqungOAMcxlObm/E7QJkFI+w6k0AKu1FpPJ33tERFmWJVuVWVXVSwczAKz7gplFVU0f+L4XwsRMvF2AwbvDGFZCFE/XQgFERERClA2MF2A+1DKzyfP80I9dAssP/Z5htRqoLMtyf+5JAQgABNPptM3Mx36/1skYwwCgWX8DEPnAmIhIqdk7L7tNxQBQ1/XDptKQiEBEFIbhgbODbV4YESFN4wN3D86AROHlLWFnspauNnboDllrjxzcLvp72dglGQYAfp2bcFEUd1xfLADleskr+qadD5hZSClvuOGGc1tEqdkbY8zcUJRSn5j1H63VT6319zky83Q2E499RuCvpiAIbFmW+61W61EURVe01l/H4/Hnvb2bI4BGw+Hwdq/XexLH8S2t9bGU8mO73R41sWt3XyOl6ldNRlIWdzeJOecAIAGQ5Hl+3Rj+3QC11l+AHymANMuyZOOFCyDs9/uREOIDM4+Z+cidsRDi9brMgnXQoiiuDQYDmaZpcFq+QrfbvdTpdP6tivsPpzqwURbUyBwAAAAASUVORK5CYII=" style="width:20px;height:20px;" alt="Casino"></div>
     <div class="bn-label">Casino</div>
   </div>
-  <div class="bn-item casino-tab">
+  <div class="bn-item">
     <div class="bn-icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAAC2klEQVR42q1UTahVVRT+1jme67tYxBsJYkpovOhZA0ORBnFBHTwIQSioSVS8Bo2Egn4QcpLYTHDg0HHRUIJE0YJXUj4K4ViSkzeI4vl4cOl4z97r5+zl4J5jr9v1YdAe7r3Wt7+11rc+wibH3QlAPnlNoASC4/887p5Nu6eHMSMiX11dfWx29okTRPmzWQZKCb8DdrUo+l+3cTkRNZsCtmXSyspKb+fOHd860RoSrgEAkT9FlB90+Iypnej3+9emgU4C5gDAxq+Z6Y3J97IsezHGY2Y6ZOa3NuYAwLQ+5ACQuXNK6Y8NHxUhhL1zc3O/AEjMsi/LsvMicijLsmYj6L/YLS8vF8y8aI0lEfkkhHC4ixGRF820UtWFmutX1eTnqUPqwGIcvWJmt81sSZXPi8gXZvqTmf4QY3wGAEaj0SERuQUAZvrrSEYv/AO0AwsS3jWzuzHGBQAIISzGWJ9smX2opushhD0AUFXVdncnVflcRN5rcbY8QGWu5lXlrxjj0920mfl1VS27KlT1jIhc6di4OzWNnm0a/awDzLrBEBUnATo7MzNzx923Ach6vd6XgCdVPQ0ARVF8TER7W5Y5EXlKqUgp2cYpN2Mh58+Z2XV37xHRCEAC0FTVvZeJaMHMvgshvOnud4loHxFpK+UjTeM//r2WrSRSSrfdXd1dAVxeWlr6YDAYNETk45bwYkrWL4qthwEccG8uEmX7E/zPIi+Oj6ukBHentrllCGHAzM+LyFeq+n1Zlj13z9vt6fp4i5nfEZFTbPzGxIa1kwEgEi+o8rkHiabfsPKn7YfbxizD26pj3W3qGu5OdV3vVtOhajg6Tr63X01vdnFVVc2raSUiL7Wst7Zyo4daUYxxwczWReSjEKqBmpZ1Xe8Sie+b2V1mXtzMuqabAvO8mVxU1RUzW1eV30TkkogcnDSCRwYFgLW1tcfrun5yOBzOTnv/T048mdj2LHuU/PsZdUzxOg0y4AAAAABJRU5ErkJggg==" style="width:20px;height:20px;" alt="Sports"></div>
     <div class="bn-label">Sports</div>
+  </div>
+  <div class="bn-item esports-active">
+    <div class="bn-icon" style="font-size:20px;">🎮</div>
+    <div class="bn-label">Esports</div>
   </div>
 </div>
 
@@ -5924,7 +5939,7 @@
         ]
       },
     ],
-    esports: [
+    cs2: [
       {
         tier: 'safe', emoji: '🛡️', name: 'CS2 Lock', tag: '2 legs · 72% hit rate',
         odds: '2.1x', color: 'safe', bet: '$15', plays: '2.8k', resType: 'safe',
@@ -5934,12 +5949,60 @@
         ]
       },
       {
-        tier: 'mid', emoji: '⚡', name: 'LCK Special', tag: '3 legs · 38% hit rate',
-        odds: '6.8x', color: 'mid', bet: '$10', plays: '1.1k', resType: 'safe',
+        tier: 'mid', emoji: '⚡', name: 'Major Madness', tag: '3 legs · 35% hit rate',
+        odds: '7.5x', color: 'mid', bet: '$10', plays: '1.4k', resType: 'safe',
         legs: [
-          { pick: 'T1 ML', match: 'LoL · LCK · vs HLE', odds: '1.65x' },
-          { pick: 'GenG -1.5 maps', match: 'LoL · LCK · vs KT', odds: '1.80x' },
-          { pick: 'Over 25 min Game 1', match: 'LoL · LCK · T1 vs HLE', odds: '2.30x' },
+          { pick: 'NAVI -1.5 maps', match: 'CS2 · Major · vs G2', odds: '2.10x' },
+          { pick: 'Over 26.5 rounds', match: 'CS2 · Major · Map 1', odds: '1.80x' },
+          { pick: 'FaZe ML', match: 'CS2 · BLAST · vs Vitality', odds: '1.95x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Clutch Factor', tag: '4 legs · 8% hit rate',
+        odds: '28x', color: 'degen', bet: '$5', plays: '920', resType: 'degen',
+        legs: [
+          { pick: 'Ace in match', match: 'CS2 · Major · Grand Final', odds: '5.00x' },
+          { pick: 'Overtime Map 1', match: 'CS2 · EPL · NAVI vs G2', odds: '3.20x' },
+          { pick: 'Knife kill', match: 'CS2 · BLAST · Any match', odds: '8.50x' },
+          { pick: 'Pistol round ace', match: 'CS2 · Major · Rd 1', odds: '6.00x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'AWP Chaos', tag: '5 legs · 2% hit rate',
+        odds: '110x', color: 'yolo', bet: '$2', plays: '3.5k', resType: 'yolo',
+        legs: [
+          { pick: 'Ace round 1', match: 'CS2 · Major · Grand Final', odds: '8.00x' },
+          { pick: '16-0 stomp', match: 'CS2 · EPL · Quarterfinal', odds: '15.0x' },
+          { pick: 'Knife kill in pistol', match: 'CS2 · BLAST · Map 2', odds: '12.0x' },
+          { pick: 'Comeback from 3-12', match: 'CS2 · Major · Map 3', odds: '6.00x' },
+          { pick: 'AWP 4k in round', match: 'CS2 · EPL · Semifinal', odds: '9.00x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'EPL Chalk', tag: '2 legs · 70% hit rate',
+        odds: '2.0x', color: 'safe', bet: '$20', plays: '4.1k', resType: 'safe',
+        legs: [
+          { pick: 'NAVI ML', match: 'CS2 · EPL · vs Astralis', odds: '1.30x' },
+          { pick: 'Vitality ML', match: 'CS2 · EPL · vs ENCE', odds: '1.52x' },
+        ]
+      },
+    ],
+    valorant: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'VCT Safe', tag: '2 legs · 75% hit rate',
+        odds: '1.8x', color: 'safe', bet: '$20', plays: '4.1k', resType: 'safe',
+        legs: [
+          { pick: 'SEN ML', match: 'Valorant · VCT · vs NRG', odds: '1.30x' },
+          { pick: 'LOUD ML', match: 'Valorant · VCT · vs MIBR', odds: '1.38x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Agent Picks', tag: '3 legs · 38% hit rate',
+        odds: '6.2x', color: 'mid', bet: '$10', plays: '1.6k', resType: 'safe',
+        legs: [
+          { pick: 'DRX ML', match: 'Valorant · VCT · vs T1', odds: '1.70x' },
+          { pick: 'Over 2.5 maps', match: 'Valorant · VCT · SEN vs LOUD', odds: '2.10x' },
+          { pick: 'PRX ML', match: 'Valorant · VCT · vs GenG', odds: '1.75x' },
         ]
       },
       {
@@ -5953,175 +6016,118 @@
         ]
       },
       {
-        tier: 'yolo', emoji: '💀', name: 'Esports Madness', tag: '5 legs · 2% hit rate',
-        odds: '110x', color: 'yolo', bet: '$2', plays: '3.5k', resType: 'yolo',
+        tier: 'yolo', emoji: '💀', name: 'Ace Hunter', tag: '5 legs · 1% hit rate',
+        odds: '180x', color: 'yolo', bet: '$1', plays: '5.2k', resType: 'yolo',
         legs: [
-          { pick: 'Ace round 1', match: 'CS2 · Major · Grand Final', odds: '8.00x' },
+          { pick: 'Ace in pistol round', match: 'Valorant · VCT · Finals', odds: '10.0x' },
+          { pick: '13-0 half', match: 'Valorant · VCT · Map 1', odds: '18.0x' },
+          { pick: 'Operator 4k', match: 'Valorant · VCT · Semifinals', odds: '7.00x' },
+          { pick: 'Comeback from 2-10', match: 'Valorant · VCT · Map 3', odds: '5.50x' },
+          { pick: 'Knife kill', match: 'Valorant · VCT · Any match', odds: '12.0x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Map Picks', tag: '2 legs · 55% hit rate',
+        odds: '3.5x', color: 'mid', bet: '$15', plays: '2.3k', resType: 'safe',
+        legs: [
+          { pick: 'SEN win Bind', match: 'Valorant · VCT · vs NRG', odds: '1.65x' },
+          { pick: 'LOUD win Lotus', match: 'Valorant · VCT · vs GenG', odds: '2.10x' },
+        ]
+      },
+    ],
+    cod: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'CDL Lock', tag: '2 legs · 68% hit rate',
+        odds: '2.3x', color: 'safe', bet: '$15', plays: '1.9k', resType: 'safe',
+        legs: [
+          { pick: 'FaZe ML', match: 'COD · CDL · vs LAT', odds: '1.45x' },
+          { pick: 'OpTic ML', match: 'COD · CDL · vs NYSL', odds: '1.58x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'Hardpoint Hero', tag: '3 legs · 32% hit rate',
+        odds: '8.1x', color: 'mid', bet: '$10', plays: '1.1k', resType: 'safe',
+        legs: [
+          { pick: 'FaZe win HP', match: 'COD · CDL · Map 1 vs LAT', odds: '1.60x' },
+          { pick: 'OpTic -1.5 maps', match: 'COD · CDL · vs NYSL', odds: '2.30x' },
+          { pick: 'Over 250 HP score', match: 'COD · CDL · FaZe Map 1', odds: '2.20x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'SnD Specials', tag: '4 legs · 9% hit rate',
+        odds: '35x', color: 'degen', bet: '$5', plays: '780', resType: 'degen',
+        legs: [
+          { pick: 'Round 11 in SnD', match: 'COD · CDL · FaZe vs LAT', odds: '2.80x' },
+          { pick: 'LAT upset FaZe', match: 'COD · CDL · Major', odds: '3.20x' },
+          { pick: '1v3 clutch', match: 'COD · CDL · SnD Map', odds: '4.50x' },
+          { pick: 'Under 4 min Control', match: 'COD · CDL · Map 3', odds: '2.90x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'CDL Nuke', tag: '5 legs · 2% hit rate',
+        odds: '125x', color: 'yolo', bet: '$2', plays: '4.1k', resType: 'yolo',
+        legs: [
+          { pick: 'V2 Rocket in match', match: 'COD · CDL · Major Finals', odds: '20.0x' },
+          { pick: '3-0 sweep', match: 'COD · CDL · FaZe vs OpTic', odds: '4.50x' },
+          { pick: '100-point club HP', match: 'COD · CDL · Map 1', odds: '6.00x' },
+          { pick: 'Ace round SnD', match: 'COD · CDL · Map 2', odds: '8.00x' },
+          { pick: 'Reverse sweep', match: 'COD · CDL · Grand Final', odds: '7.00x' },
+        ]
+      },
+      {
+        tier: 'safe', emoji: '🛡️', name: 'Major Favs', tag: '2 legs · 72% hit rate',
+        odds: '1.9x', color: 'safe', bet: '$20', plays: '3.3k', resType: 'safe',
+        legs: [
+          { pick: 'FaZe ML', match: 'COD · CDL Major · vs Surge', odds: '1.25x' },
+          { pick: 'OpTic ML', match: 'COD · CDL Major · vs Rokkr', odds: '1.52x' },
+        ]
+      },
+    ],
+    lol: [
+      {
+        tier: 'safe', emoji: '🛡️', name: 'LCK Lock', tag: '2 legs · 70% hit rate',
+        odds: '2.2x', color: 'safe', bet: '$15', plays: '3.4k', resType: 'safe',
+        legs: [
+          { pick: 'T1 ML', match: 'LoL · LCK · vs DRX', odds: '1.40x' },
+          { pick: 'Gen.G ML', match: 'LoL · LCK · vs KT', odds: '1.55x' },
+        ]
+      },
+      {
+        tier: 'mid', emoji: '⚡', name: 'LCK Special', tag: '3 legs · 38% hit rate',
+        odds: '6.8x', color: 'mid', bet: '$10', plays: '1.1k', resType: 'safe',
+        legs: [
+          { pick: 'T1 ML', match: 'LoL · LCK · vs HLE', odds: '1.65x' },
+          { pick: 'Gen.G -1.5 maps', match: 'LoL · LCK · vs KT', odds: '1.80x' },
+          { pick: 'Over 25 min Game 1', match: 'LoL · LCK · T1 vs HLE', odds: '2.30x' },
+        ]
+      },
+      {
+        tier: 'degen', emoji: '🔥', name: 'Baron Steals', tag: '4 legs · 7% hit rate',
+        odds: '38x', color: 'degen', bet: '$5', plays: '650', resType: 'degen',
+        legs: [
+          { pick: 'Baron steal in game', match: 'LoL · LCK · T1 vs Gen.G', odds: '4.50x' },
+          { pick: 'Sub-20 min game', match: 'LoL · LCK · Gen.G vs KT', odds: '3.80x' },
+          { pick: 'Pentakill in match', match: 'LoL · Worlds · Quarters', odds: '5.00x' },
+          { pick: 'First blood < 3 min', match: 'LoL · LCK · T1 vs HLE', odds: '2.80x' },
+        ]
+      },
+      {
+        tier: 'yolo', emoji: '💀', name: 'Worlds Chaos', tag: '5 legs · 1% hit rate',
+        odds: '200x', color: 'yolo', bet: '$1', plays: '6.2k', resType: 'yolo',
+        legs: [
+          { pick: 'Pentakill in finals', match: 'LoL · Worlds · Grand Final', odds: '5.00x' },
           { pick: 'Sub-20 min game', match: 'LoL · Worlds · Quarters', odds: '4.50x' },
-          { pick: 'Knife kill in pistol', match: 'CS2 · BLAST · Map 2', odds: '12.0x' },
-          { pick: 'Comeback from 0-9', match: 'Valorant · VCT · Map 3', odds: '6.00x' },
-          { pick: 'Pentakill in finals', match: 'LoL · LCK · Grand Final', odds: '5.00x' },
+          { pick: 'Elder steal + win', match: 'LoL · LCK · Playoffs', odds: '8.00x' },
+          { pick: 'Backdoor nexus', match: 'LoL · Worlds · Semifinals', odds: '15.0x' },
+          { pick: '3-0 reverse sweep', match: 'LoL · LCK · Finals', odds: '10.0x' },
         ]
       },
       {
-        tier: 'safe', emoji: '🛡️', name: 'Valorant Safe', tag: '2 legs · 75% hit rate',
-        odds: '1.8x', color: 'safe', bet: '$20', plays: '4.1k', resType: 'safe',
+        tier: 'safe', emoji: '🛡️', name: 'LEC Chalk', tag: '2 legs · 65% hit rate',
+        odds: '2.4x', color: 'safe', bet: '$20', plays: '2.6k', resType: 'safe',
         legs: [
-          { pick: 'SEN ML', match: 'Valorant · VCT · vs NRG', odds: '1.30x' },
-          { pick: 'LOUD ML', match: 'Valorant · VCT · vs MIBR', odds: '1.38x' },
-        ]
-      },
-    ],
-    soccer: [
-      {
-        tier: 'safe', emoji: '🛡️', name: 'PL Favorites', tag: '3 legs · 58% hit rate',
-        odds: '3.4x', color: 'safe', bet: '$10', plays: '5.2k', resType: 'safe',
-        legs: [
-          { pick: 'Arsenal ML', match: 'EPL · vs Wolves', odds: '1.35x' },
-          { pick: 'Man City ML', match: 'EPL · vs Bournemouth', odds: '1.45x' },
-          { pick: 'Liverpool ML', match: 'EPL · vs Crystal Palace', odds: '1.72x' },
-        ]
-      },
-      {
-        tier: 'mid', emoji: '⚡', name: 'BTTS Special', tag: '3 legs · 40% hit rate',
-        odds: '5.8x', color: 'mid', bet: '$10', plays: '1.9k', resType: 'safe',
-        legs: [
-          { pick: 'Both teams score', match: 'EPL · Chelsea vs Spurs', odds: '1.65x' },
-          { pick: 'Over 2.5 goals', match: 'La Liga · Barça vs Atlético', odds: '1.80x' },
-          { pick: 'Both teams score', match: 'Serie A · Inter vs Napoli', odds: '1.95x' },
-        ]
-      },
-      {
-        tier: 'degen', emoji: '🔥', name: 'Scoreline Hunter', tag: '3 legs · 6% hit rate',
-        odds: '42x', color: 'degen', bet: '$5', plays: '890', resType: 'degen',
-        legs: [
-          { pick: 'Arsenal 2-1 exact', match: 'EPL · vs Wolves', odds: '7.50x' },
-          { pick: 'Haaland anytime scorer', match: 'EPL · City vs Bournemouth', odds: '1.55x' },
-          { pick: 'Barça win & over 3.5', match: 'La Liga · vs Atlético', odds: '3.60x' },
-        ]
-      },
-      {
-        tier: 'yolo', emoji: '💀', name: 'UCL Chaos', tag: '5 legs · 1% hit rate',
-        odds: '175x', color: 'yolo', bet: '$1', plays: '6.8k', resType: 'yolo',
-        legs: [
-          { pick: 'Real Madrid 3-2 exact', match: 'UCL · vs PSG', odds: '15.0x' },
-          { pick: 'Red card in match', match: 'UCL · Bayern vs Inter', odds: '4.50x' },
-          { pick: 'Goal before 5 min', match: 'UCL · Arsenal vs Barça', odds: '5.00x' },
-          { pick: 'Penalty awarded', match: 'UCL · City vs Dortmund', odds: '2.80x' },
-          { pick: 'Hat trick scored', match: 'UCL · Real Madrid vs PSG', odds: '9.00x' },
-        ]
-      },
-      {
-        tier: 'mid', emoji: '⚡', name: 'Derby Day', tag: '2 legs · 52% hit rate',
-        odds: '3.1x', color: 'mid', bet: '$15', plays: '2.3k', resType: 'safe',
-        legs: [
-          { pick: 'Draw', match: 'EPL · Man Utd vs Man City', odds: '3.40x' },
-          { pick: 'Under 2.5 goals', match: 'Serie A · AC Milan vs Inter', odds: '1.90x' },
-        ]
-      },
-      {
-        tier: 'safe', emoji: '🛡️', name: 'La Liga Lock', tag: '2 legs · 70% hit rate',
-        odds: '2.2x', color: 'safe', bet: '$20', plays: '3.4k', resType: 'safe',
-        legs: [
-          { pick: 'Barcelona ML', match: 'La Liga · vs Sevilla', odds: '1.40x' },
-          { pick: 'Real Madrid ML', match: 'La Liga · vs Real Sociedad', odds: '1.55x' },
-        ]
-      },
-    ],
-    basketball: [
-      {
-        tier: 'safe', emoji: '🛡️', name: 'NBA Chalk', tag: '3 legs · 55% hit rate',
-        odds: '3.6x', color: 'safe', bet: '$10', plays: '4.5k', resType: 'safe',
-        legs: [
-          { pick: 'Celtics ML', match: 'NBA · vs Hornets', odds: '1.25x' },
-          { pick: 'Thunder ML', match: 'NBA · vs Wizards', odds: '1.30x' },
-          { pick: 'Nuggets ML', match: 'NBA · vs Blazers', odds: '1.45x' },
-        ]
-      },
-      {
-        tier: 'mid', emoji: '⚡', name: 'Player Props', tag: '3 legs · 35% hit rate',
-        odds: '7.2x', color: 'mid', bet: '$10', plays: '2.1k', resType: 'safe',
-        legs: [
-          { pick: 'LeBron over 27.5 pts', match: 'NBA · Lakers vs Clippers', odds: '1.85x' },
-          { pick: 'Jokic triple-double', match: 'NBA · Nuggets vs Blazers', odds: '2.40x' },
-          { pick: 'Curry over 4.5 threes', match: 'NBA · Warriors vs Kings', odds: '1.90x' },
-        ]
-      },
-      {
-        tier: 'degen', emoji: '🔥', name: 'Upset Alert', tag: '4 legs · 10% hit rate',
-        odds: '32x', color: 'degen', bet: '$5', plays: '1.3k', resType: 'degen',
-        legs: [
-          { pick: 'Wizards ML upset', match: 'NBA · vs Thunder', odds: '3.80x' },
-          { pick: 'Blazers +6.5', match: 'NBA · vs Nuggets', odds: '1.95x' },
-          { pick: 'Under 215.5 total', match: 'NBA · Celtics vs Hornets', odds: '2.10x' },
-          { pick: 'Wemby 5+ blocks', match: 'NBA · Spurs vs Wolves', odds: '3.20x' },
-        ]
-      },
-      {
-        tier: 'yolo', emoji: '💀', name: 'NBA Parlay Bomb', tag: '5 legs · 2% hit rate',
-        odds: '95x', color: 'yolo', bet: '$2', plays: '5.9k', resType: 'yolo',
-        legs: [
-          { pick: 'Ant-Man 40+ pts', match: 'NBA · Wolves vs Mavs', odds: '6.00x' },
-          { pick: 'Triple OT', match: 'NBA · Lakers vs Clippers', odds: '12.0x' },
-          { pick: 'Luka triple-double', match: 'NBA · Mavs vs Wolves', odds: '3.50x' },
-          { pick: '20-0 run in game', match: 'NBA · Celtics vs Hornets', odds: '8.00x' },
-          { pick: 'Buzzer beater to win', match: 'NBA · Warriors vs Kings', odds: '10.0x' },
-        ]
-      },
-      {
-        tier: 'safe', emoji: '🛡️', name: 'Spread Lock', tag: '2 legs · 68% hit rate',
-        odds: '2.4x', color: 'safe', bet: '$20', plays: '3.8k', resType: 'safe',
-        legs: [
-          { pick: 'Celtics -8.5', match: 'NBA · vs Hornets', odds: '1.50x' },
-          { pick: 'Thunder -10.5', match: 'NBA · vs Wizards', odds: '1.60x' },
-        ]
-      },
-    ],
-    hockey: [
-      {
-        tier: 'safe', emoji: '🛡️', name: 'NHL Favorites', tag: '3 legs · 52% hit rate',
-        odds: '3.9x', color: 'safe', bet: '$10', plays: '1.8k', resType: 'safe',
-        legs: [
-          { pick: 'Oilers ML', match: 'NHL · vs Sharks', odds: '1.40x' },
-          { pick: 'Panthers ML', match: 'NHL · vs Senators', odds: '1.50x' },
-          { pick: 'Avalanche ML', match: 'NHL · vs Ducks', odds: '1.55x' },
-        ]
-      },
-      {
-        tier: 'mid', emoji: '⚡', name: 'Puck Line Combo', tag: '3 legs · 30% hit rate',
-        odds: '8.5x', color: 'mid', bet: '$10', plays: '950', resType: 'safe',
-        legs: [
-          { pick: 'Over 6.5 goals', match: 'NHL · Oilers vs Sharks', odds: '2.00x' },
-          { pick: 'Panthers -1.5', match: 'NHL · vs Senators', odds: '2.10x' },
-          { pick: 'McDavid anytime goal', match: 'NHL · Oilers vs Sharks', odds: '1.75x' },
-        ]
-      },
-      {
-        tier: 'degen', emoji: '🔥', name: 'Hatty Hunter', tag: '3 legs · 5% hit rate',
-        odds: '48x', color: 'degen', bet: '$5', plays: '1.5k', resType: 'degen',
-        legs: [
-          { pick: 'McDavid hat trick', match: 'NHL · Oilers vs Sharks', odds: '12.0x' },
-          { pick: 'Over 8.5 goals', match: 'NHL · Avalanche vs Ducks', odds: '3.50x' },
-          { pick: 'Fight in 1st period', match: 'NHL · Rangers vs Bruins', odds: '2.80x' },
-        ]
-      },
-      {
-        tier: 'yolo', emoji: '💀', name: 'OT Madness', tag: '5 legs · 1% hit rate',
-        odds: '200x', color: 'yolo', bet: '$1', plays: '3.2k', resType: 'yolo',
-        legs: [
-          { pick: 'Game goes to OT', match: 'NHL · Rangers vs Bruins', odds: '4.00x' },
-          { pick: 'Goalie scores', match: 'NHL · Any game', odds: '50.0x' },
-          { pick: 'Short-handed goal', match: 'NHL · Oilers vs Sharks', odds: '5.50x' },
-          { pick: 'Shutout', match: 'NHL · Panthers vs Senators', odds: '6.00x' },
-          { pick: 'Own goal scored', match: 'NHL · Avalanche vs Ducks', odds: '15.0x' },
-        ]
-      },
-      {
-        tier: 'safe', emoji: '🛡️', name: 'Original Six', tag: '2 legs · 65% hit rate',
-        odds: '2.5x', color: 'safe', bet: '$15', plays: '2.6k', resType: 'safe',
-        legs: [
-          { pick: 'Rangers ML', match: 'NHL · vs Bruins', odds: '1.55x' },
-          { pick: 'Maple Leafs ML', match: 'NHL · vs Red Wings', odds: '1.60x' },
+          { pick: 'G2 ML', match: 'LoL · LEC · vs Rogue', odds: '1.45x' },
+          { pick: 'Fnatic ML', match: 'LoL · LEC · vs MAD', odds: '1.65x' },
         ]
       },
     ],
